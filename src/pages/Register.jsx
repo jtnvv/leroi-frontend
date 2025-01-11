@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -28,7 +27,7 @@ function Register() {
   const [verificationCode, setVerificationCode] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [isSubmittingCode, setIsSubmittingCode] = useState(false);
-
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -144,7 +143,7 @@ function Register() {
           const errorData = await response.json();
           throw new Error(errorData.detail || 'Error al registrar el usuario');
         }
-        navigate('/');
+        navigate('/login');
   
       } catch (error) {
         console.error('Error al registrar el usuario:', error);
@@ -197,7 +196,8 @@ function Register() {
       name: formData.nombres,
       last_name: formData.apellidos,
       email: formData.email,
-      password: formData.contraseña
+      password: formData.contraseña,
+      provider: 'email'
     };
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, {
@@ -212,7 +212,7 @@ function Register() {
         const errorData = await response.json();
         throw new Error(errorData.detail || 'Error al registrar el usuario');
       }
-      navigate('/');
+      navigate('/login');
 
     } catch (error) {
       console.error('Error al registrar el usuario:', error);
@@ -322,10 +322,18 @@ function Register() {
                 required
               />
               <span>Acepto los </span>
-              <Link to="/terminos" className="terms-link">
+              <span className="terms-link" onClick={() => setShowTermsModal(true)}>
                 términos y condiciones
-              </Link>
+              </span>
             </label>
+
+            <div className="have-account">
+              <span className="have-account-text">¿Ya tienes una cuenta?</span>
+              <span className="login-link" onClick={() => navigate('/login')}>
+                Iniciar sesión
+              </span>
+            </div>
+
           </div>
 
         <div className="button-container">
@@ -383,6 +391,26 @@ function Register() {
                 {isSubmittingCode ? 'Verificando...' : 'Verificar'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {showTermsModal && (
+        <div className="verification-modal">
+          <div className="modal-content">
+            <h2>Términos y condiciones</h2>
+            <p className="terms-text">
+              LEROI es una plataforma web diseñada para generar rutas de aprendizaje personalizadas a partir de documentos cargados por los usuarios, 
+              quienes son responsables del contenido que suben y de su uso en conformidad con las leyes aplicables. El servicio es exclusivamente educativo, 
+              y los documentos se procesan temporalmente, sin almacenamiento permanente. Los usuarios pueden generar hasta tres rutas gratuitas y adquirir créditos para generar más, 
+              estos créditos no son reembolsables ni transferibles. La plataforma y sus contenidos son propiedad de LEROI, y el uso indebido de los mismos está prohibido. 
+              LEROI no garantiza la disponibilidad continua del servicio ni la precisión de las rutas generadas, y no se hace responsable por daños indirectos derivados del uso de la plataforma. 
+              LEROI puede modificar los servicios o los términos en cualquier momento, notificando a los usuarios registrados.</p>
+            <button 
+              onClick={() => setShowTermsModal(false)}
+              className="verify-button"
+            >
+              Cerrar
+            </button>
           </div>
         </div>
       )}

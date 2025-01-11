@@ -12,8 +12,9 @@
   .register-box {
     background: rgba(30, 31, 38, 0.95);
     border-radius: 16px;
-    padding: 40px;
-    margin-top: 1.5rem;
+    padding: 30px;
+    padding-top: 20px;
+    margin-top: 2.5rem;
     width: 100%;
     max-width: 480px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -25,7 +26,8 @@
   .register-box h1 {
     color: #fff;
     font-size: 32px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    margin-top: 0;
   }
   
   .register-box h2 {
@@ -46,7 +48,7 @@
   .form-row {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.8rem;
   }
   
   .form-group {
@@ -239,6 +241,26 @@
 
 .verify-button:hover {
   background: #6b4ad4;
+}
+
+.terms-text{
+  text-align: justify;
+}
+
+.have-account{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 1rem;
+}
+
+.login-link{
+  color: #6366f1;
+  text-decoration: none;
+  cursor: pointer;
 }
   
   /* Estilos para el checkbox */

@@ -68,8 +68,16 @@
 }
 
 .feature-icon {
-  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 15px;
+}
+.feature-icon img {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 15px;
+  filter: brightness(0) invert(1);
 }
 
 .feature-card h3 {

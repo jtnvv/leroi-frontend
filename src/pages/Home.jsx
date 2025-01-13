@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       {/* Hook*/}
-      <section className="hook">
+      <section id = "tutorial"className="hook">
         <div className="hook-content">
           <h1>Convierte tus documentos en rutas de aprendizaje personalizadas</h1>
           <Link to="/upload" className="cta-button">Sube tu primer documento</Link>
@@ -62,7 +62,7 @@ function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section className="pricing">
+      <section id= "credits" className="pricing">
         <h2>Adquiere créditos</h2>
         <div className="pricing-container">
           <div className="pricing-card">

@@ -45,7 +45,7 @@
 
 .features h2 {
   text-align: center;
-  color: #fff;
+  color: var(--foreground);
   font-size: 32px;
   margin-bottom: 40px;
 }
@@ -102,6 +102,7 @@
 .pricing h2 {
   font-size: 32px;
   margin-bottom: 20px;
+  color: var(--foreground);
 }
 
 .pricing-container {

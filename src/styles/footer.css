@@ -1,6 +1,6 @@
 /* Footer */
 .footer {
-    background-color: #020817;
+    background-color: var(--card);
     padding: 60px 20px;
   }
   
@@ -17,7 +17,7 @@
   }
   
   .footer-section {
-    background-color: #020817;
+    background-color: none;
     border-radius: 16px;
     padding: 30px;
     width: 100%;
@@ -34,7 +34,7 @@
   
   .footer-section p,
   .footer-section ul {
-    color: #ccc;
+    color: #fff;
     font-size: 16px;
   }
   
@@ -48,18 +48,18 @@
   }
   
   .footer-section ul li:hover {
-    color: #835bfc;
+    color: var(--hover);
     cursor: pointer;
   }
   
   
   .footer-section a {
-    color: #ccc;
+    color: #fff;
     text-decoration: none; 
     transition: color 0.3s ease; 
   }
   
   .footer-section a:hover {
-    color: #835bfc; 
+    color: var(--hover);; 
   }
   

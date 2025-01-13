@@ -1,24 +1,21 @@
-import  { useState, useEffect } from "react";
-import { Moon, Sun } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "./Button";
-import PropTypes from "prop-types";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    }
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   return (
@@ -36,8 +33,3 @@ export function ThemeToggle() {
     </Button>
   );
 }
-
-ThemeToggle.propTypes = {
-  className: PropTypes.string,
-};
-

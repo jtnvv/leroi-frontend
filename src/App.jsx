@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+
 import './styles/app.css';
 
 // Importa tus páginas y componentes principales
@@ -9,6 +10,7 @@ import Profile from './pages/Profile';
 import Roadmap from './pages/Roadmap';
 import Register from './pages/Register';
 import Login from './pages/Login';
+
 
 function App() {
   return (

@@ -1,3 +1,4 @@
+import "../styles/styles.css";
 import "../styles/home.css";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";  

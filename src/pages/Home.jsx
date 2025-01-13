@@ -4,6 +4,7 @@ import feature1 from "../assets/feature-1.svg";
 import feature2 from "../assets/feature-2.svg";
 import feature3 from "../assets/feature-3.svg";
 import feature4 from "../assets/feature-4.svg";
+import tutorialGif from "../assets/Tuto-Placeholder.gif";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";  
 
@@ -13,6 +14,11 @@ function Home() {
       {/* Hook*/}
       <section id = "tutorial"className="hook">
         <div className="hook-content">
+          <img 
+            src={tutorialGif} 
+            alt="Tutorial Placeholder" 
+            className="hook-gif" 
+          />
           <h1>Convierte tus documentos en rutas de aprendizaje personalizadas</h1>
           <Link to="/upload" className="cta-button">Sube tu primer documento</Link>
         </div>

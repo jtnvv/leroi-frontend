@@ -180,3 +180,23 @@
     padding: var(--spacing-xs) var(--spacing-sm); 
     font-size: 0.75rem; 
   }
+
+.theme-toggle {
+  background-color: transparent; 
+  color: var(--background); 
+  border-radius: 50%; 
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+}
+
+.theme-toggle:hover {
+  background-color: var(--navbar); 
+  transform: scale(1.1); 
+}
+
+.theme-toggle .icon {
+  transition: color 0.3s ease;
+}
+
+
+

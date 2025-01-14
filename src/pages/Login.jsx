@@ -11,12 +11,14 @@ function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
-    contraseña: '',
+    password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,12 +34,25 @@ function Login() {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail);
+        }
+        const data = await response.json();
+        const token = data.access_token;
+        localStorage.setItem('token', token);
+        navigate('/roadmap');
         
-        
-        toast.success('Código de verificación enviado a tu correo');
       } catch (error) {
-        toast.error('Error al enviar el código de verificación');
-        console.error('Error al enviar el código de verificación:', error);
+        toast.error(error.message);
+        console.error('Error al iniciar sesión:', error);
       } finally {
         setIsSubmitting(false);
       }
@@ -55,9 +70,9 @@ function Login() {
         name: result.user.displayName,       
         provider: 'google',                    
       };
-      console.log('Datos del usuario:', userData);
+      
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login-google`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -67,54 +82,66 @@ function Login() {
   
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.detail || 'Error al registrar el usuario');
+          throw new Error(errorData.detail || 'Error al iniciar sesión');
         }
-        navigate('/login');
+        const data = await response.json();
+        const token = data.access_token;
+        localStorage.setItem('token', token);
+        navigate('/roadmap');
   
       } catch (error) {
-        console.error('Error al registrar el usuario:', error);
+        console.error('Error al iniciar sesión:', error);
         throw error;
       }
 
     } catch (error) {
       console.error('Error en la autenticación:', error);
-      setError(error.message);
     } finally {
       setIsLoading(false);
     }
   };
   
   const validateForm = () => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    // Validar que todos los campos estén llenos
-    if (!formData.nombres || !formData.apellidos || !formData.email || !formData.contraseña || !formData.confirmarContraseña) {
+    if(!formData.email || !formData.password) {
       toast.error('Por favor, completa todos los campos');
-      return false;
-    }
-    // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast.error('Por favor, ingresa un email válido');
-      return false;
-    }
-
-    // Validar que las contraseñas coincidan
-    if (formData.contraseña !== formData.confirmarContraseña) {
-      toast.error('Las contraseñas no coinciden');
-      return false;
-    }
-    // Validar longitud mínima de contraseña
-    if (!passwordRegex.test(formData.contraseña)) {
-      toast.error('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial');
-      return false;
-    } 
-    // Validar términos y condiciones
-    if (!formData.aceptaTerminos) {
-      toast.error('Debes aceptar los términos y condiciones');
       return false;
     }
 
     return true;
+  };
+
+  const handleForgotPassword = async () => {
+
+    if(!forgotPasswordEmail) {
+      toast.error('Por favor, ingresa tu correo electrónico');
+      return;
+    }
+    if(!forgotPasswordEmail.includes('@')) {
+      toast.error('Por favor, ingresa un correo electrónico válido');
+      return;
+    }
+
+    setIsForgotPasswordSubmitting(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: forgotPasswordEmail })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail);
+      }
+      setForgotPasswordEmail('');
+      setShowForgotPassword(false);
+      toast.success('Correo enviado correctamente');
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsForgotPasswordSubmitting(false);
+    }
   };
 
   return (
@@ -147,9 +174,9 @@ function Login() {
             <div className="password-input-wrapper">
                 <input
                 type={showPassword ? "text" : "password"}
-                name="contraseña"
+                name="password"
                 placeholder="Contraseña"
-                value={formData.contraseña}
+                value={formData.password}
                 onChange={handleChange}
                 required
                 />
@@ -167,6 +194,13 @@ function Login() {
               <span className="have-account-text">¿No tienes una cuenta?</span>
               <span className="login-link" onClick={() => navigate('/register')}>
                 Registrate
+              </span>
+              
+            </div>
+
+            <div className="forgot-password">
+              <span className="login-link" onClick={() => setShowForgotPassword(true)} style={{marginTop: '0.5rem'}}>
+                ¿Olvidaste tu contraseña?
               </span>
             </div>
 
@@ -192,9 +226,36 @@ function Login() {
               </>
             )}
             </button>
-            {error && <p className="error-message">{error}</p>}
         </div> 
         </form>
+
+        {showForgotPassword && (
+          <div className="verification-modal">
+            <div className="modal-content">
+              <h2>Ingresa tu correo asociado a tu cuenta</h2>
+              <input 
+                type="email" 
+                name="email" 
+                value={forgotPasswordEmail} 
+                onChange={(e) => setForgotPasswordEmail(e.target.value)} 
+                placeholder="Correo electrónico"
+                required
+                className="forgot-password-input"
+              />
+              <div className="modal-buttons">
+                <button type="button" className="cancel-button" onClick={() => setShowForgotPassword(false)}>Cancelar</button>
+                <button 
+                  type="submit" 
+                  className="submit-button" 
+                  onClick={() => handleForgotPassword()}
+                  disabled={isForgotPasswordSubmitting}
+                >
+                  {isForgotPasswordSubmitting ? 'Enviando...' : 'Enviar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -21,7 +21,6 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
@@ -42,6 +41,25 @@ function Register() {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
+        const emailCheckResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/check-email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: formData.email }),
+        });
+  
+        if (!emailCheckResponse.ok) {
+          const errorData = await emailCheckResponse.json();
+          throw new Error(errorData.detail || 'Error al verificar el correo electrónico');
+        }
+  
+        const emailCheckData = await emailCheckResponse.json();
+        if (emailCheckData.exists) {
+          toast.error('Este correo electrónico ya está registrado');
+          return;
+        }
+
         const code = generateVerificationCode();
         setUserEmail(formData.email);
 
@@ -83,7 +101,6 @@ function Register() {
       }
   
       const data = await response.json();
-      console.log(data.message); 
       return data;
   
     } catch (error) {
@@ -152,7 +169,6 @@ function Register() {
 
     } catch (error) {
       console.error('Error en la autenticación:', error);
-      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -328,8 +344,8 @@ function Register() {
             </label>
 
             <div className="have-account">
-              <span className="have-account-text">¿Ya tienes una cuenta?</span>
-              <span className="login-link" onClick={() => navigate('/login')}>
+              <span className="have-account-text" style={{marginTop: '0.5rem'}}>¿Ya tienes una cuenta?</span>
+              <span className="login-link" onClick={() => navigate('/login')} style={{marginTop: '0.5rem'}}>
                 Iniciar sesión
               </span>
             </div>
@@ -358,7 +374,6 @@ function Register() {
               </>
             )}
             </button>
-            {error && <p className="error-message">{error}</p>}
         </div> 
         </form>
 

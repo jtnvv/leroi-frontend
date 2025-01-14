@@ -44,7 +44,7 @@
 .mission-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: auto;
     gap: 20px;
 }
 
@@ -52,21 +52,27 @@
 .mission {
     background-color: var(--card);
     border-radius: 16px;
-    padding: 40px;
+    padding: 5vh;
     color: #fff;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     flex: 1;
-    min-width: 300px;
-    max-width: 600px;
+    min-width: 30vh;
+    max-width: 70vh;
+    min-height: 30vh;
 }
 
-.vision-wrapper h3,
+.vision-wrapper h3{
+    color: var(--foreground);
+    font-size: 32px;
+    margin: 0;
+    text-align: right;
+}
 .mission-wrapper h3 {
     color: var(--foreground);
     font-size: 32px;
     margin: 0;
-    text-align: center;
+    text-align: left;
 }
 
 .vision p,
@@ -93,3 +99,95 @@
         max-width: 100%;
     }
 }
+
+.team {
+    background-color: var(--background);
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.team h3 {
+    color: var(--primary);
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+.team-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40vh,80vh )); 
+    gap: 5vh; 
+    justify-content: center; 
+    align-items: stretch; /
+}
+
+.team-card {
+    background-color: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex; 
+    align-items: center; 
+    gap: 20px;
+    flex: 1; 
+    min-width: 300px;
+}
+
+.team-card img.team-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.team-card-content {
+    flex: 1; 
+    text-align: left;
+}
+
+.team-card h4 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.team-card p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.team-card a {
+    color: #fff;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.team-card a:hover {
+    color: var(--hover);
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 768px) {
+    .team-cards {
+        grid-template-columns: 1fr; 
+    }
+
+    .team-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .team-card img.team-photo {
+        margin-bottom: 15px;
+    }
+
+    .team-card-content {
+        text-align: center;
+    }
+}
+
+
+

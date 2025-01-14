@@ -166,7 +166,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000 !important;
 }
 
 .modal-content {
@@ -195,7 +195,7 @@
   margin-bottom: 1.5rem;
 }
 
-.verification-input {
+.verification-input{
   width: 100%;
   padding: 1rem;
   background: #2a2a2a;
@@ -207,6 +207,19 @@
   text-align: center;
   margin-bottom: 1.5rem;
 }
+
+.forgot-password-input{
+  width: 100%;
+  padding: 1rem;
+  background: #2a2a2a;
+  border: 1px solid #835bfc;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
 
 .modal-buttons {
   display: flex;
@@ -248,13 +261,24 @@
 }
 
 .have-account{
+  margin: 0 !important;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
   color: #fff;
   font-size: 14px;
-  margin-top: 1rem;
+  padding: 0;
+}
+
+.forgot-password{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 1rem;
 }
 
 .login-link{

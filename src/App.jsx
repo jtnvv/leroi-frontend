@@ -9,6 +9,8 @@ import Profile from './pages/Profile';
 import Roadmap from './pages/Roadmap';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -44,7 +46,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </div>
     </Router>

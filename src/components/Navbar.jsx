@@ -67,7 +67,7 @@ function Navbar({ t }) {
           {/* Navigation Links */}
           <div className="navbar-links">
             <NavItem href="#tutorial">{t.nav.tutorial}</NavItem>
-            <NavItem href="#about">{t.nav.about}</NavItem>
+            <NavItem href="about">{t.nav.about}</NavItem>
             <NavItem href="#credits">{t.nav.credits}</NavItem>
             <NavItem href="#support">{t.nav.support}</NavItem>
             <NavItem href="#contact">{t.nav.contact}</NavItem>

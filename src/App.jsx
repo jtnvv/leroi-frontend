@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Roadmap from './pages/Roadmap';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import About from './pages/About';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/about" element={<About/>} />
         </Routes>
       </div>
     </Router>

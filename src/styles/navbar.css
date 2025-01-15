@@ -49,7 +49,7 @@
     margin-left: var(--spacing-xs); 
     font-size: 1rem; 
     font-weight: 600; 
-    color: var(--secondary);
+    color: white;
   }
   
   /* Navigation links */
@@ -64,7 +64,7 @@
     padding: 0.5rem;
     white-space: nowrap; 
     text-decoration: none;
-    color: var(--secondary);
+    color: white;
   }
 
   .navbar-links a:hover {
@@ -105,7 +105,7 @@
   .navbar-button {
     background: transparent;
     border: none;
-    color: var(--secondary);
+    color: white;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
@@ -183,7 +183,7 @@
 
 .theme-toggle {
   background-color: transparent; 
-  color: var(--background); 
+  color: white; 
   border-radius: 50%; 
   transition: background-color 0.3s ease, transform 0.2s ease;
   border: none;
@@ -196,6 +196,9 @@
 
 .theme-toggle .icon {
   transition: color 0.3s ease;
+}
+.html{
+  scroll-behavior: smooth;
 }
 
 

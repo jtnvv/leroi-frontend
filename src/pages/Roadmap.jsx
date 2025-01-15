@@ -1,7 +1,8 @@
+import '../styles/roadmap.css';
 
 function Roadmap() {
   return (
-    <div>
+    <div className="roadmap-container">
       <h1>Roadmap</h1>
       <p>Bienvenido a la página del roadmap.</p>
     </div>

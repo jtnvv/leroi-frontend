@@ -10,7 +10,7 @@
 }
 
 .register-box {
-  background: rgba(var(--card-rgb), 0.95); /* Usando el color de tarjeta con transparencia */
+  background: var(--register-background);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   padding-top: var(--spacing-md);

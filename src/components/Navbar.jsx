@@ -49,12 +49,11 @@ function NavItem({ href, children }) {
 }
 
 function Navbar({ t }) {
-
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-row">
-          <div className="navbar-logo">
+          <a href="/" className="navbar-logo">
             <div className="logo-container">
               <img
                 src={logo}
@@ -63,16 +62,18 @@ function Navbar({ t }) {
               />
             </div>
             <span className="logo-text">Leroi</span>
-          </div>
+          </a>
 
+          {/* Navigation Links */}
           <div className="navbar-links">
             <NavItem href="#tutorial">{t.nav.tutorial}</NavItem>
-            <NavItem href="#about">{t.nav.about}</NavItem>
+            <NavItem href="about">{t.nav.about}</NavItem>
             <NavItem href="#credits">{t.nav.credits}</NavItem>
             <NavItem href="#support">{t.nav.support}</NavItem>
             <NavItem href="#contact">{t.nav.contact}</NavItem>
           </div>
 
+          {/* Buttons */}
           <div className="navbar-buttons">
             <Button
               variant="ghost"
@@ -101,5 +102,6 @@ function Navbar({ t }) {
     </nav>
   );
 }
+
 
 export default Navbar;

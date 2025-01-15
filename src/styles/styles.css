@@ -20,6 +20,8 @@
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(222.2, 84%, 4.9%);
   --navbar: #835BFCCC;
+  --hover: #835bfc;
+  --button-hover: #6b4ad4;
 
   /* Colores primarios y secundarios */
   --primary: hsl(222.2, 47.4%, 11.2%);
@@ -28,7 +30,7 @@
   --secondary-foreground: hsl(222.2, 47.4%, 11.2%);
 
   /* Componentes UI */
-  --card: hsl(0, 0%, 100%);
+  --card: #835BFCCC;
   --card-foreground: hsl(222.2, 84%, 4.9%);
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(222.2, 84%, 4.9%);
@@ -59,7 +61,7 @@
 [data-theme="dark"] {
   --background: hsl(222.2, 84%, 4.9%);
   --foreground: hsl(210, 40%, 98%);
-  --card: hsl(222.2, 84%, 4.9%);
+  --card: #0c122b;
   --card-foreground: hsl(210, 40%, 98%);
   --popover: hsl(222.2, 84%, 4.9%);
   --popover-foreground: hsl(210, 40%, 98%);

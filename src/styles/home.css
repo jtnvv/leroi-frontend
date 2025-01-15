@@ -1,202 +1,212 @@
 /* Home Page */
 .hook {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #020817;
-    padding: 20px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .hook-content {
-    text-align: center;
-  }
-  
-  .hook h1 {
-    color: #fff;
-    font-size: 36px;
-    margin-bottom: 16px;
-  }
-  
-  .cta-button {
-    font-family: 'Lexend Deca', sans-serif;
-    padding: 12px 24px;
-    background-color: #835bfc;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-  }
-  
-  .cta-button:hover {
-    background-color: #6b4ad4;
-  }
-  
-  /* Features */
-  .features {
-    background-color: #020817;
-    padding: 60px 20px;
-  }
-  
-  .features h2 {
-    text-align: center;
-    color: #fff;
-    font-size: 32px;
-    margin-bottom: 40px;
-  }
-  
-  .features-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 30px;
-  }
-  
-  .feature-card {
-    background-color: #0c122b;
-    border-radius: 16px;
-    padding: 40px;
-    width: 100%;
-    max-width: 320px;
-    backdrop-filter: blur(4px);
-    text-align: center;
-  }
-  
-  .feature-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-  }
-  
-  .feature-card h3 {
-    color: #fff;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .feature-card p {
-    color: #ccc;
-    font-size: 16px;
-  }
-  
-  /* Pricing */
-  .pricing {
-    background-color: #020817; 
-    padding: 40px 20px;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .pricing h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
-  }
-  
-  
-.pricing-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch; 
-    gap: 20px;
-  }
-  
-  /* Contenedor de cada tarjeta */
-  .pricing-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-    align-items: center;
-    background-color: #0c122b;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    width: 300px;
-    height: 450px; 
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  /* Título */
-  .pricing-card h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  /* Precio */
-  .pricing-card .price {
-    font-size: 40px;
-    margin: 10px 0;
-  }
-  
-  /* Lista de beneficios */
-  .pricing-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-    text-align: left;
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; 
-  }
-  
-  /* Elementos de la lista */
-  .pricing-card ul li {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .pricing-card ul li::before {
-    content: '✔️';
-    color: #28a745;
-    margin-right: 10px;
-  }
-  
-  /* Botón */
-  .pricing-card .cta-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #835bfc;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s;
-    margin-top: auto; 
-    height: 50px; 
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-  }
-  
-  .pricing-card .cta-button:hover {
-    background-color: #6c3fcd;
-    color: #fff;
-  }
-  
-  
-  
-  .cta-button {
-    font-family: 'Lexend Deca', sans-serif;
-    padding: 12px 24px;
-    background-color: #835bfc;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cta-button:hover {
-    background-color: #6b4ad4;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 3.5rem);
+  background-color: var(--background);
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
 
-  
+.hook-content {
+  text-align: center;
+}
+
+.hook-gif {
+  max-width: 100%;
+  width: 500px;
+  height: 300px;
+  margin-bottom: 16px; 
+}
+
+.hook h1 {
+  color: var(--primary);
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.cta-button {
+  font-family: 'Lexend Deca', sans-serif;
+  padding: 12px 24px;
+  background-color: var(--hover);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  background-color: var(--button-hover);
+}
+
+/* Features */
+.features {
+  background-color: var(--background);
+  padding: 60px 20px;
+}
+
+.features h2 {
+  text-align: center;
+  color: var(--foreground);
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.features-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.feature-card {
+  background-color: var(--card);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 320px;
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.feature-icon img {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 15px;
+  filter: brightness(0) invert(1);
+}
+
+.feature-card h3 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.feature-card p {
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Pricing */
+.pricing {
+  background-color: var(--background); 
+  padding: 40px 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.pricing h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: var(--foreground);
+}
+
+.pricing-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; 
+  gap: 20px;
+}
+
+/* Contenedor de cada tarjeta */
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center;
+  background-color: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  height: 450px; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Título */
+.pricing-card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Precio */
+.pricing-card .price {
+  font-size: 40px;
+  margin: 10px 0;
+}
+
+/* Lista de beneficios */
+.pricing-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+}
+
+/* Elementos de la lista */
+.pricing-card ul li {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.pricing-card ul li::before {
+  content: '✔️';
+  color: #28a745;
+  margin-right: 10px;
+}
+
+/* Botón */
+.pricing-card .cta-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--hover);
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: auto; 
+  height: 50px; 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.pricing-card .cta-button:hover {
+  background-color: var(--button-hover);
+  color: #fff;
+}
+
+.cta-button {
+  font-family: 'Lexend Deca', sans-serif;
+  padding: 12px 24px;
+  background-color: var(--hover);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--button-hover);
+}

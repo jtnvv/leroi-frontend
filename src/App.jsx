@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+
 import './styles/app.css';
 
 // Importa tus páginas y componentes principales
@@ -11,6 +12,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './pages/ResetPassword';
+import About from './pages/About';
 
 function App() {
   return (
@@ -48,6 +50,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/about" element={<About/>} />
         </Routes>
       </div>
     </Router>

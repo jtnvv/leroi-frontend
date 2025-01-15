@@ -2,7 +2,7 @@
 .navbar {
     position: fixed;
     width: 100%;
-    background-color: hsl(var(--background) / 0.8);
+    background-color: var(--navbar);
     border-bottom: 1px solid hsl(var(--border));
     z-index: 50;
   }
@@ -25,6 +25,7 @@
   .navbar-logo {
     display: flex;
     align-items: center;
+    text-decoration: none;
   }
   
   .logo-container {
@@ -48,7 +49,7 @@
     margin-left: var(--spacing-xs); 
     font-size: 1rem; 
     font-weight: 600; 
-    color: #fff;
+    color: var(--secondary);
   }
   
   /* Navigation links */
@@ -63,12 +64,11 @@
     padding: 0.5rem;
     white-space: nowrap; 
     text-decoration: none;
-    color: #fff;
+    color: var(--secondary);
   }
 
   .navbar-links a:hover {
-    transform: translateY(-1px);
-    color: #835bfc;
+    color: var(--hover);
   }
   
   /* Actions section */
@@ -105,7 +105,7 @@
   .navbar-button {
     background: transparent;
     border: none;
-    color: #fff;
+    color: var(--secondary);
     font-family: 'Lexend Deca', sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
@@ -123,18 +123,18 @@
     height: 2px;
     bottom: 0;
     left: 50%;
-    background-color: #835bfc;
+    background-color: var(--hover);
     transition: all 0.3s ease;
     transform: translateX(-50%);
   }
   
   .navbar-button:hover {
-    transform: translateY(-1px);
-    color: #835bfc;
+    color: var(--hover);
+    transform: scale(1.1); 
   }
 
   .navbar-button.active {
-    color: #835bfc;
+    color: var(--hover);
   }
   
   /* Media queries */
@@ -180,3 +180,23 @@
     padding: var(--spacing-xs) var(--spacing-sm); 
     font-size: 0.75rem; 
   }
+
+.theme-toggle {
+  background-color: transparent; 
+  color: var(--background); 
+  border-radius: 50%; 
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+}
+
+.theme-toggle:hover {
+  background-color: var(--navbar); 
+  transform: scale(1.1); 
+}
+
+.theme-toggle .icon {
+  transition: color 0.3s ease;
+}
+
+
+

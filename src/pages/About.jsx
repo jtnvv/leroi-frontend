@@ -2,7 +2,7 @@ import "../styles/styles.css";
 import "../styles/about.css";
 import Footer from "../components/Footer";
 import imagotipo from "../assets/imagotipo.png";
-import member1 from "../assets/mateo.png"; // Asegúrate de tener las fotos en la carpeta "assets"
+import member1 from "../assets/mateo.png"; 
 import member2 from "../assets/camila.png";
 import member3 from "../assets/anderson.png";
 import member4 from "../assets/juan.png";

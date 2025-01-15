@@ -1,5 +1,6 @@
 import "../styles/styles.css";
 import "../styles/home.css";
+import { useEffect } from "react";
 import feature1 from "../assets/feature-1.svg";
 import feature2 from "../assets/feature-2.svg";
 import feature3 from "../assets/feature-3.svg";
@@ -9,6 +10,15 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";  
 
 function Home() {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+    }, []);
   return (
     <>
       {/* Hook*/}

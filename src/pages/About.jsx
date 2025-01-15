@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "../styles/styles.css";
 import "../styles/about.css";
 import Footer from "../components/Footer";
@@ -8,6 +9,15 @@ import member3 from "../assets/anderson.png";
 import member4 from "../assets/juan.png";
 
 function About() {
+        useEffect(() => {
+            const hash = window.location.hash;
+            if (hash) {
+                const element = document.querySelector(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        }, []);
     return(
     <>
         <section className="intro">

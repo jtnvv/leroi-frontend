@@ -1,4 +1,4 @@
-.pricing-container {
+.pricing-container-p {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,7 @@
     position: relative;
 }
 
-.pricing-box {
+.pricing-box-p {
     background: rgba(30, 31, 38, 0.95);
     border-radius: 16px;
     padding: 30px;
@@ -23,14 +23,14 @@
     z-index: 1;
 }
 
-.pricing-title {
+.pricing-title-p {
     text-align: center;
     color: #fff;
     font-size: 32px;
     margin-bottom: 18px;
 }
 
-.pricing-subtitle {
+.pricing-subtitle-p{
     text-align: center;
     color: #fff;
     font-size: 24px;

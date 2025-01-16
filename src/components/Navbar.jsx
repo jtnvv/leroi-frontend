@@ -1,5 +1,6 @@
 // import { ThemeToggle } from "./ui/ThemeToggle";
 import { Button } from "./ui/Button";
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import logo from "../assets/LOGO.png";
 import "../styles/navbar.css";
@@ -49,6 +50,14 @@ function NavItem({ href, children }) {
 }
 
 function Navbar({ t }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    console.log('Menu button clicked');
+    setMenuOpen(!menuOpen);
+    console.log('Menu open state:', !menuOpen);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -63,9 +72,11 @@ function Navbar({ t }) {
             </div>
             <span className="logo-text">Leroi</span>
           </a>
-
+          <button className="hamburger-button" onClick={toggleMenu}>
+            ☰
+          </button>
           {/* Navigation Links */}
-          <div className="navbar-links">
+          <div className={`navbar-links ${menuOpen ? 'menu-open' : ''}`}>
             <NavItem href="/#tutorial">{t.nav.tutorial}</NavItem>
             <NavItem href="/about">{t.nav.about}</NavItem>
             <NavItem href="/#credits">{t.nav.credits}</NavItem>

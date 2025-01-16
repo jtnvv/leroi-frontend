@@ -135,34 +135,7 @@
   .navbar-button.active {
     color: var(--hover);
   }
-  
-  /* Media queries */
-  @media (min-width: 768px) {
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm); 
-    }
-  
-    .mobile-menu-btn {
-      display: none;
-    }
-  
-    .auth-buttons {
-      display: inline-flex;
-    }
-  }
-  
-  @media (max-width: 767px) {
-    .mobile-menu.open {
-      display: block;
-    }
-  
-    .auth-buttons {
-      display: none;
-    }
-  }
-  
+
   /* Button variants */
   .btn-ghost {
     background-color: transparent;
@@ -198,6 +171,19 @@
 }
 .html{
   scroll-behavior: smooth;
+}
+
+.hamburger-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.menu-open {
+  display: block;
 }
 
 
@@ -239,4 +225,30 @@
   }
 }
 
+@media (max-width: 470px) {
+  .navbar-links {
+    display: none; /* Hidden by default on small screens */
+    flex-direction: column;
+    position: absolute;
+    top: 1.8rem;
+    left: 0;
+    width: 100%;
+    background-color: var(--navbar);
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
 
+  .navbar-links.menu-open {
+    display: flex; /* Display as flex when menu is open */
+  }
+
+  .navbar-links a {
+    padding: 0.5rem 0;
+    text-align: center;
+  }
+
+  .hamburger-button {
+    display: block !important;
+  }
+}

@@ -60,6 +60,13 @@
     min-width: 30vh;
     max-width: 70vh;
     min-height: 30vh;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vision:hover,
+.mission:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .vision-wrapper h3{
@@ -162,6 +169,12 @@
     gap: 20px;
     flex: 1; 
     min-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .team-card img.team-photo {

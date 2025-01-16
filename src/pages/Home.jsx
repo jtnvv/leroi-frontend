@@ -6,6 +6,7 @@ import feature2 from "../assets/feature-2.svg";
 import feature3 from "../assets/feature-3.svg";
 import feature4 from "../assets/feature-4.svg";
 import gif from "../assets/gif.gif";
+// import gif from "../assets/gif2.gif";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";  
 import { Fade } from "react-awesome-reveal";

@@ -218,18 +218,15 @@
 @media (max-width: 767px) {
   .navbar-links a,
   .navbar-button {
-    font-size: 0.75rem; /* Reduce font size for smaller screens */
+    font-size: 0.5rem; /* Reduce font size for smaller screens */
   }
 
   .navbar-row {
-    padding: 0 0.5rem; /* Adjust padding for smaller screens */
+    padding: 0 0.4rem; /* Adjust padding for smaller screens */
   }
 
   .navbar-links {
-    gap: 1rem; /* Reduce gap between links */
+    gap: 0.6rem; /* Reduce gap between links */
   }
 
-  .mobile-menu-btn {
-    display: block; /* Show the mobile menu button on smaller screens */
-  }
 }

@@ -12,6 +12,7 @@
   "dependencies": {
     "@paypal/react-paypal-js": "^8.7.0",
     "@react-three/fiber": "^8.17.12",
+    "firebase": "^11.1.0",
     "framer-motion": "^11.18.0",
     "lucide-react": "^0.461.0",
     "popmotion": "^11.0.5",

@@ -226,7 +226,10 @@
   }
 
   .navbar-links {
-    gap: 0.6rem; /* Reduce gap between links */
+    gap: 0.2rem; /* Reduce gap between links */
   }
 
+  .navbar-button {
+    font-size: 0.5rem; /* Reduce font size for smaller screens */
+  }
 }

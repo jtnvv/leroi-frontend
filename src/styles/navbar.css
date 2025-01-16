@@ -68,7 +68,7 @@
   }
 
   .navbar-links a:hover {
-    color: var(--hover);
+    transform: scale(1.1); 
   }
   
   /* Actions section */
@@ -129,7 +129,6 @@
   }
   
   .navbar-button:hover {
-    color: var(--hover);
     transform: scale(1.1); 
   }
 
@@ -201,5 +200,36 @@
   scroll-behavior: smooth;
 }
 
+@media (max-width: 767px) {
+  .navbar-links a,
+  .navbar-button {
+    font-size: 0.75rem; /* Reduce font size for smaller screens */
+  }
 
+  .navbar-row {
+    padding: 0 0.5rem; /* Adjust padding for smaller screens */
+  }
 
+  .navbar-links {
+    gap: 1rem; /* Reduce gap between links */
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-links a,
+  .navbar-button {
+    font-size: 0.75rem; /* Reduce font size for smaller screens */
+  }
+
+  .navbar-row {
+    padding: 0 0.5rem; /* Adjust padding for smaller screens */
+  }
+
+  .navbar-links {
+    gap: 1rem; /* Reduce gap between links */
+  }
+
+  .mobile-menu-btn {
+    display: block; /* Show the mobile menu button on smaller screens */
+  }
+}

@@ -193,7 +193,7 @@ function Login() {
             <div className="have-account" style={{marginBottom: '1rem'}}>
               <span className="have-account-text">¿No tienes una cuenta?</span>
               <span className="login-link" onClick={() => navigate('/register')}>
-                Registrate
+                Regístrate
               </span>
               
             </div>

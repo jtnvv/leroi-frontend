@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './pages/ResetPassword';
 import About from './pages/About';
+import Pricing from './pages/Pricing';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/about" element={<About/>} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </div>
     </Router>

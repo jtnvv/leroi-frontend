@@ -245,7 +245,7 @@ function Register() {
         <div className="light-orb" style={{ '--delay': '4s' }}></div>
 
       <div className="register-box">
-        <h1 className="register-title">Registrate</h1>
+        <h1 className="register-title">Regístrate</h1>
         <h2 className="register-subtitle">Ingresa tus datos</h2>
         
         <form onSubmit={handleSubmit}>
@@ -370,7 +370,7 @@ function Register() {
             {isLoading ? 'Cargando...' : (
               <>
                 <img src={googleIcon} alt="Google" className="google-icon" />
-                Registrate con Google
+                Regístrate con Google
               </>
             )}
             </button>

@@ -124,9 +124,9 @@ function Pricing() {
     };
 
     return (
-        <div className="pricing-container">
-            <div className="pricing-box">
-                <h1 className="pricing-title">Comprar Créditos</h1>
+        <div className="pricing-container-p">
+            <div className="pricing-box-p">
+                <h1 className="pricing-title-p">Comprar Créditos</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Cantidad de créditos</label>

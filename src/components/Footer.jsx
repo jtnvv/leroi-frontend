@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/footer.css';
 
@@ -57,22 +56,22 @@ function Footer({ t }) {
           </div>
 
           {/* Sección de Recursos */}
-          <div className="footer-section">
+          {/* <div className="footer-section">
             <h4>{t.footer.resources}</h4>
             <ul>
               <li><a href={t.footer.faqLink}>{t.footer.faq}</a></li>
               <li><a href={t.footer.tutorialsLink}>{t.footer.tutorials}</a></li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Sección Legal */}
-          <div className="footer-section">
+          {/* <div className="footer-section">
             <h4>{t.footer.legal}</h4>
             <ul>
               <li><a href={t.footer.termsLink}>{t.footer.terms}</a></li>
               <li><a href={t.footer.privacyLink}>{t.footer.privacy}</a></li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

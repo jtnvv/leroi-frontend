@@ -5,9 +5,10 @@ import feature1 from "../assets/feature-1.svg";
 import feature2 from "../assets/feature-2.svg";
 import feature3 from "../assets/feature-3.svg";
 import feature4 from "../assets/feature-4.svg";
-import tutorialGif from "../assets/Tuto-Placeholder.gif";
+import gif from "../assets/gif.gif";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";  
+import { Fade } from "react-awesome-reveal";
 
 function Home() {
   useEffect(() => {
@@ -25,18 +26,26 @@ function Home() {
       <section id = "tutorial"className="hook">
         <div className="hook-content">
           <img 
-            src={tutorialGif} 
+            src={gif} 
             alt="Tutorial Placeholder" 
             className="hook-gif" 
           />
-          <h1>Convierte tus documentos en rutas de aprendizaje personalizadas</h1>
-          <Link to="/upload" className="cta-button">Sube tu primer documento</Link>
+          <h1>
+          <Fade delay={200} cascade damping={0.02}>
+            Convierte tus documentos en rutas de aprendizaje personalizadas
+            </Fade>
+          </h1>
+          <Link to="/register" className="cta-button">Sube tu primer documento</Link>
         </div>
       </section>
 
       {/* Features*/}
       <section className="features">
-        <h2>¿Quién es Leroi?</h2>
+        <h2>
+        <Fade delay={200} cascade damping={0.02}>
+          ¿Quién es Leroi?
+        </Fade>
+        </h2>
         <div className="features-container">
           <div className="feature-card">
             <div className="feature-icon">
@@ -79,7 +88,11 @@ function Home() {
 
       {/* Pricing Section */}
       <section id= "credits" className="pricing">
-        <h2>Adquiere créditos</h2>
+        <h2>
+          <Fade delay={200} cascade damping={0.02}>
+          Adquiere créditos
+          </Fade>
+        </h2>
         <div className="pricing-container">
           <div className="pricing-card">
             <h3>Principiante</h3>

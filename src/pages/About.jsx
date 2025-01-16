@@ -92,7 +92,7 @@ function About() {
                                 <a href="mailto:amateusl@unal.edu.co" target="_blank" rel="noopener noreferrer">
                                     <Mail className="icon h-5 w-5" />
                                 </a>
-                                <a href="https://github.com/miembro3" target="_blank" rel="noopener noreferrer">
+                                <a href="https://github.com/amateusl" target="_blank" rel="noopener noreferrer">
                                     <Github className="icon h-5 w-5" />
                                 </a>
                             </div>

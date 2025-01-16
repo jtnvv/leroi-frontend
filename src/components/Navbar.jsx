@@ -1,4 +1,4 @@
-import { ThemeToggle } from "./ui/ThemeToggle";
+// import { ThemeToggle } from "./ui/ThemeToggle";
 import { Button } from "./ui/Button";
 import PropTypes from 'prop-types';
 import logo from "../assets/LOGO.png";
@@ -94,7 +94,7 @@ function Navbar({ t }) {
             >
               {t.nav.signup}
             </Button>
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </div>
         </div>
       </div>

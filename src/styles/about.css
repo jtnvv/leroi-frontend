@@ -82,11 +82,13 @@
     color: #fff;
 }
 
-/* Pantallas pequeñas */
+/* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
+    
     .vision-mission {
         flex-direction: column;
         gap: 20px;
+        padding: 40px 10px; 
     }
 
     .vision-wrapper,
@@ -96,7 +98,36 @@
 
     .vision,
     .mission {
-        max-width: 100%;
+        max-width: 100%; 
+        min-width: auto; 
+    }
+
+    /* Ajuste del tamaño de la fuente */
+    .vision-wrapper h3, .mission-wrapper h3 {
+        font-size: 28px; 
+        text-align: center; 
+    }
+
+    .vision p,
+    .mission p {
+        font-size: 14px; 
+    }
+
+    /* Ajustes en la introducción */
+    .intro h3 {
+        font-size: 28px; 
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .logo-container {
+        flex-direction: column; 
+        gap: 10px; 
+    }
+
+    .imagotipo {
+        width: 50vh; 
+        margin-top: 6rem;
     }
 }
 
@@ -114,10 +145,10 @@
 
 .team-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40vh,80vh )); 
+    grid-template-columns: repeat(auto-fit, minmax(40vh,80vh)); 
     gap: 5vh; 
     justify-content: center; 
-    align-items: stretch; /
+    align-items: stretch;
 }
 
 .team-card {
@@ -172,12 +203,12 @@
 /* Ajuste para pantallas pequeñas */
 @media (max-width: 768px) {
     .team-cards {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr; /* Mostrar las tarjetas en una sola columna */
     }
 
     .team-card {
         flex-direction: column;
-        text-align: center;
+        text-align: center; /* Centrar el contenido */
     }
 
     .team-card img.team-photo {
@@ -189,19 +220,20 @@
     }
 }
 
+/* Ajustes de iconos */
 .team-icons {
     display: flex;
     gap: 10px;
     margin-top: 10px;
     size: 6rem;
 }
-    
+
 .team-icons a {
     color: white;
     font-size: 1.5rem;
     transition: color 0.3s;
 }
-    
+
 .team-icons a:hover {
     color: var(--navbar);
 }
@@ -211,28 +243,3 @@
     width: 7vh;    
     height: 7vh;   
 }
-
-
-
-.team-icons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    size: 6rem;
-}
-    
-.team-icons a {
-    color: white;
-    font-size: 1.5rem;
-    transition: color 0.3s;
-}
-    
-.team-icons a:hover {
-    color: var(--navbar);
-}
-.team-icons .icon {
-    font-size: 32px; 
-    width: 7vh;    
-    height: 7vh;   
-}
-

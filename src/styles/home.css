@@ -8,6 +8,7 @@
   padding: 20px;
   overflow: hidden;
   position: relative;
+  flex-direction: column; 
 }
 
 .hook-content {
@@ -16,14 +17,14 @@
 
 .hook-gif {
   max-width: 100%;
-  width: 500px;
-  height: 300px;
+  width: 75vh;
+  height: auto;
   margin-bottom: 16px; 
 }
 
 .hook h1 {
   color: var(--primary);
-  font-size: 36px;
+  font-size: 36px; 
   margin-bottom: 16px;
 }
 
@@ -86,6 +87,7 @@
   justify-content: center;
   margin-bottom: 15px;
 }
+
 .feature-icon img {
   width: 4rem;
   height: 4rem;
@@ -123,6 +125,7 @@
   justify-content: center;
   align-items: stretch; 
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 /* Contenedor de cada tarjeta */
@@ -207,18 +210,36 @@
   color: #fff;
 }
 
-.cta-button {
-  font-family: 'Lexend Deca', sans-serif;
-  padding: 12px 24px;
-  background-color: var(--hover);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .hook-gif {
+    width: 100%;
+    width: 50vh;
+    height: auto;
+  }
+  .hook h1 {
+    font-size: 14px;
+    word-wrap: break-word;
+    text-align: center;
+  }
+  .features-container {
+    flex-direction: column; 
+    gap: 20px;
+  }
+
+  .pricing-container {
+    flex-direction: column; 
+    gap: 20px;
+  }
+
+  .pricing-card {
+    width: 100%;
+    height: auto;
+  }
+
+  .cta-button {
+    font-size: 14px; 
+    padding: 10px 20px;
+  }
 }
 
-.cta-button:hover {
-  background-color: var(--button-hover);
-}

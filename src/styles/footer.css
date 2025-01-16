@@ -48,7 +48,7 @@
 }
 
 .footer-section li {
-  margin-bottom: 8px;/
+  margin-bottom: 8px;
 }
 
 .footer-section ul li:hover {
@@ -64,4 +64,32 @@
 
 .footer-section a:hover {
   color: var(--hover);
+}
+
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .footer {
+    padding: 10px; 
+    max-height: none; 
+  }
+
+  .footer-row {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .footer-section {
+    max-width: 100%; 
+  }
+
+  .footer-section h4 {
+    font-size: 16px; 
+  }
+
+  .footer-section p,
+  .footer-section ul {
+    font-size: 12px; 
+  }
 }

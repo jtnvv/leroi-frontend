@@ -214,11 +214,11 @@
 @media (max-width: 768px) {
   .hook-gif {
     width: 100%;
-    width: 50vh;
+    width: 45vh;
     height: auto;
   }
   .hook h1 {
-    font-size: 14px;
+    font-size: 12px;
     word-wrap: break-word;
     text-align: center;
   }

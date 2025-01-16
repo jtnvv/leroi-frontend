@@ -200,20 +200,6 @@
   scroll-behavior: smooth;
 }
 
-@media (max-width: 767px) {
-  .navbar-links a,
-  .navbar-button {
-    font-size: 0.75rem; /* Reduce font size for smaller screens */
-  }
-
-  .navbar-row {
-    padding: 0 0.5rem; /* Adjust padding for smaller screens */
-  }
-
-  .navbar-links {
-    gap: 1rem; /* Reduce gap between links */
-  }
-}
 
 @media (max-width: 767px) {
   .navbar-links a,
@@ -226,11 +212,12 @@
   }
 
   .navbar-links {
-    gap: 0.2rem; /* Reduce gap between links */
+    gap: 0.1rem; /* Reduce gap between links */
   }
 
   .navbar-button {
     font-size: 0.5rem; /* Reduce font size for smaller screens */
+    gap: 0.05rem; 
   }
 }
 

@@ -1,4 +1,4 @@
-// import { ThemeToggle } from "./ui/ThemeToggle";
+import { ThemeToggle } from "./ui/ThemeToggle";
 import { Button } from "./ui/Button";
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -105,7 +105,7 @@ function Navbar({ t }) {
             >
               {t.nav.signup}
             </Button>
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </div>
         </div>
       </div>

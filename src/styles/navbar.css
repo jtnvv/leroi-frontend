@@ -186,6 +186,28 @@ cursor: pointer;
 display: block;
 }
 
+.profile-button {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.profile-button:hover {
+  transform: scale(1.1); 
+  color: hsl(var(--hover)); 
+}
+
+.profile-button .lucide {
+  width: 24px;
+  height: 24px;
+}
+
 
 @media (max-width: 767px) {
 /* Reducir tamaño de la fuente y el espacio entre los enlaces */
@@ -222,6 +244,9 @@ display: block;
 /* Ajustes en los botones */
 .navbar-button::after {
   height: 1px; 
+}
+.profile-button {
+  font-size: 1.2rem; 
 }
 }
 

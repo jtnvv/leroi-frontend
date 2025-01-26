@@ -1,0 +1,99 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background);
+    padding: 20px;
+  }
+  
+  .profile-box {
+    background: rgba(30, 31, 38, 0.95);
+    border-radius: 16px;
+    padding: 30px;
+    min-width: 40vw;
+    width: 40%;
+    max-width: 75vw;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .profile-header {
+    text-align: center;
+  }
+  
+  .profile-header h2 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 20px;
+    opacity: 0.9;
+  }
+  
+  .profile-main {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+  }
+  
+  .profile-image {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-image svg {
+    height: 120px;
+    width: 120px;
+    color: white;
+  }
+  
+  .profile-fields {
+    flex: 1;
+    text-align: right;
+    display: right;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .profile-field {
+    font-size: 16px;
+    color: #fff;
+  }
+  
+  .profile-field strong {
+    font-weight: bold;
+  }
+  
+  .profile-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    display: inline-block;
+    padding: 1rem;
+    background: #835bfc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  button:hover {
+    background: #6b4ad4;
+  }
+  
+  button:active {
+    background: #5137b0;
+  }
+  

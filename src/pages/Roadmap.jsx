@@ -55,7 +55,7 @@ function Roadmap() {
 
   const handleSubmitFile = async () => {
     if (!base64 || !fileUploaded) {
-      console.error("No hay datos para enviar.");
+      toast.error("No has subido ningún archivo");
       return;
     }
   
@@ -110,6 +110,7 @@ function Roadmap() {
         </div>
         <button 
           className="generate-button" 
+          disabled={isLoading}
           onClick={handleSubmitFile}>
             {isLoading ? 'Generando Roadmap...' : 'Generar Roadmap'}
         </button>

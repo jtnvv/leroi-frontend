@@ -46,6 +46,11 @@
   font-size: 1rem;
   cursor: pointer;
   }
+
+  .generate-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
   
 .preview-modal {
   position: fixed;
@@ -87,4 +92,9 @@
   font-weight: 500;
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.preview-content button:hover {
+  background: #1a1a2e;
+  transform: scale(1.05);
 }

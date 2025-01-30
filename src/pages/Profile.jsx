@@ -7,21 +7,36 @@ function Profile() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
 
-    if (token) {
-      // Simulamos la carga de los datos del usuario
-      setUserData({
-        firstName: "Juan",
-        lastName: "Pérez",
-        email: "juan.perez@example.com",
-        credits: 120,
-        roadmapsCreated: 5,
-        birthDate: "1990-06-15",
-      });
-    } else {
-      window.location.href = "/login";
-    }
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8000/user-profile", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos del usuario");
+        }
+
+        const data = await response.json();
+        setUserData(data.data);
+      } catch (error) {
+        console.error(error);
+        window.location.href = "/login";
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   if (!userData) {
@@ -30,18 +45,19 @@ function Profile() {
 
   return (
     <div className="profile-container">
+      <div className="light-orb"></div>
+      <div className="light-orb"></div>
+      <div className="light-orb"></div>
+      <div className="light-orb"></div>
+      <div className="light-orb"></div>
       <div className="profile-box">
-        {/* Contenedor del título */}
         <div className="profile-header">
           <h2>Perfil de Usuario</h2>
         </div>
         <div className="profile-main">
-          {/* Imagen del usuario */}
           <div className="profile-image">
             <User />
           </div>
-
-          {/* Campos del usuario */}
           <div className="profile-fields">
             <div className="profile-field">
               <strong>Nombre:</strong> {userData.firstName} {userData.lastName}
@@ -61,8 +77,6 @@ function Profile() {
             </div>
           </div>
         </div>
-
-        {/* Botón para cerrar sesión */}
         <div className="profile-footer">
           <Button
             variant="ghost"

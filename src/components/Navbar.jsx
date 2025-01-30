@@ -113,7 +113,7 @@ function Navbar({ t }) {
                   onClick={handleLogout}
                   className="navbar-button"
                 >
-                  Logout
+                  Cerrar Sesión
                 </Button>
               </>
             ) : (

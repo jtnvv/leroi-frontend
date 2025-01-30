@@ -1,99 +1,147 @@
 .profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: var(--background);
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-box {
+  background: rgba(30, 31, 38, 0.95);
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-header h2 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.profile-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image svg {
+  height: 120px;
+  width: 120px;
+  color: white;
+}
+
+.profile-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-field {
+  font-size: 16px;
+  color: #fff;
+}
+
+.profile-field strong {
+  font-weight: bold;
+}
+
+.profile-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  display: inline-block;
+  padding: 1rem;
+  background: #835bfc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #6b4ad4;
+}
+
+button:active {
+  background: #5137b0;
+}
+
+/* Estilos de los orbes */
+.light-orb {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(
+    circle,
+    rgba(165, 113, 255, 0.599) 0%,
+    rgba(165, 113, 255, 0.1) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0;
   }
-  
-  .profile-box {
-    background: rgba(30, 31, 38, 0.95);
-    border-radius: 16px;
-    padding: 30px;
-    min-width: 40vw;
-    width: 40%;
-    max-width: 75vw;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
+  50% {
+    opacity: 0.5;
   }
-  
-  .profile-header {
-    text-align: center;
+  100% {
+    opacity: 0;
   }
-  
-  .profile-header h2 {
-    color: white;
-    font-size: 24px;
-    margin-bottom: 20px;
-    opacity: 0.9;
-  }
-  
-  .profile-main {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-    align-items: flex-start;
-  }
-  
-  .profile-image {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .profile-image svg {
-    height: 120px;
-    width: 120px;
-    color: white;
-  }
-  
-  .profile-fields {
-    flex: 1;
-    text-align: right;
-    display: right;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .profile-field {
-    font-size: 16px;
-    color: #fff;
-  }
-  
-  .profile-field strong {
-    font-weight: bold;
-  }
-  
-  .profile-footer {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  button {
-    display: inline-block;
-    padding: 1rem;
-    background: #835bfc;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-  }
-  
-  button:hover {
-    background: #6b4ad4;
-  }
-  
-  button:active {
-    background: #5137b0;
-  }
-  
+}
+
+.light-orb:nth-child(1) {
+  animation: pulse 4s infinite ease-in-out;
+  top: 10%;
+  left: 10%;
+}
+.light-orb:nth-child(2) {
+  animation: pulse 5s infinite ease-in-out;
+  top: 60%;
+  left: 80%;
+}
+.light-orb:nth-child(3) {
+  animation: pulse 6s infinite ease-in-out;
+  top: 70%;
+  left: 20%;
+}
+.light-orb:nth-child(4) {
+  animation: pulse 6s infinite ease-in-out;
+  top: 70%;
+  left: 40%;
+}
+.light-orb:nth-child(5) {
+  animation: pulse 4.5s infinite ease-in-out;
+  top: 10%;
+  left: 80%;
+}

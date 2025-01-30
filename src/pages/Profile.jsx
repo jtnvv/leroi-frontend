@@ -5,6 +5,7 @@ import "../styles/profile.css";
 
 function Profile() {
   const [userData, setUserData] = useState(null);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -16,7 +17,7 @@ function Profile() {
       }
 
       try {
-        const response = await fetch("http://localhost:8000/user-profile", {
+        const response = await fetch(`${backendUrl}/user-profile`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,7 +38,49 @@ function Profile() {
     };
 
     fetchUserData();
-  }, []);
+  }, [backendUrl]);
+
+  const handleDeleteAccount = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    // Confirmar antes de borrar
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer."
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${backendUrl}/delete-user/${userData.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al borrar la cuenta");
+      }
+
+      // Eliminar el token y redirigir al login
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error al borrar la cuenta:", error);
+      alert("Hubo un error al intentar borrar la cuenta.");
+    }
+  };
 
   if (!userData) {
     return <div>Cargando...</div>;
@@ -87,6 +130,13 @@ function Profile() {
             }}
           >
             Cerrar sesión
+          </Button>
+          <Button
+            className="delete-button" 
+            size="sm"
+            onClick={handleDeleteAccount}            
+          >
+            Borrar cuenta
           </Button>
         </div>
       </div>

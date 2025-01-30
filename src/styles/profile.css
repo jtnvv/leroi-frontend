@@ -69,6 +69,7 @@
 .profile-footer {
   display: flex;
   justify-content: center;
+  gap: 10px; /* Espacio entre los botones */
   margin-top: 20px;
 }
 
@@ -90,6 +91,26 @@ button:hover {
 
 button:active {
   background: #5137b0;
+}
+
+/* Estilos específicos para el botón de eliminar */
+.delete-button {
+  background: #ff4d4d; /* Fondo rojo */
+  color: white; /* Texto blanco */
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background: #e60000; /* Rojo más oscuro al pasar el mouse */
+}
+
+.delete-button:active {
+  background: #cc0000; /* Rojo aún más oscuro al hacer clic */
 }
 
 /* Estilos de los orbes */

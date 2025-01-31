@@ -1,5 +1,6 @@
 .profile-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -9,20 +10,8 @@
   position: relative;
 }
 
-.profile-box {
-  background: rgba(30, 31, 38, 0.95);
-  border-radius: 16px;
-  padding: 30px;
-  margin-top: 2.5rem;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  position: relative;
-  z-index: 1;
-}
-
-.profile-header h2 {
+/* Título fuera de la caja */
+.profile-title {
   color: #fff;
   font-size: 24px;
   margin-bottom: 20px;
@@ -30,18 +19,28 @@
   opacity: 0.9;
 }
 
-.profile-main {
+/* Caja de perfil */
+.profile-box {
+  background: rgba(30, 31, 38, 0.95);
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   gap: 20px;
-  text-align: center;
 }
 
+/* Sección izquierda: Ícono SVG */
 .profile-image {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 30%;
 }
 
 .profile-image svg {
@@ -50,8 +49,9 @@
   color: white;
 }
 
+/* Sección derecha: Campos de información */
 .profile-fields {
-  width: 100%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -66,16 +66,19 @@
   font-weight: bold;
 }
 
+/* Botones en la parte inferior derecha */
 .profile-footer {
   display: flex;
-  justify-content: center;
-  gap: 10px; /* Espacio entre los botones */
-  margin-top: 20px;
+  flex-direction: column; 
+  align-items: flex-end; 
+  gap: 10px; 
+  margin-top: 20px; 
 }
 
+/* Estilos para los botones */
 button {
   display: inline-block;
-  padding: 1rem;
+  padding: 0.75rem 1.5rem; 
   background: #835bfc;
   color: white;
   border: none;
@@ -83,6 +86,8 @@ button {
   font-weight: 500;
   transition: all 0.3s ease;
   font-size: 1rem;
+  width: auto; 
+  text-align: center; 
 }
 
 button:hover {
@@ -95,22 +100,22 @@ button:active {
 
 /* Estilos específicos para el botón de eliminar */
 .delete-button {
-  background: #ff4d4d; /* Fondo rojo */
-  color: white; /* Texto blanco */
+  background: #ff4d4d;
+  color: white;
   border: none;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem 1.5rem; 
   font-size: 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .delete-button:hover {
-  background: #e60000; /* Rojo más oscuro al pasar el mouse */
+  background: #e60000;
 }
 
 .delete-button:active {
-  background: #cc0000; /* Rojo aún más oscuro al hacer clic */
+  background: #cc0000;
 }
 
 /* Estilos de los orbes */
@@ -165,4 +170,24 @@ button:active {
   animation: pulse 4.5s infinite ease-in-out;
   top: 10%;
   left: 80%;
+}
+
+/* Estilos para el botón de modificar datos */
+.edit-button {
+  background: #4caf50; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+  background: #45a049; 
+}
+
+.edit-button:active {
+  background: #3d8b40;
 }

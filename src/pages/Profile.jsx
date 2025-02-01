@@ -12,12 +12,11 @@ function Profile() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const authToken = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
+      if (!authToken) {
         window.location.href = "/login";
         return;
       }
@@ -26,7 +25,7 @@ function Profile() {
         const response = await fetch(`${backendUrl}/user-profile`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
         });
@@ -44,36 +43,34 @@ function Profile() {
     };
 
     fetchUserData();
-  }, [backendUrl]);
+  }, [backendUrl, authToken]);
 
   const handleDeleteAccount = async () => {
     setShowConfirmModal(true);
   };
 
   const confirmDelete = async () => {
-    const token = localStorage.getItem("token");
-  
-    if (!token) {
+    if (!authToken) {
       window.location.href = "/login";
       return;
     }
-  
+
     try {
       const response = await fetch(
         `${backendUrl}/delete-user/${encodeURIComponent(userData.email)}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Error al borrar la cuenta");
       }
-  
+
       localStorage.removeItem("token");
       window.location.href = "/login";
     } catch (error) {
@@ -83,11 +80,47 @@ function Profile() {
       setShowConfirmModal(false);
     }
   };
-  
 
   const cancelDelete = () => {
     setShowConfirmModal(false);
   };
+
+  const handleSave = async (updatedData) => {
+    const trimmedData = {
+      name: updatedData.firstName.trim(),
+      last_name: updatedData.lastName.trim(),
+      email: userData.email?.trim(),
+      provider: 'default'
+    };
+  
+    console.log("Datos corregidos enviados al backend:", trimmedData);
+  
+    try {
+      const response = await fetch(`${backendUrl}/update-user`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(trimmedData),
+      });
+  
+      const result = await response.json();
+      console.log("Respuesta del backend:", result);
+  
+      if (!response.ok) {
+        throw new Error(result.detail || "Error al actualizar los datos");
+      }
+  
+      alert("Datos actualizados correctamente");
+      setUserData({ ...userData, ...updatedData });
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.message);
+    }
+  };
+  
 
   if (!userData) {
     return <div>Cargando...</div>;
@@ -101,20 +134,19 @@ function Profile() {
       <div className="light-orb"></div>
       <div className="light-orb"></div>
 
-      {/* Título fuera de la caja */}
       <h2 className="profile-title">Perfil de Usuario</h2>
 
-      {/* Caja de perfil */}
       <div className="profile-box">
-        {/* Sección izquierda: Ícono SVG */}
         <div className="profile-image">
           <User />
         </div>
 
-        {/* Sección derecha: Campos de información */}
         <div className="profile-fields">
           <div className="profile-field">
-            <strong>Nombre:</strong> {userData.firstName} {userData.lastName}
+            <strong>Nombre:</strong> {userData.firstName}
+          </div>
+          <div className="profile-field">
+            <strong>Apellido:</strong> {userData.lastName}
           </div>
           <div className="profile-field">
             <strong>Email:</strong> {userData.email}
@@ -125,28 +157,14 @@ function Profile() {
           <div className="profile-field">
             <strong>Roadmaps Creados:</strong> {userData.roadmapsCreated}
           </div>
-          <div className="profile-field">
-            <strong>Fecha de Nacimiento:</strong>{" "}
-            {new Date(userData.birthDate).toLocaleDateString()}
-          </div>
+          
         </div>
 
-        {/* Botones en la parte inferior derecha */}
         <div className="profile-footer">
           <Button
-            variant="ghost"
+            className="edit-button"
             size="sm"
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location.href = "/login";
-            }}
-          >
-            Cerrar sesión
-          </Button>
-          <Button
-            className="edit-button" 
-            size="sm"
-            onClick={() => setShowEditModal(true)} 
+            onClick={() => setShowEditModal(true)}
           >
             Modificar datos
           </Button>
@@ -160,7 +178,6 @@ function Profile() {
         </div>
       </div>
 
-      {/* Modal de confirmación */}
       {showConfirmModal && (
         <ConfirmModal
           message="¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer."
@@ -169,15 +186,13 @@ function Profile() {
         />
       )}
 
-
-
       {showEditModal && (
         <EditModal
           userData={userData}
           onClose={() => setShowEditModal(false)}
+          onSave={handleSave}
         />
       )}
-
     </div>
   );
 }

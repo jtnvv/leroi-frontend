@@ -31,16 +31,16 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
 }
 
-/* Sección izquierda: Ícono SVG */
+/* Sección de la imagen */
 .profile-image {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30%;
+  margin-bottom: 20px;
 }
 
 .profile-image svg {
@@ -49,36 +49,38 @@
   color: white;
 }
 
-/* Sección derecha: Campos de información */
+/* Sección de campos de información */
 .profile-fields {
-  width: 70%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .profile-field {
   font-size: 16px;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
 }
 
 .profile-field strong {
   font-weight: bold;
+  margin-right: 10px;
 }
 
-/* Botones en la parte inferior derecha */
+/* Botones en la parte inferior */
 .profile-footer {
   display: flex;
-  flex-direction: column; 
-  align-items: flex-end; 
-  gap: 10px; 
-  margin-top: 20px; 
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 /* Estilos para los botones */
 button {
   display: inline-block;
-  padding: 0.75rem 1.5rem; 
+  padding: 0.75rem 1.5rem;
   background: #835bfc;
   color: white;
   border: none;
@@ -86,8 +88,8 @@ button {
   font-weight: 500;
   transition: all 0.3s ease;
   font-size: 1rem;
-  width: auto; 
-  text-align: center; 
+  width: auto;
+  text-align: center;
 }
 
 button:hover {
@@ -104,7 +106,7 @@ button:active {
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.75rem 1.5rem; 
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -174,7 +176,7 @@ button:active {
 
 /* Estilos para el botón de modificar datos */
 .edit-button {
-  background: #4caf50; 
+  background: var(--hover);
   color: white;
   border: none;
   border-radius: 8px;
@@ -185,9 +187,9 @@ button:active {
 }
 
 .edit-button:hover {
-  background: #45a049; 
+  background: var(--button-hover);
 }
 
 .edit-button:active {
-  background: #3d8b40;
+  background: #5137b0;
 }

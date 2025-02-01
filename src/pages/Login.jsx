@@ -88,6 +88,7 @@ function Login() {
         const token = data.access_token;
         localStorage.setItem('token', token);
         navigate('/roadmap');
+        window.location.reload('/roadmap');
   
       } catch (error) {
         console.error('Error al iniciar sesión:', error);

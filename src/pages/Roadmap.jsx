@@ -65,7 +65,7 @@ function Roadmap() {
   
     // Obtener el token JWT del localStorage
     const token = localStorage.getItem("token"); 
-    console.log('Token obtenido del localStorage:', token);  // Verifica si el token está ahí
+    //console.log('Token obtenido del localStorage:', token);  
   
     if (!token) {
       toast.error('No se encontró el token del usuario.');
@@ -75,10 +75,10 @@ function Roadmap() {
     let email = '';
     try {
       if (token.split('.').length === 3) {
-        const decodedPayload = token.split('.')[1]; // Tomamos la segunda parte del JWT (Payload)
-        const decoded = atob(decodedPayload); // Decodificamos el Payload en Base64
-        const parsed = JSON.parse(decoded); // Parseamos el JSON
-        email = parsed.sub; // El correo está en el campo 'sub' del JWT
+        const decodedPayload = token.split('.')[1]; 
+        const decoded = atob(decodedPayload); 
+        const parsed = JSON.parse(decoded); 
+        email = parsed.sub; 
       } else {
         toast.error('El token JWT no tiene un formato válido.');
         return;
@@ -94,58 +94,58 @@ function Roadmap() {
       return;
     }
   
-    const cleanedBase64 = base64.split(',')[1]; // Esto elimina la parte 'data:application/pdf;base64,'
+    const cleanedBase64 = base64.split(',')[1]; 
   
     const dataToSend = {
       fileName: fileUploaded.name,
       fileType: fileUploaded.type,
       fileSize: fileUploaded.size,
-      fileBase64: cleanedBase64,  // Usar la cadena base64 limpia
+      fileBase64: cleanedBase64,  
     };
   
-    // Usamos FormData para enviar el archivo y correo al endpoint de análisis
+    
     const formData = new FormData();
     formData.append("file", fileUploaded);
     formData.append("email", email);
   
-    // Endpoint para procesar archivo (envía datos en formato JSON)
+    
     const processFile = fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',  // Especificar que el cuerpo es JSON
+        'Content-Type': 'application/json',  
       },
       body: JSON.stringify({
         fileName: fileUploaded.name,
         fileType: fileUploaded.type,
         fileSize: fileUploaded.size,
-        fileBase64: cleanedBase64,  // Usar la cadena base64 limpia
-      }),  // Enviamos el archivo con JSON
+        fileBase64: cleanedBase64,  
+      }),  
     });
   
-    // Endpoint de análisis (usa FormData para el archivo y correo)
+    
     const analyzeFile = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
       },
-      body: formData,  // Enviamos el archivo y correo con FormData
+      body: formData,  
     });
   
     try {
-      // Enviamos la petición de procesamiento del archivo
+      
       const processResponse = await processFile;
       const processResult = await processResponse.json();
   
       if (processResponse.ok) {
         toast.success('¡Roadmap generado con éxito!');
-        setIsRoadmapGenerated(true); // Aquí marcamos que el roadmap fue generado
-        setIsLoading(false); // Detener la carga aquí, sin esperar por el análisis
+        setIsRoadmapGenerated(true); 
+        setIsLoading(false); 
       } else {
         toast.error(processResult.detail || 'Error al procesar el archivo en el primer endpoint.');
       }
   
-      // Realizamos el análisis en segundo plano sin afectar el flujo principal
+      
       const analyzeResponse = await analyzeFile;
       const analyzeResult = await analyzeResponse.json();
       if (analyzeResponse.ok) {
@@ -159,7 +159,7 @@ function Roadmap() {
     } catch (error) {
       console.error('Error al enviar los datos:', error);
       toast.error('Error al enviar el archivo');
-      setIsLoading(false); // Detener la carga en caso de error
+      setIsLoading(false); 
     }
   };
   

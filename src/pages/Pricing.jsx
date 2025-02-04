@@ -67,7 +67,7 @@ function Pricing() {
             [name]: type === 'checkbox' ? checked : value,
         }));
         if (name === 'credits') {
-            const totalCost = await fetchCreditsCost(value); // Llama a la función reutilizable
+            const totalCost = await fetchCreditsCost(value);
             if (totalCost !== null) {
                 setTotalCost(totalCost);
             }
@@ -84,7 +84,6 @@ function Pricing() {
             amount: formData.credits
         }
         try {
-            // Simular redirección a una plataforma de pago
             toast.success('Redirigiendo a la plataforma de pago...');
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/create-payment`, {
                 method: 'POST',
@@ -102,7 +101,6 @@ function Pricing() {
             } else {
                 console.error('Error al generar el enlace de compra');
             }
-            //setTimeout(() => navigate('/payment-platform'), 2000);
         } catch (error) {
             console.error('Error en la operación:', error);
             setError('Ocurrió un error al procesar la operación.');
@@ -128,17 +126,23 @@ function Pricing() {
             <div className="pricing-box-p">
                 <h1 className="pricing-title-p">Comprar Créditos</h1>
                 <form onSubmit={handleSubmit}>
+
                     <div className="form-group">
                         <label>Cantidad de créditos</label>
-                        <input
-                            type="number"
-                            name="credits"
-                            placeholder="Ejemplo: 10"
-                            value={formData.credits}
-                            onChange={handleChange}
-                            min="1"
-                            required
-                        />
+                        <div className="credit-options">
+                            <select
+                                id="credits"
+                                name="credits"
+                                required
+                                value={formData.credits}
+                                onChange={handleChange}
+                            >
+                                <option value="" disabled>Elige una opción</option>
+                                <option value="250">250 Créditos</option>
+                                <option value="750">750 Créditos</option>
+                                <option value="1500">1500 Créditos</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -146,6 +150,7 @@ function Pricing() {
                         <input
                             type="text"
                             value={`$${totalCost} USD`}
+                            default=""
                             readOnly
                             className="readonly-input"
                         />

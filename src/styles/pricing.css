@@ -30,7 +30,7 @@
     margin-bottom: 18px;
 }
 
-.pricing-subtitle-p{
+.pricing-subtitle-p {
     text-align: center;
     color: #fff;
     font-size: 24px;
@@ -101,4 +101,47 @@
 .purchase-button:disabled {
     background: #666;
     cursor: not-allowed;
+}
+
+/* Selección de cantidad de creditos */
+
+.credit-options {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.credit-options select {
+    font-family: 'Lexend Deca', sans-serif;
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.credit-options select:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.credit-options select:focus {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* Estilizar las opciones del select */
+.credit-options select option {
+    background: #1e1f26;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* Evitar que la primera opción (placeholder) sea seleccionable */
+.credit-options select option:disabled {
+    color: rgba(255, 255, 255, 0.5);
 }

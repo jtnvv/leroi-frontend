@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import archivo from '../assets/archivo.png';
 import { toast } from 'react-hot-toast';
 import '../styles/roadmap.css';
@@ -8,6 +9,12 @@ function Roadmap() {
   const [previewFile, setPreviewFile] = useState(null);  
   const [base64, setBase64] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [topicsModal, setTopicsModal] = useState(false);
+  const [topics, setTopics] = useState([]);
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [roadmapTopics, setRoadmapTopics] = useState({});
+
+  const navigate = useNavigate();
 
 
   const convertToBase64 = (file) => {
@@ -33,6 +40,21 @@ function Roadmap() {
       console.log("Archivo subido:", fileUploaded.name);
     }
   }, [fileUploaded]);
+
+  useEffect(() => {
+    if (topics.length > 0) {
+      console.log("Topics updated:", topics);
+      setTopicsModal(true);
+    }
+  }, [topics]);
+
+  useEffect(() => {
+    if (Object.keys(roadmapTopics).length > 0) {
+      console.log("Roadmap Topics:", roadmapTopics);
+      setLoadingPage(false);
+      navigate('/generatedRoadmap', {state: {roadmapTopics}});
+    }
+  }, [roadmapTopics, navigate]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -84,12 +106,38 @@ function Roadmap() {
       }
   
       const result = await response.json();
-      console.log('Respuesta del backend:', result);
-      toast.success('Archivo enviado con éxito');
+      const parseResult = JSON.parse(result);
+      setTopics(parseResult);
+      setIsLoading(false);
 
     } catch (error) {
       console.error('Error al enviar los datos:', error);
       toast.error('Error al enviar el archivo');
+    }
+  };
+
+  const handleSelecteTopic = async(topic) => {  
+    setTopicsModal(false);
+    setLoadingPage(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate-roadmap`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topic }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el topic al backend');
+      }
+      const result = await response.json();
+      const parseResult = JSON.parse(result);
+      console.log(parseResult);
+      setRoadmapTopics(parseResult);
+    } catch (error) {
+      console.error('Error al enviar al generar la ruta:', error);
+      toast.error('No pudimos generar tu ruta de aprendizaje 😔');
     }
   };
 
@@ -112,7 +160,7 @@ function Roadmap() {
           className="generate-button" 
           disabled={isLoading}
           onClick={handleSubmitFile}>
-            {isLoading ? 'Generando Roadmap...' : 'Generar Roadmap'}
+            {isLoading ? 'Generando tu ruta de aprendizaje...' : 'Generar ruta de aprendizaje'}
         </button>
       </div>
       {previewFile && base64 && (
@@ -125,6 +173,26 @@ function Roadmap() {
               height="500px"
             />
             <button onClick={handleClosePreview}>Cerrar</button>
+          </div>
+        </div>
+      )}
+      {topicsModal && (
+        <div className="topics-modal">
+            <h1>Temas detectados en tu archivo</h1>
+              <div className="topics-content">
+                {topics.map((topic, index) => (
+                  <button className="topic-button" key={index} onClick={() => handleSelecteTopic(topic)}>
+                    {topic}
+                  </button>
+                ))}
+              </div>
+        </div>
+      )}
+      {loadingPage && (
+        <div className="loading-modal">
+          <div className="loading-content">
+            <h2>Estamos creando tu ruta de aprendizaje 😁</h2>
+            <div className="spinner"></div>
           </div>
         </div>
       )}

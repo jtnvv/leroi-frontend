@@ -15,6 +15,16 @@
   text-align: center;
 }
 
+.hook-heading-container {
+  display: block;
+  width: 100%;
+  word-wrap: break-word;
+  /* Esto asegura que el texto se ajuste correctamente */
+  text-align: center;
+  /* Centra el texto */
+  margin-bottom: 16px;
+}
+
 .hook-gif {
   max-width: 100%;
   width: 500vh;
@@ -110,7 +120,6 @@
 .pricing {
   background-color: var(--background);
   padding: 40px 20px;
-  color: #fff;
   text-align: center;
 }
 
@@ -135,6 +144,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--card);
+  color: var(--background);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
@@ -153,6 +163,7 @@
 /* Título */
 .pricing-card h3 {
   font-size: 24px;
+  color: white;
   margin-bottom: 10px;
 }
 
@@ -160,6 +171,7 @@
 .pricing-card .price {
   font-size: 40px;
   margin: 10px 0;
+  color: white;
 }
 
 /* Lista de beneficios */
@@ -168,6 +180,8 @@
   padding: 0;
   margin: 20px 0;
   text-align: left;
+  flex-grow: 1;
+  color: white;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -218,10 +232,20 @@
     height: auto;
   }
 
+  .hook-heading-container {
+    display: block;
+    padding: 0 10px;
+    width: 768px;
+  }
+
   .hook h1 {
+    font-size: 16px;
+
     font-size: 11px;
     word-wrap: break-word;
+
     text-align: center;
+    word-wrap: break-word;
   }
 
   .features-container {

@@ -38,7 +38,7 @@ const ProtectedRoute = ({ children }) => {
   }, [token]);
 
   if (isValid === null) {
-    return <div>Cargando...</div>; 
+    return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem ', fontWeight: 'bold'}}>Cargando...</div>; 
   }
 
   if (!isValid) {

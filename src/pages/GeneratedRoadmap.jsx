@@ -11,8 +11,8 @@ function GeneratedRoadmap() {
   const edges = [];
 
   let idCounter = 0;
-  const levelOffset = 500; // Espacio entre niveles
-  const nodeWidth = 400; // Ancho de los nodos
+  const levelOffset = 500; 
+  const nodeWidth = 400; 
 
   Object.keys(roadmapTopics).forEach((topicKey, topicIndex) => {
     const topicNode = {

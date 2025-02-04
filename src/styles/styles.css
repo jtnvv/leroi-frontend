@@ -17,20 +17,20 @@
   --radius-lg: 1rem;
 
   /* Colores base */
-  --background: hsl(222.2, 84%, 4.9%);
-  --foreground: hsl(210, 40%, 98%);
+  --background: #ffffff(222.2, 84%, 4.9%);
+  --foreground: #1e1e2f(210, 40%, 98%);
   --navbar: #835BFCCC;
   --hover: #835bfc;
   --button-hover: #6b4ad4;
 
   /* Colores primarios y secundarios */
-  --primary: hsl(210, 40%, 98%);
-  --primary-foreground: hsl(222.2, 47.4%, 11.2%);
+  --primary: #1e1e2f;
+  --primary-foreground: #ffffff;
   --secondary: hsl(217.2, 32.6%, 17.5%);
   --secondary-foreground: hsl(210, 40%, 98%);
 
   /* Componentes UI */
-  --card: #0c122b;
+  --card:  #5f3bca;
   --card-foreground: hsl(210, 40%, 98%);
   --popover: hsl(222.2, 84%, 4.9%);
   --popover-foreground: hsl(210, 40%, 98%);
@@ -48,7 +48,7 @@
 [data-theme="dark"] {
   --background: hsl(222.2, 84%, 4.9%);
   --foreground: hsl(210, 40%, 98%);
-  --card: #0c122b;
+  --card: #101838;
   --card-foreground: hsl(210, 40%, 98%);
   --popover: hsl(222.2, 84%, 4.9%);
   --popover-foreground: hsl(210, 40%, 98%);

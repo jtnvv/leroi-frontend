@@ -1,8 +1,19 @@
-# React + Vite
+LEROI - Plataforma de Generación de Rutas de Aprendizaje
+LEROI es un proyecto que plantea el desarrollo de una herramienta de recomendación de rutas de aprendizaje personalizada basada en documentos. Se busca construir una herramienta de recomendación de rutas de aprendizaje (RoadMap) personalizada. El usuario podrá cargar archivos en formato PDF sobre temas que desea aprender, los cuales serán analizados por inteligencia artificial para crear un roadmap ajustado a los temas deseados. La herramienta permitirá añadir archivos adicionales (como libros o artículos) a cada tema del roadmap para recomendar secciones específicas del material que el usuario debe estudiar.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Características
+Procesamiento de textos: Analiza documentos para extraer conceptos clave.
+Generación de rutas de aprendizaje: Sugiere un camino personalizado basado en el contenido y las preferencias del usuario.
+Interfaz amigable: Diseñada para facilitar la interacción y navegación.
+Escalabilidad: Construida para soportar múltiples usuarios simultáneamente.
+🛠️ Tecnologías utilizadas (Hasta el momento)
+- **Frontend**: React
 
-Currently, two official plugins are available:
+🚧 Estado del proyecto
+El desarrollo de LEROI está en curso. Actualmente, estamos trabajando en:
+- Vista de Perfil
+- Visualización de Roadmap
+- Pasarela de Pago
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📧 Contacto
+Si tienes preguntas o sugerencias, no dudes en contactarnos a leroi.devteam@gmail.com.

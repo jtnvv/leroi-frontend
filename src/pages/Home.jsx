@@ -1,5 +1,6 @@
 import "../styles/styles.css";
 import "../styles/home.css";
+import { useState } from "react";
 import { useEffect } from "react";
 import feature1 from "../assets/feature-1.svg";
 import feature2 from "../assets/feature-2.svg";
@@ -11,6 +12,26 @@ import { Link } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 
 function Home() {
+  const [activeIndex, setActiveIndex] = useState(null); 
+
+  const faqData = [
+    {
+      question: "¿Cómo funciona?",
+      answer: "Leroi analiza el contenido de los documentos subidos por los usuarios y genera un roadmap de aprendizaje jerárquico basado en los temas y subtemas identificados."
+    },
+    {
+      question: "¿Qué tipo de documentos puedo subir?",
+      answer: "Leroi acepta documentos en formato PDF."
+    },
+    {
+      question: "¿Puedo personalizar los roadmaps generados?",
+      answer: "Por ahora no, pero estamos trabajando para que los usuarios puedan ajustar los roadmaps generados por Leroi."
+    }
+  ];
+
+  const toggleAnswer = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {
@@ -126,6 +147,25 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Common Questions */}
+      <section id="faq" className="faq">
+      <h2>
+        <Fade delay={200} cascade damping={0.02}>
+          Preguntas frecuentes
+        </Fade>
+      </h2>
+      <div className="faq-container">
+        {faqData.map((item, index) => (
+          <div key={index} className={`faq-card ${activeIndex === index ? 'active' : ''}`}>
+            <h3 onClick={() => toggleAnswer(index)} style={{ cursor: 'pointer' }}>
+              {item.question}
+            </h3>
+            {activeIndex === index && <p>{item.answer}</p>} {console.log("esta esta activa", activeIndex, "la respuesta: ", item.answer)}
+          </div>
+        ))}
+      </div>
+    </section>
 
       {/* El footer*/}
       <Footer />

@@ -221,6 +221,58 @@
   color: #fff;
 }
 
+.faq {
+  background-color: var(--background); /* Usar variable de fondo global */
+  padding: 40px 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.faq h2 {
+  text-align: center; /* Centrar el título */
+  font-size: 2rem; /* Tamaño de fuente grande */
+  margin-bottom: 20px; /* Espaciado inferior */
+  color: var(--primary); /* Usar variable de color primario */
+}
+
+.faq-container {
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+  max-width: 800px; 
+  margin: 0 auto; 
+}
+
+.faq-card {
+  background-color: var(--card);
+  padding: 20px; 
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.2s; 
+  cursor: pointer; 
+}
+
+.faq-card:hover {
+  transform: translateY(-5px); 
+}
+
+.faq-card h3 {
+  font-size: 1.5rem; 
+  margin-bottom: 10px; 
+  color: #fff; 
+}
+
+.faq-card p {
+  font-size: 1rem; 
+  color: var(--text-color); 
+  margin-top: 10px; 
+  display: none; 
+}
+
+.faq-card.active p {
+  display: block; 
+}
+
 /* Media Queries para pantallas pequeñas */
 @media (max-width: 768px) {
   .hook-gif {

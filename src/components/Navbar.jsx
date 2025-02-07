@@ -12,6 +12,7 @@ Navbar.defaultProps = {
       tutorial: "Tutorial",
       about: "Quienes somos",
       credits: "Créditos",
+      faq: "Preguntas frecuentes",
       support: "Soporte",
       contact: "Contacto",
       login: "Iniciar sesión",
@@ -26,6 +27,7 @@ Navbar.propTypes = {
       tutorial: PropTypes.string,
       about: PropTypes.string,
       credits: PropTypes.string,
+      faq: PropTypes.string,
       support: PropTypes.string,
       contact: PropTypes.string,
       login: PropTypes.string,
@@ -92,6 +94,7 @@ function Navbar({ t }) {
             <NavItem href="/#tutorial">{t.nav.tutorial}</NavItem>
             <NavItem href="/about">{t.nav.about}</NavItem>
             <NavItem href="/#credits">{t.nav.credits}</NavItem>
+            <NavItem href="/#faq">{t.nav.faq}</NavItem>
             <NavItem href="/about/#team">{t.nav.contact}</NavItem>
           </div>
 

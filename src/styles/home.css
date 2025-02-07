@@ -5,10 +5,10 @@
   align-items: center;
   min-height: calc(100vh - 3.5rem);
   background-color: var(--background);
-  padding: 20px;
+  padding: 1.5rem;
   overflow: hidden;
   position: relative;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .hook-content {
@@ -18,22 +18,23 @@
 .hook-heading-container {
   display: block;
   width: 100%;
-  word-wrap: break-word; /* Esto asegura que el texto se ajuste correctamente */
-  text-align: center;  /* Centra el texto */
-  margin-bottom: 16px;
+  word-wrap: break-word;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 0 10px;
 }
 
 .hook-gif {
   max-width: 100%;
   width: 75vh;
   height: auto;
-  margin-bottom: 16px; 
+  margin-bottom: 1rem;
 }
 
 .hook h1 {
   color: var(--primary);
-  font-size: 36px; 
-  margin-bottom: 16px;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .cta-button {
@@ -43,7 +44,7 @@
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
@@ -56,36 +57,36 @@
 /* Features */
 .features {
   background-color: var(--background);
-  padding: 60px 20px;
+  padding: 3.75rem 1.25rem;
 }
 
 .features h2 {
   text-align: center;
   color: var(--foreground);
-  font-size: 32px;
-  margin-bottom: 40px;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .features-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 1.875rem;
 }
 
 .feature-card {
   background-color: var(--card);
-  border-radius: 16px;
-  padding: 40px;
-  width: 100%;
-  max-width: 320px;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  width: calc(50% - 1.875rem);
+  max-width: 20rem;
   backdrop-filter: blur(4px);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-10px); 
+  transform: translateY(-10px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -93,133 +94,127 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
 }
 
 .feature-icon img {
   width: 4rem;
   height: 4rem;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
   filter: brightness(0) invert(1);
 }
 
 .feature-card h3 {
   color: #fff;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .feature-card p {
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 /* Pricing */
 .pricing {
-  background-color: var(--background); 
-  padding: 40px 20px;
+  background-color: var(--background);
+  padding: 2.5rem 1.25rem;
   text-align: center;
 }
 
 .pricing h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
   color: var(--foreground);
 }
 
 .pricing-container {
   display: flex;
   justify-content: center;
-  align-items: stretch; 
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
-/* Contenedor de cada tarjeta */
 .pricing-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   background-color: var(--card);
   color: var(--background);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 20px;
-  width: 300px;
-  height: 450px; 
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  width: calc(50% - 1.25rem);
+  max-width: 18.75rem;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pricing-card:hover {
-  transform: translateY(-10px); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Título */
 .pricing-card h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: white;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 }
 
-/* Precio */
 .pricing-card .price {
-  font-size: 40px;
-  margin: 10px 0;
+  font-size: 2.5rem;
+  margin: 0.625rem 0;
   color: white;
 }
 
-/* Lista de beneficios */
 .pricing-card ul {
   list-style: none;
   padding: 0;
-  margin: 20px 0;
+  margin: 1.25rem 0;
   text-align: left;
   color: white;
-  flex-grow: 1; 
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
+  justify-content: flex-start;
 }
 
-/* Elementos de la lista */
 .pricing-card ul li {
   display: flex;
   align-items: center;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  margin-bottom: 0.625rem;
 }
 
 .pricing-card ul li::before {
   content: '✔️';
   color: #28a745;
-  margin-right: 10px;
+  margin-right: 0.625rem;
 }
 
-/* Botón */
 .pricing-card .cta-button {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   text-decoration: none;
   color: #fff;
   background-color: var(--hover);
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
-  margin-top: auto; 
-  height: 50px; 
+  margin-top: auto;
+  height: 3.125rem;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
 }
 
 .pricing-card .cta-button:hover {
   background-color: var(--button-hover);
   color: #fff;
 }
+
 
 .faq {
   background-color: var(--background); /* Usar variable de fondo global */
@@ -277,31 +272,34 @@
 @media (max-width: 768px) {
   .hook-gif {
     width: 100%;
-    width: 45vh;
+    max-width: 300px;
     height: auto;
   }
+
   .hook-heading-container {
-    display: block;
+    width: 100%;
     padding: 0 10px;
-    width: 768px;
   }
+
   .hook h1 {
-    font-size: 16px; 
-
-    font-size: 11px;
+    font-size: 1.5rem;
     word-wrap: break-word;
-
     text-align: center;
-    word-wrap: break-word; 
   }
+
   .features-container {
-    flex-direction: column; 
-    gap: 20px;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .feature-card {
+    width: 100%;
+    max-width: 100%;
   }
 
   .pricing-container {
-    flex-direction: column; 
-    gap: 20px;
+    flex-direction: column;
+    gap: 1.25rem;
   }
 
   .pricing-card {
@@ -310,8 +308,21 @@
   }
 
   .cta-button {
-    font-size: 14px; 
-    padding: 10px 20px;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
   }
 }
 
+@media (max-width: 480px) {
+  .hook h1 {
+    font-size: 1.25rem;
+  }
+
+  .feature-card {
+    padding: 1.25rem;
+  }
+
+  .pricing-card {
+    padding: 1.25rem;
+  }
+}

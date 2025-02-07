@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
 import { Button } from "../components/ui/Button";
-import ConfirmModal from "../components/modal";
+import ConfirmModal from "../components/Modal";
 import EditModal from "../components/EditModal";
 import "../styles/profile.css";
 import "../styles/modal.css";

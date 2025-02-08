@@ -1,6 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "../components/ui/Button";
+import PropTypes from "prop-types";
 import "../styles/modal.css";
+
+EditModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+}
 
 function EditModal({ onClose, userData, onSave }) {
   const [formData, setFormData] = useState({

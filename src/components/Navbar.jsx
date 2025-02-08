@@ -17,6 +17,7 @@ Navbar.defaultProps = {
       contact: "Contacto",
       login: "Iniciar sesión",
       signup: "Registrarse",
+      roadmap: "Roadmap", 
     },
   },
 };
@@ -32,6 +33,7 @@ Navbar.propTypes = {
       contact: PropTypes.string,
       login: PropTypes.string,
       signup: PropTypes.string,
+      roadmap: PropTypes.string, 
     }),
   }),
 };
@@ -69,7 +71,7 @@ function Navbar({ t }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
-    window.location.href = "/login"; 
+    window.location.href = "/login";
   };
 
   return (
@@ -96,6 +98,9 @@ function Navbar({ t }) {
             <NavItem href="/#credits">{t.nav.credits}</NavItem>
             <NavItem href="/#faq">{t.nav.faq}</NavItem>
             <NavItem href="/about/#team">{t.nav.contact}</NavItem>
+            {isAuthenticated && (
+              <NavItem href="/roadmap">{t.nav.roadmap}</NavItem>
+            )}
           </div>
 
           {/* Botones de autenticación o perfil */}

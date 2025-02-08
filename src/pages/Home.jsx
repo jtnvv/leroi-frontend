@@ -1,7 +1,6 @@
 import "../styles/styles.css";
 import "../styles/home.css";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import feature1 from "../assets/feature-1.svg";
 import feature2 from "../assets/feature-2.svg";
 import feature3 from "../assets/feature-3.svg";
@@ -13,6 +12,12 @@ import { Fade } from "react-awesome-reveal";
 
 function Home() {
   const [activeIndex, setActiveIndex] = useState(null); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
 
   const faqData = [
     {
@@ -32,6 +37,7 @@ function Home() {
   const toggleAnswer = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {
@@ -40,11 +46,12 @@ function Home() {
             element.scrollIntoView({ behavior: "smooth" });
         }
     }
-    }, []);
+  }, []);
+
   return (
     <>
       {/* Hook*/}
-      <section id = "tutorial"className="hook">
+      <section id="tutorial" className="hook">
         <div className="hook-content">
           <img 
             src={gif} 
@@ -54,9 +61,11 @@ function Home() {
           <h1>
           <Fade delay={200} cascade damping={0.02}>
             Convierte tus documentos en rutas de aprendizaje personalizadas
-            </Fade>
+          </Fade>
           </h1>
-          <Link to="/register" className="cta-button">Sube tu primer documento</Link>
+          <Link to={isAuthenticated ? "/roadmap" : "/register"} className="cta-button">
+            {isAuthenticated ? "Generar ruta de aprendizaje" : "Sube tu primer documento"}
+          </Link>
         </div>
       </section>
 
@@ -101,13 +110,12 @@ function Home() {
             </div>
             <h3>Adaptable y flexible</h3>
             <p>
-            Los roadmaps de Leroi  son ajustables según las necesidades del usuario, como plazos, etapas, y materiales adicionales. Hace que el aprendizaje sea flexible y eficiente.
+            Los roadmaps de Leroi son ajustables según las necesidades del usuario, como plazos, etapas, y materiales adicionales. Hace que el aprendizaje sea flexible y eficiente.
             </p>
           </div>
         </div>
       </section>
-
-      {/* Pricing Section */}
+      {/*Pricing*/}
       <section id= "credits" className="pricing">
         <h2>
           <Fade delay={200} cascade damping={0.02}>
@@ -161,7 +169,7 @@ function Home() {
             <h3 onClick={() => toggleAnswer(index)} style={{ cursor: 'pointer' }}>
               {item.question}
             </h3>
-            {activeIndex === index && <p>{item.answer}</p>} {console.log("esta esta activa", activeIndex, "la respuesta: ", item.answer)}
+            {activeIndex === index && <p>{item.answer}</p>}
           </div>
         ))}
       </div>

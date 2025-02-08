@@ -9,6 +9,7 @@ function Roadmap() {
   const [previewFile, setPreviewFile] = useState(null);  
   const [base64, setBase64] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRoadmapGenerated, setIsRoadmapGenerated] = useState(false); // Estado de Roadmap generado
   const [topicsModal, setTopicsModal] = useState(false);
   const [topics, setTopics] = useState([]);
   const [loadingPage, setLoadingPage] = useState(false);
@@ -58,7 +59,7 @@ function Roadmap() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    const maxSize = 50 * 1024 * 1024; 
+    const maxSize = 50 * 1024 * 1024; // 50 MB
 
     if (file.size > maxSize) {
       toast.error('El archivo no puede ser mayor a 50 MB');
@@ -85,36 +86,107 @@ function Roadmap() {
     console.log("Enviando base64:", base64);
     console.log("Enviando archivo:", fileUploaded);
   
+    // Obtener el token JWT del localStorage
+    const token = localStorage.getItem("token"); 
+    //console.log('Token obtenido del localStorage:', token);  
+  
+    if (!token) {
+      toast.error('No se encontró el token del usuario.');
+      return;
+    }
+  
+    let email = '';
+    try {
+      if (token.split('.').length === 3) {
+        const decodedPayload = token.split('.')[1]; 
+        const decoded = atob(decodedPayload); 
+        const parsed = JSON.parse(decoded); 
+        email = parsed.sub; 
+      } else {
+        toast.error('El token JWT no tiene un formato válido.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      toast.error('Error al decodificar el token');
+      return;
+    }
+  
+    if (!email) {
+      toast.error('No se pudo obtener el correo del usuario.');
+      return;
+    }
+  
+    const cleanedBase64 = base64.split(',')[1]; 
+  
     const dataToSend = {
       fileName: fileUploaded.name,
       fileType: fileUploaded.type,
       fileSize: fileUploaded.size,
-      fileBase64: base64,
+      fileBase64: cleanedBase64,  
     };
   
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
+    
+    const formData = new FormData();
+    formData.append("file", fileUploaded);
+    formData.append("email", email);
   
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos al backend');
+    
+    const processFile = fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',  
+      },
+      body: JSON.stringify({
+        fileName: fileUploaded.name,
+        fileType: fileUploaded.type,
+        fileSize: fileUploaded.size,
+        fileBase64: cleanedBase64,  
+      }),  
+    });
+  
+    
+    const analyzeFile = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: formData,  
+    });
+  
+    try {
+      
+      const processResponse = await processFile;
+      const processResult = await processResponse.json();
+  
+      if (processResponse.ok) {
+        toast.success('Archivo procesado correctamente');
+        setIsRoadmapGenerated(true); 
+        setIsLoading(false); 
+      } else {
+        toast.error(processResult.detail || 'Error al procesar el archivo en el primer endpoint.');
       }
   
-      const result = await response.json();
-      const parseResult = JSON.parse(result);
-      setTopics(parseResult);
-      setIsLoading(false);
-
+      
+      const analyzeResponse = await analyzeFile;
+      const analyzeResult = await analyzeResponse.json();
+      if (analyzeResponse.ok) {
+        if (analyzeResult.has_virus) {
+          toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
+        }
+      } else {
+        toast.error(analyzeResult.detail || 'Error al procesar el archivo en el análisis.');
+      }
     } catch (error) {
       console.error('Error al enviar los datos:', error);
       toast.error('Error al enviar el archivo');
+      setIsLoading(false); 
     }
   };
+  
+  
+  
 
   const handleSelecteTopic = async(topic) => {  
     setTopicsModal(false);
@@ -176,6 +248,9 @@ function Roadmap() {
           </div>
         </div>
       )}
+
+      {isRoadmapGenerated && !isLoading && <p>¡El roadmap ha sido generado con éxito!</p>}
+
       {topicsModal && (
         <div className="topics-modal">
             <h1>Temas detectados en tu archivo</h1>
@@ -195,6 +270,7 @@ function Roadmap() {
             <div className="spinner"></div>
           </div>
         </div>
+
       )}
     </>
   );

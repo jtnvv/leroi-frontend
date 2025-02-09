@@ -13,6 +13,7 @@ function Pricing() {
     const [totalCost, setTotalCost] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const authToken = localStorage.getItem("token");
 
     const fetchCreditsCost = async (amount) => {
         const creditsData = { amount };
@@ -80,18 +81,18 @@ function Pricing() {
         if (!validateForm()) return;
 
         setIsSubmitting(true);
-        const paymentData = {
-            amount: formData.credits
-        }
         try {
             toast.success('Redirigiendo a la plataforma de pago...');
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/create-payment`, {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(paymentData)
-            });
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/create-payment/${encodeURIComponent(formData.credits)}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
             if (response.ok) {
                 const data = await response.json();

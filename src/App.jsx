@@ -52,7 +52,7 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route path="/about" element={<About />} />
-            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing" element={<ProtectedRoute><Pricing /></ProtectedRoute>} />
           </Routes>
         </div>
       </Router>

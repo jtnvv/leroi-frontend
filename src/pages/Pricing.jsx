@@ -13,6 +13,7 @@ function Pricing() {
     const [totalCost, setTotalCost] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const [showTermsModal, setShowTermsModal] = useState(false);
     const authToken = localStorage.getItem("token");
 
     const fetchCreditsCost = async (amount) => {
@@ -164,7 +165,10 @@ function Pricing() {
                             checked={formData.acceptTerms}
                             onChange={handleChange}
                         />
-                        <label>Acepto los términos y condiciones</label>
+                        <span>Acepto los </span>
+                        <span className="terms-link" onClick={() => setShowTermsModal(true)}>
+                            términos y condiciones
+                        </span>
                     </div>
 
                     <div className="button-container">
@@ -178,8 +182,29 @@ function Pricing() {
                     </div>
                     {error && <p className="error-message">{error}</p>}
                 </form>
+            {showTermsModal && (
+                <div className="verification-modal">
+                    <div className="modal-content">
+                        <h2>Términos y condiciones</h2>
+                        <p className="terms-text">
+                        Al realizar un pago por medio de la pasarela de pago de Leroi, el usuario acepta que no se realizarán 
+                        devoluciones bajo ninguna circunstancia. Leroi no se hace responsable por el uso que el usuario dé a 
+                        los créditos adquiridos ni por cualquier transacción realizada a través de la plataforma. 
+                        Toda responsabilidad de pago, incluyendo cargos, montos adeudados y cualquier otro compromiso financiero, 
+                        recae exclusivamente en el usuario, quien deberá asegurarse de cumplir con sus obligaciones de pago de 
+                        manera adecuada.</p>
+                        <button 
+                        onClick={() => setShowTermsModal(false)}
+                        className="verify-button"
+                        >
+                        Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
             </div>
         </div>
+            
     );
 }
 

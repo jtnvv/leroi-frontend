@@ -84,13 +84,48 @@ function Roadmap() {
     setIsLoading(true);
     console.log("Enviando base64:", base64);
     console.log("Enviando archivo:", fileUploaded);
+
+    const token = localStorage.getItem("token"); 
+
+    if (!token) {
+      toast.error('No se encontró el token del usuario.');
+      return;
+    }
   
+    let email = '';
+    try {
+      if (token.split('.').length === 3) {
+        const decodedPayload = token.split('.')[1]; 
+        const decoded = atob(decodedPayload); 
+        const parsed = JSON.parse(decoded); 
+        email = parsed.sub; 
+      } else {
+        toast.error('El token JWT no tiene un formato válido.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      toast.error('Error al decodificar el token');
+      return;
+    }
+  
+    if (!email) {
+      toast.error('No se pudo obtener el correo del usuario.');
+      return;
+    }
+  
+     
+
     const dataToSend = {
       fileName: fileUploaded.name,
       fileType: fileUploaded.type,
       fileSize: fileUploaded.size,
       fileBase64: base64,
     };
+
+    const formData = new FormData();
+    formData.append("file", fileUploaded);
+    formData.append("email", email);
   
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
@@ -114,8 +149,21 @@ function Roadmap() {
       console.error('Error al enviar los datos:', error);
       toast.error('Error al enviar el archivo');
     }
-  };
 
+    const analyzeResponse = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData,
+    });
+
+    const analyzeResult = await analyzeResponse.json();
+    if (analyzeResponse.ok && analyzeResult.has_virus) {
+      toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
+    }
+
+    setIsLoading(false);
+  } ;
+  
   const handleSelecteTopic = async(topic) => {  
     setTopicsModal(false);
     setLoadingPage(true);

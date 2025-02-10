@@ -138,16 +138,18 @@ function Roadmap() {
   
       if (!response.ok) {
         throw new Error('Error al enviar los datos al backend');
+        
       }
   
       const result = await response.json();
       const parseResult = JSON.parse(result);
       setTopics(parseResult);
-      setIsLoading(false);
+      
 
     } catch (error) {
       console.error('Error al enviar los datos:', error);
       toast.error('Error al enviar el archivo');
+      setIsLoading(false);
     }
 
     const analyzeResponse = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {

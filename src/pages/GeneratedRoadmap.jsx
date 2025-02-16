@@ -1,18 +1,35 @@
-import { useLocation } from 'react-router-dom';
-import ReactFlow, { Background, Controls } from 'react-flow-renderer';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
 
 function GeneratedRoadmap() {
   const location = useLocation();
-  const { roadmapTopics } = location.state || {};
+  const navigate = useNavigate();
+  const { roadmapTopics, relatedTopics } = location.state || {};
+  const [relatedTopicsModal, setRelatedTopicsModal] = useState(false);
+
+  const handleShowModal = () => {
+    setRelatedTopicsModal(true);
+    localStorage.setItem('topicsModal', 'true');
+  };
+
+  const handleNewRoadmap = () => {
+    const topicState = relatedTopicsModal ? {relatedTopics} : {};
+    navigate('/roadmap', {state: {topicState}});
+  };
+
+  const closeModal = () => {
+    setRelatedTopicsModal(false); 
+  };
 
   const nodes = [];
   const edges = [];
 
   let idCounter = 0;
-  const levelOffset = 500; 
-  const nodeWidth = 400; 
+  const levelOffset = 600; 
+  const nodeWidth = 500; 
 
   Object.keys(roadmapTopics).forEach((topicKey, topicIndex) => {
     const topicNode = {
@@ -56,11 +73,34 @@ function GeneratedRoadmap() {
               nodes={nodes} 
               edges={edges} 
               nodeTypes={{ custom: CustomNode }}
-              fitView>
+              fit>
               <Background />
-              <Controls/>
+              <Controls 
+                style={{position: 'fixed', top: '10%', left: '3%', display: 'flex', flexDirection: 'row'}}
+              >
+              <ControlButton 
+                className="control-button"
+                onClick={() => handleShowModal()}
+              >🔍</ControlButton>
+              </Controls>
             </ReactFlow>
           </div>
+      )}
+      {relatedTopicsModal && (
+        <div className="modal-overlay" onClick={closeModal}> 
+          <div className="modal" onClick={(e) => e.stopPropagation()}> 
+            <h1 className='modal-title'>¿Quieres crear una ruta de un tema relacionado? 🧐</h1>
+            <ul>
+              {relatedTopics.map((topic, index) => (
+                <li key={index}>{topic}</li>
+              ))}
+            </ul>
+            <div className="modal-buttons">
+              <button onClick={() => handleNewRoadmap()} className='modal-button'>Sí 😃</button>
+              <button onClick={closeModal} className='modal-button'>No 🙁</button> 
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

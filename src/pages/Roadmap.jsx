@@ -119,21 +119,32 @@ function Roadmap() {
     }
   };
 
-  const handleSelecteTopic = async(topic) => {  
+  const handleSelecteTopic = async (topic) => {
+    const authToken = localStorage.getItem("token");
+  
+    if (!authToken) {
+      toast.error("No estás autenticado. Por favor, inicia sesión.");
+      navigate("/login");
+      return;
+    }
+  
     setTopicsModal(false);
     setLoadingPage(true);
+  
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate-roadmap`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify({ topic }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al enviar el topic al backend');
       }
+  
       const result = await response.json();
       const parseResult = JSON.parse(result);
       console.log(parseResult);

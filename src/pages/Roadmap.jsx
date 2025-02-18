@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import archivo from '../assets/archivo.png';
 import anim_tutorial from '../assets/Tutorial_CrearRoadmap.mp4';
 import tutorial_logo from '../assets/Tutorial_logo.png';
+import anim_tutorial from '../assets/Tutorial_CrearRoadmap.mp4';
+import tutorial_logo from '../assets/Tutorial_logo.png';
 import { toast } from 'react-hot-toast';
 import '../styles/roadmap.css';
 
@@ -21,10 +23,20 @@ function Roadmap() {
   const [loadingPage, setLoadingPage] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [roadmapTopics, setRoadmapTopics] = useState({});
-  const authToken = localStorage.getItem("token");
+
   const navigate = useNavigate();
 
   const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    });
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -171,6 +183,8 @@ function Roadmap() {
       toast.error('No se pudo obtener el correo del usuario.');
       return;
     }
+    
+    setLoadingPage(true);
     setLoadingText("Buscando temas relacionados... 📈🧠📚");
   
     const dataToSend = {
@@ -253,7 +267,7 @@ function Roadmap() {
 
   return (
     <>
-      <div>
+     <div>
         {/* Sección de carga del archivo */}
         {!showFileInfo ? (
           <div className="roadmap-container">

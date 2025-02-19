@@ -201,8 +201,8 @@ function Profile() {
         </div>
       </div>
 
-    {/* Sección de Roadmaps */}
-    <div className="roadmaps-section">
+      {/* Sección de Roadmaps */}
+      <div className="roadmaps-section">
         <h3>Roadmaps Creados</h3>
         {userRoadmaps.length > 0 ? (
           <div className="roadmaps-grid">
@@ -210,12 +210,20 @@ function Profile() {
               <div
                 key={roadmap.id_roadmap}
                 className="roadmap-card"
-                onClick={() => handleRoadmapClick(roadmap)}  // Manejador de clics
+                onClick={() => handleRoadmapClick(roadmap)}  
               >
                 <div className="roadmap-card-header">
                   <strong>{roadmap.nombre}</strong>
                 </div>
                 <div className="roadmap-card-body">
+                  {/* Mostrar la imagen */}
+                    <img
+                      src={roadmap.image}
+                      alt={`Imagen de ${roadmap.nombre}`}
+                      className="roadmap-image"
+                    />
+
+                  
                   <p>Creado el: {new Date(roadmap.fecha_creacion).toLocaleDateString()}</p>
                 </div>
               </div>

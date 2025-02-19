@@ -144,8 +144,9 @@ function Roadmap() {
       if (!response.ok) {
         throw new Error('Error al enviar el topic al backend');
       }
-  
+      
       const result = await response.json();
+      console.log("Response:", result);
       const parseResult = JSON.parse(result);
       console.log(parseResult);
       setRoadmapTopics(parseResult);

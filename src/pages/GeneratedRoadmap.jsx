@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import ReactFlow, { Background, Controls } from 'react-flow-renderer';
+import html2canvas from 'html2canvas';
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
 
@@ -48,20 +49,66 @@ function GeneratedRoadmap() {
     });
   });
 
+  const captureRoadmap = async () => {
+    const roadmapElement = document.getElementById('roadmap-container');
+    if (!roadmapElement) return;
+
+    try {
+      const canvas = await html2canvas(roadmapElement, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      await saveImageToDB(imgData);
+    } catch (error) {
+      console.error('Error al capturar la imagen:', error);
+    }
+  };
+
+  const saveImageToDB = async (base64Image) => {
+    const authToken = localStorage.getItem("token");
+
+    if (!roadmapTopics || Object.keys(roadmapTopics).length === 0) {
+      console.error("No hay datos del roadmap para guardar.");
+      return;
+    }
+
+    const topic = Object.keys(roadmapTopics)[0]; 
+    const roadmapData = JSON.stringify(roadmapTopics); 
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/save-roadmap-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ 
+          topic,  
+          roadmap_data: roadmapData,  
+          image_base64: base64Image  
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al guardar la imagen en la base de datos');
+      }
+
+      console.log('Roadmap guardado correctamente');
+    } catch (error) {
+      console.error('Error al enviar el roadmap al backend:', error);
+    }
+  };
+
   return (
     <div className="generated-roadmap-container">
-      {roadmapTopics && (
-          <div className="react-flow-container">
-            <ReactFlow 
-              nodes={nodes} 
-              edges={edges} 
-              nodeTypes={{ custom: CustomNode }}
-              fitView>
-              <Background />
-              <Controls/>
-            </ReactFlow>
-          </div>
-      )}
+      <button onClick={captureRoadmap} className="capture-button">
+        Guardar Roadmap
+      </button>
+
+      <div id="roadmap-container" className="react-flow-container">
+        <ReactFlow nodes={nodes} edges={edges} nodeTypes={{ custom: CustomNode }} fitView>
+          <Background />
+          <Controls />
+        </ReactFlow>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+/* Contenedor principal */
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -10,7 +11,7 @@
   position: relative;
 }
 
-/* Título fuera de la caja */
+/* Título de la página */
 .profile-title {
   color: #fff;
   font-size: 24px;
@@ -35,7 +36,7 @@
   gap: 20px;
 }
 
-/* Sección de la imagen */
+/* Imagen de perfil */
 .profile-image {
   display: flex;
   align-items: center;
@@ -49,7 +50,7 @@
   color: white;
 }
 
-/* Sección de campos de información */
+/* Campos de información del perfil */
 .profile-fields {
   display: flex;
   flex-direction: column;
@@ -77,104 +78,7 @@
   margin-top: 20px;
 }
 
-/* Estilos para los botones */
-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: #835bfc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  width: auto;
-  text-align: center;
-}
-
-button:hover {
-  background: #6b4ad4;
-}
-
-button:active {
-  background: #5137b0;
-}
-
-/* Estilos específicos para el botón de eliminar */
-.delete-button {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.delete-button:hover {
-  background: #e60000;
-}
-
-.delete-button:active {
-  background: #cc0000;
-}
-
-/* Estilos de los orbes */
-.light-orb {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(
-    circle,
-    rgba(165, 113, 255, 0.599) 0%,
-    rgba(165, 113, 255, 0.1) 40%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  filter: blur(20px);
-  opacity: 0;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.light-orb:nth-child(1) {
-  animation: pulse 4s infinite ease-in-out;
-  top: 10%;
-  left: 10%;
-}
-.light-orb:nth-child(2) {
-  animation: pulse 5s infinite ease-in-out;
-  top: 60%;
-  left: 80%;
-}
-.light-orb:nth-child(3) {
-  animation: pulse 6s infinite ease-in-out;
-  top: 70%;
-  left: 20%;
-}
-.light-orb:nth-child(4) {
-  animation: pulse 6s infinite ease-in-out;
-  top: 70%;
-  left: 40%;
-}
-.light-orb:nth-child(5) {
-  animation: pulse 4.5s infinite ease-in-out;
-  top: 10%;
-  left: 80%;
-}
-
-/* Estilos para el botón de modificar datos */
+/* Botón de modificar datos */
 .edit-button {
   background: var(--hover);
   color: white;
@@ -192,6 +96,26 @@ button:active {
 
 .edit-button:active {
   background: #5137b0;
+}
+
+/* Botón de eliminar cuenta */
+.delete-button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background: #e60000;
+}
+
+.delete-button:active {
+  background: #cc0000;
 }
 
 /* Sección de Roadmaps */
@@ -228,6 +152,11 @@ button:active {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 }
 
 .roadmap-card:hover {
@@ -240,28 +169,48 @@ button:active {
   padding: 1rem;
   background: rgba(50, 51, 59, 0.95);
   color: #fff;
-}
-
-.roadmap-card-header strong {
-  font-size: 1.2rem;
+  text-align: center;
   font-weight: bold;
+  width: 100%;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Cuerpo de la Card */
 .roadmap-card-body {
   padding: 1rem;
-}
-
-.roadmap-card-body p {
-  margin: 0.5rem 0;
+  text-align: center;
   color: #ddd;
   font-size: 0.9rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.roadmap-prompt {
-  color: #bbb;
-  font-size: 0.8rem;
-  line-height: 1.4;
+/* Imagen dentro de la Card */
+.roadmap-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Botón dentro de la Card */
+.roadmap-button {
+  background: var(--hover);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.roadmap-button:hover {
+  background: var(--button-hover);
 }
 
 /* Mensaje cuando no hay roadmaps */

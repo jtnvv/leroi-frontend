@@ -17,6 +17,7 @@
     "classcat": "^5.0.5",
     "firebase": "^11.1.0",
     "framer-motion": "^11.18.0",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.461.0",
     "nanoid": "^5.0.9",
     "popmotion": "^11.0.5",

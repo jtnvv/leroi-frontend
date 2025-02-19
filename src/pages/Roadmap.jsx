@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import archivo from '../assets/archivo.png';
 import anim_tutorial from '../assets/Tutorial_CrearRoadmap.mp4';
 import tutorial_logo from '../assets/Tutorial_logo.png';
@@ -7,6 +7,9 @@ import { toast } from 'react-hot-toast';
 import '../styles/roadmap.css';
 
 function Roadmap() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [fileUploaded, setFileUploaded] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);  
   const [helpModal, setHelpModal] = useState(false);
@@ -21,8 +24,10 @@ function Roadmap() {
   const [loadingPage, setLoadingPage] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [roadmapTopics, setRoadmapTopics] = useState({});
+  const [relatedTopics, setRelatedTopics] = useState([]);
   const authToken = localStorage.getItem("token");
   const navigate = useNavigate();
+
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -39,16 +44,9 @@ function Roadmap() {
 
   useEffect(() => {
     if (base64) {
-      // console.log("aca esta el base64", base64);
       setPreviewFile(true);
     }
   }, [base64]);
-
-  useEffect(() => {
-    if (fileUploaded) {
-      console.log("Archivo subido:", fileUploaded.name);
-    }
-  }, [fileUploaded]);
 
   useEffect(() => {
     if (topics.length > 0) {
@@ -58,13 +56,31 @@ function Roadmap() {
   }, [topics]);
 
   useEffect(() => {
+    const storedModalState = localStorage.getItem('topicsModal');
+    if (storedModalState === 'true') {
+      console.log("State:", location.state?.topicState); 
+      if (location.state?.topicState) {
+        setTopics(location.state.topicState.relatedTopics || []); 
+      }
+      setTopicsModal(true);
+      localStorage.removeItem('topicsModal');
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     if (Object.keys(roadmapTopics).length > 0) {
       console.log("Roadmap Topics:", roadmapTopics);
       setLoadingPage(false);
       setLoadingText("");
-      navigate('/generatedRoadmap', {state: {roadmapTopics}});
+      navigate('/generatedRoadmap', {state: {roadmapTopics, relatedTopics}});
     }
-  }, [roadmapTopics, navigate]);
+  }, [roadmapTopics, relatedTopics, navigate]);
+
+  useEffect(() => {
+    if (relatedTopics.length > 0) {
+      console.log("Related Topics :D", relatedTopics);
+    }
+  }, [relatedTopics]);
 
   const handleFileChange = async (e) => {
     setLoadingPage(true);
@@ -75,6 +91,9 @@ function Roadmap() {
     if (file.size > maxSize) {
       toast.error('El archivo no puede ser mayor a 50 MB');
       return;
+    } else {
+      setFileUploaded(file);
+      convertToBase64(file);
     }
 
     setFileUploaded(file);
@@ -232,7 +251,7 @@ function Roadmap() {
     }
   };
 
-  const handleSelecteTopic = async(topic) => {  
+  const handleSelectedTopic = async(topic) => {  
     setTopicsModal(false);
     setLoadingPage(true);
     setLoadingText("Estamos creando tu ruta de aprendizaje 😁");
@@ -250,8 +269,20 @@ function Roadmap() {
       }
       const result = await response.json();
       const parseResult = JSON.parse(result);
-      // console.log(parseResult);
-      setRoadmapTopics(parseResult);
+
+      const responseTopics = await fetch(`${import.meta.env.VITE_BACKEND_URL}/related-topics`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topic }),
+      });
+      
+      const resultTopics = await responseTopics.json();
+      const parseResultTopics = JSON.parse(resultTopics);
+
+      setRelatedTopics(parseResultTopics);
+      setRoadmapTopics(parseResult);    
     } catch (error) {
       console.error('Error al enviar al generar la ruta:', error);
       toast.error('No pudimos generar tu ruta de aprendizaje 😔');
@@ -342,7 +373,7 @@ function Roadmap() {
             <h1>Temas detectados en tu archivo</h1>
               <div className="topics-content">
                 {topics.map((topic, index) => (
-                  <button className="topic-button" key={index} onClick={() => handleSelecteTopic(topic)}>
+                  <button className="topic-button" key={index} onClick={() => handleSelectedTopic(topic)}>
                     {topic}
                   </button>
                 ))}

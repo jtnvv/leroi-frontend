@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
-
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons'; 
@@ -28,8 +26,8 @@ function GeneratedRoadmap() {
   };
 
   const handleNewRoadmap = () => {
-    const topicState = relatedTopicsModal ? { relatedTopics } : {};
-    navigate('/roadmap', { state: { topicState } });
+    const topicState = relatedTopicsModal ? {relatedTopics} : {};
+    navigate('/roadmap', {state: {topicState}});
   };
 
   const closeModal = () => {
@@ -40,15 +38,24 @@ function GeneratedRoadmap() {
   const edges = [];
 
   let idCounter = 0;
-  const levelOffset = 500;
-  const nodeWidth = 400;
+  const levelOffset = 600; 
+  const nodeWidth = 500; 
 
-  if (roadmapTopics) {
-    Object.keys(roadmapTopics).forEach((topicKey, topicIndex) => {
-      const topicNode = {
-        id: `topic-${idCounter++}`,
-        data: { label: topicKey, color: '#ffca00' },
-        position: { x: 0, y: 500 },
+  Object.keys(roadmapTopics).forEach((topicKey, topicIndex) => {
+    const topicNode = {
+      id: `topic-${idCounter++}`,
+      data: { label: topicKey, color: '#ffca00' },
+      position: { x: 0, y: 500},
+      type: 'custom',
+    };
+    nodes.push(topicNode);
+
+    const topic = roadmapTopics[topicKey];
+    Object.keys(topic).forEach((subtopicKey, subtopicIndex) => {
+      const subtopicNode = {
+        id: `subtopic-${idCounter++}`,
+        data: { label: subtopicKey, color: '#96E6B3' },
+        position: { x: nodeWidth, y: topicIndex * levelOffset + subtopicIndex * levelOffset / 2 },
         type: 'custom',
       };
       nodes.push(topicNode);
@@ -209,7 +216,7 @@ function GeneratedRoadmap() {
               nodes={nodes}
               edges={edges}
               nodeTypes={{ custom: CustomNode }}
-              fitView
+              fit
               onInit={onInit}
             >
               <Background />
@@ -245,6 +252,22 @@ function GeneratedRoadmap() {
             <div className="modal-buttons">
               <button onClick={() => handleNewRoadmap()} className="modal-button">Sí 😃</button>
               <button onClick={closeModal} className="modal-button">No 🙁</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {relatedTopicsModal && (
+        <div className="modal-overlay" onClick={closeModal}> 
+          <div className="modal" onClick={(e) => e.stopPropagation()}> 
+            <h1 className='modal-title'>¿Quieres crear una ruta de un tema relacionado? 🧐</h1>
+            <ul>
+              {relatedTopics.map((topic, index) => (
+                <li key={index}>{topic}</li>
+              ))}
+            </ul>
+            <div className="modal-buttons">
+              <button onClick={() => handleNewRoadmap()} className='modal-button'>Sí 😃</button>
+              <button onClick={closeModal} className='modal-button'>No 🙁</button> 
             </div>
           </div>
         </div>

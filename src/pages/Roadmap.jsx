@@ -188,45 +188,48 @@ function Roadmap() {
     formData.append("email", email);
   
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
-        method: 'POST',
+
+      const processPromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(dataToSend),
       });
   
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos al backend');
+      const analyzePromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.has_virus) {
+            toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
+          }
+        })
+        .catch((error) => console.error("Error al analizar el archivo:", error));
+  
+      
+      const processResponse = await processPromise;
+  
+      if (!processResponse.ok) {
+        throw new Error("Error al enviar los datos al backend");
       }
   
-      const result = await response.json();
+      const result = await processResponse.json();
       const parseResult = JSON.parse(result);
-
       setTopics(parseResult.themes);
+  
+    } catch (error) {
+      console.error("Error en el proceso:", error);
+      toast.error("Error al procesar el archivo");
+    } finally {
       setIsLoading(false);
       setLoadingPage(false);
       setLoadingText("");
-
-
-    } catch (error) {
-      console.error('Error al enviar los datos:', error);
-      toast.error('Error al enviar el archivo');
-      setIsLoading(false);
     }
-    const analyzeResponse = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: formData,
-    });
-
-    const analyzeResult = await analyzeResponse.json();
-    if (analyzeResponse.ok && analyzeResult.has_virus) {
-      toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
-    }
-
-    setIsLoading(false);
   };
 
   const handleSelecteTopic = async(topic) => {  

@@ -26,7 +26,6 @@ function Roadmap() {
   const [roadmapTopics, setRoadmapTopics] = useState({});
   const [relatedTopics, setRelatedTopics] = useState([]);
   const authToken = localStorage.getItem("token");
-  const navigate = useNavigate();
 
 
   const convertToBase64 = (file) => {

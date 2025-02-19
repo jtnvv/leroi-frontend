@@ -143,7 +143,38 @@ function Roadmap() {
     }
   
     setIsLoading(true);
+
+    const token = localStorage.getItem("token"); 
+
+    if (!token) {
+      toast.error('No se encontró el token del usuario.');
+      return;
+    }
+  
+    let email = '';
+    try {
+      if (token.split('.').length === 3) {
+        const decodedPayload = token.split('.')[1]; 
+        const decoded = atob(decodedPayload); 
+        const parsed = JSON.parse(decoded); 
+        email = parsed.sub; 
+      } else {
+        toast.error('El token JWT no tiene un formato válido.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      toast.error('Error al decodificar el token');
+      return;
+    }
+  
+    if (!email) {
+      toast.error('No se pudo obtener el correo del usuario.');
+      return;
+    }
+
     setLoadingPage(true);
+
     setLoadingText("Buscando temas relacionados... 📈🧠📚");
   
     const dataToSend = {
@@ -152,33 +183,52 @@ function Roadmap() {
       fileSize: fileUploaded.size,
       fileBase64: base64,
     };
+    const formData = new FormData();
+    formData.append("file", fileUploaded);
+    formData.append("email", email);
   
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
-        method: 'POST',
+
+      const processPromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(dataToSend),
       });
   
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos al backend');
+      const analyzePromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.has_virus) {
+            toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
+          }
+        })
+        .catch((error) => console.error("Error al analizar el archivo:", error));
+  
+      
+      const processResponse = await processPromise;
+  
+      if (!processResponse.ok) {
+        throw new Error("Error al enviar los datos al backend");
       }
   
-      const result = await response.json();
+      const result = await processResponse.json();
       const parseResult = JSON.parse(result);
-
       setTopics(parseResult.themes);
+  
+    } catch (error) {
+      console.error("Error en el proceso:", error);
+      toast.error("Error al procesar el archivo");
+    } finally {
       setIsLoading(false);
       setLoadingPage(false);
       setLoadingText("");
-
-
-    } catch (error) {
-      console.error('Error al enviar los datos:', error);
-      toast.error('Error al enviar el archivo');
     }
   };
 

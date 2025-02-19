@@ -58,32 +58,22 @@ function GeneratedRoadmap() {
         position: { x: nodeWidth, y: topicIndex * levelOffset + subtopicIndex * levelOffset / 2 },
         type: 'custom',
       };
-      nodes.push(topicNode);
+      nodes.push(subtopicNode);
+      edges.push({ id: `e-${topicNode.id}-${subtopicNode.id}`, source: topicNode.id, target: subtopicNode.id });
 
-      const topic = roadmapTopics[topicKey];
-      Object.keys(topic).forEach((subtopicKey, subtopicIndex) => {
-        const subtopicNode = {
-          id: `subtopic-${idCounter++}`,
-          data: { label: subtopicKey, color: '#96E6B3' },
-          position: { x: nodeWidth, y: topicIndex * levelOffset + subtopicIndex * levelOffset / 2 },
+      topic[subtopicKey].forEach((subSubtopic, index) => {
+        const subSubtopicNode = {
+          id: `subSubtopic-${idCounter++}`,
+          data: { label: subSubtopic, color: '#FF92E6' },
+          position: { x: nodeWidth * 2, y: topicIndex * levelOffset + subtopicIndex * levelOffset / 2 + index * 50 },
           type: 'custom',
-        };
-        nodes.push(subtopicNode);
-        edges.push({ id: `e-${topicNode.id}-${subtopicNode.id}`, source: topicNode.id, target: subtopicNode.id });
 
-        topic[subtopicKey].forEach((subSubtopic, index) => {
-          const subSubtopicNode = {
-            id: `subSubtopic-${idCounter++}`,
-            data: { label: subSubtopic, color: '#FF92E6' },
-            position: { x: nodeWidth * 2, y: topicIndex * levelOffset + subtopicIndex * levelOffset / 2 + index * 50 },
-            type: 'custom',
-          };
-          nodes.push(subSubtopicNode);
-          edges.push({ id: `e-${subtopicNode.id}-${subSubtopicNode.id}`, source: subtopicNode.id, target: subSubtopicNode.id });
-        });
+        };
+        nodes.push(subSubtopicNode);
+        edges.push({ id: `e-${subtopicNode.id}-${subSubtopicNode.id}`, source: subtopicNode.id, target: subSubtopicNode.id });
       });
     });
-  }
+  });
 
   const handleDownload = async (format) => {
     const roadmapElement = roadmapRef.current;

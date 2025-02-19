@@ -1,24 +1,44 @@
-import { useLocation } from 'react-router-dom';
-import React, { useState, useRef } from 'react';
-import ReactFlow, { Background } from 'react-flow-renderer';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand } from '@fortawesome/free-solid-svg-icons';
-
+import { faLink } from '@fortawesome/free-solid-svg-icons'; 
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 
 function GeneratedRoadmap() {
   const location = useLocation();
-  const { roadmapTopics } = location.state || {};
-  const roadmapRef = useRef(null);
+  const navigate = useNavigate();
+  const { roadmapTopics, relatedTopics } = location.state || {};
+  const [relatedTopicsModal, setRelatedTopicsModal] = useState(false);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState('json');
+  const roadmapRef = useRef(null);
   const reactFlowInstance = useRef(null);
+
+  const handleShowModal = () => {
+    setRelatedTopicsModal(true);
+    localStorage.setItem('topicsModal', 'true');
+  };
+
+  const handleNewRoadmap = () => {
+    const topicState = relatedTopicsModal ? { relatedTopics } : {};
+    navigate('/roadmap', { state: { topicState } });
+  };
+
+  const closeModal = () => {
+    setRelatedTopicsModal(false);
+  };
 
   const nodes = [];
   const edges = [];
+
   let idCounter = 0;
   const levelOffset = 500;
   const nodeWidth = 400;
@@ -58,8 +78,10 @@ function GeneratedRoadmap() {
     });
   }
 
-  const handleDownload = async () => {
-    if (selectedFormat === 'json') {
+  const handleDownload = async (format) => {
+    const roadmapElement = roadmapRef.current;
+  
+    if (format === 'json') {
       const jsonData = JSON.stringify(roadmapTopics, null, 2);
       const blob = new Blob([jsonData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -70,51 +92,60 @@ function GeneratedRoadmap() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } else if (selectedFormat === 'image' || selectedFormat === 'pdf') {
-      setTimeout(async () => {
-        const roadmapElement = roadmapRef.current;
+    } else if (format === 'image' || format === 'pdf') {
+      try {
+        reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const canvas = await html2canvas(roadmapElement, {
-          scale: 2, // Aumentar la escala para mejorar la calidad
-          useCORS: true, // Habilitar CORS si es necesario
-          logging: true, // Habilitar logging para depuración
+          scale: 2, 
+          useCORS: true,
+          logging: true,
+          width: roadmapElement.scrollWidth,
+          height: roadmapElement.scrollHeight,
+          allowTaint: true,
         });
-        if (selectedFormat === 'image') {
-          const image = canvas.toDataURL('image/png');
+  
+        const dataUrl = canvas.toDataURL('image/png');
+  
+        if (format === 'image') {
           const a = document.createElement('a');
-          a.href = image;
+          a.href = dataUrl;
           a.download = 'roadmap.png';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-        } else if (selectedFormat === 'pdf') {
-          const imgData = canvas.toDataURL('image/png');
+        } else if (format === 'pdf') {
           const pdf = new jsPDF('landscape');
-          pdf.addImage(imgData, 'PNG', 10, 10, 280, 150);
+          const imgProps = pdf.getImageProperties(dataUrl);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
           pdf.save('roadmap.pdf');
         }
-      }, 500);
+      } catch (error) {
+        console.error('Error al generar la imagen o PDF:', error);
+      }
     }
   };
-
   const onInit = (instance) => {
     reactFlowInstance.current = instance;
     setTimeout(() => {
       instance.fitView({ padding: 0.2, duration: 500 });
-    }, 500); // Esperar un poco para que se carguen los nodos
+    }, 500); 
   };
-  
+
   const handleZoomIn = () => {
     if (reactFlowInstance.current) {
       reactFlowInstance.current.zoomTo(reactFlowInstance.current.getZoom() + 0.2);
     }
   };
-  
+
   const handleZoomOut = () => {
     if (reactFlowInstance.current) {
       reactFlowInstance.current.zoomTo(reactFlowInstance.current.getZoom() - 0.2);
     }
   };
-  
+
   const handleFitView = () => {
     if (reactFlowInstance.current) {
       reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
@@ -168,36 +199,55 @@ function GeneratedRoadmap() {
                     <span>PDF</span>
                   </label>
                 </div>
-                <button className="download-button" onClick={handleDownload}>Descargar</button>
+                <button className="download-button" onClick={() => handleDownload(selectedFormat)}>Descargar</button>
               </div>
             </div>
           )}
 
           <div className="react-flow-container" ref={roadmapRef}>
-            <ReactFlow 
-              nodes={nodes} 
-              edges={edges} 
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
               nodeTypes={{ custom: CustomNode }}
               fitView
-              onInit={onInit} // Aquí se cambia de onLoad a onInit
+              onInit={onInit}
             >
               <Background />
             </ReactFlow>
           </div>
 
           <div className="controls-container">
-        <button className="control-button" onClick={handleZoomIn}>
-          <FontAwesomeIcon icon={faSearchPlus} />
-        </button>
-        <button className="control-button" onClick={handleZoomOut}>
-          <FontAwesomeIcon icon={faSearchMinus} />
-        </button>
-        <button className="control-button" onClick={handleFitView}>
-          <FontAwesomeIcon icon={faExpand} />
-        </button>
-      </div>
-          
+            <button className="control-button" onClick={handleZoomIn}>
+              <FontAwesomeIcon icon={faSearchPlus} />
+            </button>
+            <button className="control-button" onClick={handleZoomOut}>
+              <FontAwesomeIcon icon={faSearchMinus} />
+            </button>
+            <button className="control-button" onClick={handleFitView}>
+              <FontAwesomeIcon icon={faExpand} />
+            </button>
+            <button className="control-button" onClick={handleShowModal}>
+              <FontAwesomeIcon icon={faLink} />
+          </button>
+          </div>
         </>
+      )}
+
+      {relatedTopicsModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h1 className="modal-title">¿Quieres crear una ruta de un tema relacionado? 🧐</h1>
+            <ul>
+              {relatedTopics.map((topic, index) => (
+                <li key={index}>{topic}</li>
+              ))}
+            </ul>
+            <div className="modal-buttons">
+              <button onClick={() => handleNewRoadmap()} className="modal-button">Sí 😃</button>
+              <button onClick={closeModal} className="modal-button">No 🙁</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -55,6 +55,7 @@ function Profile() {
         }
 
         const roadmapsData = await roadmapsResponse.json();
+        console.log("Roadmaps del usuario:", roadmapsData.data);
         setUserRoadmaps(roadmapsData.data);
       } catch (error) {
         console.error(error);
@@ -222,8 +223,6 @@ function Profile() {
                       alt={`Imagen de ${roadmap.nombre}`}
                       className="roadmap-image"
                     />
-
-                  
                   <p>Creado el: {new Date(roadmap.fecha_creacion).toLocaleDateString()}</p>
                 </div>
               </div>

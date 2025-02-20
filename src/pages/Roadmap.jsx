@@ -259,14 +259,17 @@ function Roadmap() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify({ topic }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al enviar el topic al backend');
       }
+      
       const result = await response.json();
+      console.log("Response:", result);
       const parseResult = JSON.parse(result);
 
       const responseTopics = await fetch(`${import.meta.env.VITE_BACKEND_URL}/related-topics`, {

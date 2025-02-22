@@ -317,6 +317,16 @@
   width: 90%; 
   color: white; 
 }
+.modal-content {
+  background: #6a0dad;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  color: white;
+  width: 90%; /* Hacemos el modal más ancho en pantallas pequeñas */
+  max-width: 400px; /* Limitamos el ancho máximo */
+  text-align: center;
+}
 
 .modal-title{
   font-size: 2rem; 
@@ -555,10 +565,41 @@
 }
 
 .download-button:hover {
-  background-color: #6b4ad4; /* Morado más oscuro */
-  transform: scale(1.05); /* Efecto de escala al hacer hover */
+  background: linear-gradient(#835BFCCC);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
+.download-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes para pantallas menores a 768px */
+@media (max-width: 768px) {
+  .download-container {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .download-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Ajustes para pantallas menores a 480px */
+@media (max-width: 480px) {
+  .download-container {
+    bottom: 5px;
+    right: 5px;
+  }
+
+  .download-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
 
 .icon-button {
   background: none;
@@ -834,5 +875,43 @@
 }
 
 
+/* Botones de descarga*/
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%; /* Ocupa casi todo el ancho en pantallas pequeñas */
+    padding: 15px;
+  }
 
+  .download-options {
+    flex-direction: column;
+    gap: 8px; /* Reducimos el espacio entre botones */
+  }
 
+  .format-option {
+    padding: 8px;
+  }
+
+  .format-option span {
+    font-size: 0.9rem; /* Reducimos el tamaño de la fuente */
+  }
+}
+
+/* Ajustes para pantallas menores a 480px */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 10px;
+  }
+
+  .download-options {
+    flex-direction: column;
+    gap: 5px; /* Menos espacio entre botones */
+  }
+
+  .format-option {
+    padding: 6px;
+  }
+
+  .format-option span {
+    font-size: 0.8rem; /* Fuente aún más pequeña */
+  }
+}

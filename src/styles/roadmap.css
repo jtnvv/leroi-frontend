@@ -735,7 +735,7 @@
   }
 
   .react-flow-container {
-    transform: scale(0.9); /* Reducir el tamaño del roadmap */
+    transform: scale(0.9); 
     transform-origin: top center;
   }
 }
@@ -755,13 +755,13 @@
   }
 
   .generated-roadmap-container {
-    height: calc(100vh - 100px); /* Ajustar altura para móviles */
+    height: calc(100vh - 100px); 
   }
 
   .react-flow-container {
-    transform: scale(0.8); /* Reducir aún más el tamaño del roadmap */
-    width: 95%; /* Reducir ligeramente el ancho */
-    margin: 0 auto; /* Centrar el contenedor */
+    transform: scale(0.8); 
+    width: 95%; 
+    margin: 0 auto; 
   }
 }
 .react-flow__node {
@@ -777,7 +777,7 @@
   }
 }
 
-/* Ajustes para móviles */
+
 @media (max-width: 768px) {
   .react-flow__node {
     --levelOffset: 200px;
@@ -785,7 +785,7 @@
   }
 }
 
-/* Ajustes para móviles pequeños */
+
 @media (max-width: 480px) {
   .react-flow__node {
     --levelOffset: 150px;
@@ -793,31 +793,31 @@
   }
 }
 
-/*Responsive topics roadmap*/
+
 @media (max-width: 768px) {
   .topics-content {
-    flex-direction: column; /* Apilar los temas verticalmente en móviles */
-    align-items: center; /* Centrar los temas */
-    gap: 8px; /* Reducir el espacio entre temas */
+    flex-direction: column; 
+    align-items: center; 
+    gap: 8px; 
   }
 
   .topic-button {
-    width: 80%; /* Hacer que los botones ocupen más ancho en móviles */
-    font-size: 0.9rem; /* Reducir el tamaño de la fuente */
-    padding: 0.6rem 1rem; /* Reducir el padding */
+    width: 80%; 
+    font-size: 0.9rem; 
+    padding: 0.6rem 1rem; 
   }
 }
 
 @media (max-width: 480px) {
   .topics-modal h1 {
-    font-size: 1.5rem; /* Reducir el tamaño del título en móviles pequeños */
-    text-align: center; /* Centrar el título */
+    font-size: 1.5rem; 
+    text-align: center; 
   }
 
   .topic-button {
-    width: 90%; /* Ocupar casi todo el ancho en móviles pequeños */
-    font-size: 0.8rem; /* Reducir aún más el tamaño de la fuente */
-    padding: 0.5rem 0.8rem; /* Reducir el padding */
+    width: 90%; 
+    font-size: 0.8rem; 
+    padding: 0.5rem 0.8rem; 
   }
 }
 

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand,faSave } from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons'; 
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
@@ -173,10 +173,10 @@ function GeneratedRoadmap() {
     }
   };
   const onInit = (instance) => {
-    reactFlowInstance.current = instance;
-    setTimeout(() => {
+    if (!reactFlowInstance.current) {
+      reactFlowInstance.current = instance;
       instance.fitView({ padding: 0.2, duration: 500 });
-    }, 500); 
+    } 
   };
 
   const handleZoomIn = () => {
@@ -199,11 +199,8 @@ function GeneratedRoadmap() {
 
   return (
     <div className="generated-roadmap-container">
-      <button onClick={captureRoadmap} className="capture-button">
-        Guardar Roadmap
-      </button>
 
-      <div id="roadmap-container" className="react-flow-container">
+      <div id="roadmap-container" className="react-flow-container" ref={roadmapRef}>
         <ReactFlow nodes={nodes} edges={edges} nodeTypes={{ custom: CustomNode }} fitView>
           <Background />
           <Controls />
@@ -259,17 +256,6 @@ function GeneratedRoadmap() {
             </div>
           )}
 
-          <div className="react-flow-container" ref={roadmapRef}>
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              nodeTypes={{ custom: CustomNode }}
-              fit
-              onInit={onInit}
-            >
-              <Background />
-            </ReactFlow>
-          </div>
 
           <div className="controls-container">
             <button className="control-button" onClick={handleZoomIn}>
@@ -283,7 +269,10 @@ function GeneratedRoadmap() {
             </button>
             <button className="control-button" onClick={handleShowModal}>
               <FontAwesomeIcon icon={faLink} />
-          </button>
+            </button>
+            <button className="control-button" onClick={captureRoadmap}>
+              <FontAwesomeIcon icon={faSave} />
+            </button>          
           </div>
         </>
       )}

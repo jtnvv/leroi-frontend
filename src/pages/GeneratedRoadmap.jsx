@@ -157,55 +157,79 @@ function GeneratedRoadmap() {
     }
 };
 
-  const handleDownload = async (format) => {
-    const roadmapElement = roadmapRef.current;
-  
-    if (format === 'json') {
-      const jsonData = JSON.stringify(roadmapTopics, null, 2);
-      const blob = new Blob([jsonData], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'roadmap.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } else if (format === 'image' || format === 'pdf') {
-      try {
-        reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const canvas = await html2canvas(roadmapElement, {
-          scale: 2, 
-          useCORS: true,
-          logging: true,
-          width: roadmapElement.scrollWidth,
-          height: roadmapElement.scrollHeight,
-          allowTaint: true,
-        });
-  
-        const dataUrl = canvas.toDataURL('image/png');
-  
-        if (format === 'image') {
-          const a = document.createElement('a');
-          a.href = dataUrl;
-          a.download = 'roadmap.png';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        } else if (format === 'pdf') {
-          const pdf = new jsPDF('landscape');
-          const imgProps = pdf.getImageProperties(dataUrl);
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          pdf.save('roadmap.pdf');
-        }
-      } catch (error) {
-        console.error('Error al generar la imagen o PDF:', error);
+const handleDownload = async (format) => {
+  const roadmapElement = roadmapRef.current;
+
+  if (format === 'json') {
+    const jsonData = JSON.stringify(roadmapTopics, null, 2);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'roadmap.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } else if (format === 'image' || format === 'pdf') {
+    try {
+      reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const isMobile = window.innerWidth < 768; // Verifica si es un dispositivo móvil
+      
+      if (format === 'pdf' && isMobile) {
+        setLevelOffset(300); // Ajusta el nivel de offset
+        setNodeWidth(225); // Ajusta el ancho del nodo
+        await new Promise(resolve => setTimeout(resolve, 500)); // Espera a que se apliquen los cambios
       }
+
+      const canvas = await html2canvas(roadmapElement, {
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        width: roadmapElement.scrollWidth,
+        height: roadmapElement.scrollHeight,
+        allowTaint: true,
+      });
+
+      const dataUrl = canvas.toDataURL('image/png');
+
+      if (format === 'image') {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'roadmap.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else if (format === 'pdf') {
+        const pdf = new jsPDF(isMobile ? 'portrait' : 'landscape');
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgRatio = imgProps.width / imgProps.height;
+        let imgWidth = pdfWidth;
+        let imgHeight = imgWidth / imgRatio;
+
+        if (imgHeight > pdfHeight) {
+          let position = 0;
+          while (position < imgHeight) {
+            if (position > 0) pdf.addPage();
+            const pageHeight = Math.min(pdfHeight, imgHeight - position);
+            pdf.addImage(dataUrl, 'PNG', 0, -position, imgWidth, imgHeight);
+            position += pdfHeight;
+          }
+        } else {
+          pdf.addImage(dataUrl, 'PNG', 0, 0, imgWidth, imgHeight);
+        }
+
+        pdf.save('roadmap.pdf');
+      }
+    } catch (error) {
+      console.error('Error al generar la imagen o PDF:', error);
     }
-  };
+  }
+};
   const onInit = (instance) => {
     if (!reactFlowInstance.current) {
       reactFlowInstance.current = instance;

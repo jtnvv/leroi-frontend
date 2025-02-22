@@ -207,10 +207,10 @@ function GeneratedRoadmap() {
     }
   };
   const onInit = (instance) => {
-    reactFlowInstance.current = instance;
-    setTimeout(() => {
+    if (!reactFlowInstance.current) {
+      reactFlowInstance.current = instance;
       instance.fitView({ padding: 0.2, duration: 500 });
-    }, 500); 
+    } 
   };
 
   const handleZoomIn = () => {
@@ -279,7 +279,6 @@ function GeneratedRoadmap() {
               </div>
             </div>
           )}
-
           <div className="react-flow-container" ref={roadmapRef}>
             <ReactFlow
               nodes={nodes}
@@ -291,6 +290,7 @@ function GeneratedRoadmap() {
               <Background />
             </ReactFlow>
           </div>
+
 
           <div className="controls-container">
           <button className="control-button" onClick={handleZoomIn}>
@@ -312,7 +312,6 @@ function GeneratedRoadmap() {
               <button className="icon-button" onClick={() => setShowDownloadOptions(true)}>
               <FontAwesomeIcon icon={faDownload} className="download-icon" />
             </button>
-
           </div>
         </>
       )}

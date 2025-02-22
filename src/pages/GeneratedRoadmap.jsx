@@ -4,7 +4,7 @@ import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-rende
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand,faSave } from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons'; 
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
@@ -42,29 +42,29 @@ function GeneratedRoadmap() {
   const [levelOffset, setLevelOffset] = useState(400);
   const [nodeWidth, setNodeWidth] = useState(400);
 
-  // Función para ajustar los valores según el tamaño de la pantalla
+
   const updateDimensions = () => {
     const width = window.innerWidth;
 
-    if (width < 480) { // Pantallas pequeñas (móviles)
+    if (width < 480) { 
       setLevelOffset(450);
       setNodeWidth(225);
-    } else if (width >= 480 && width < 768) { // Tablets
+    } else if (width >= 480 && width < 768) { 
       setLevelOffset(395);
       setNodeWidth(225);
-    } else { // Pantallas grandes (escritorio)
+    } else { 
       setLevelOffset(400);
       setNodeWidth(400);
     }
   };
 
-  // Efecto para actualizar los valores al cargar el componente y al cambiar el tamaño de la ventana
+  
   useEffect(() => {
-    updateDimensions(); // Ajustar valores iniciales
-    window.addEventListener('resize', updateDimensions); // Escuchar cambios en el tamaño de la ventana
+    updateDimensions(); 
+    window.addEventListener('resize', updateDimensions); 
 
     return () => {
-      window.removeEventListener('resize', updateDimensions); // Limpiar el listener al desmontar el componente
+      window.removeEventListener('resize', updateDimensions); 
     };
   }, []);
   
@@ -108,6 +108,54 @@ function GeneratedRoadmap() {
       });
     });
   }
+
+  const captureRoadmap = async () => {
+    const roadmapElement = document.getElementById('roadmap-container');
+    if (!roadmapElement) return;
+
+    try {
+      const canvas = await html2canvas(roadmapElement, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      await saveImageToDB(imgData);
+    } catch (error) {
+      console.error('Error al capturar la imagen:', error);
+    }
+  };
+
+  const saveImageToDB = async (base64Image) => {
+    const authToken = localStorage.getItem("token");
+
+    if (!roadmapTopics || Object.keys(roadmapTopics).length === 0) {
+      console.error("No hay datos del roadmap para guardar.");
+      return;
+    }
+
+    const topic = Object.keys(roadmapTopics)[0]; 
+    const roadmapData = JSON.stringify(roadmapTopics); 
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/save-roadmap-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ 
+          topic,  
+          roadmap_data: roadmapData,  
+          image_base64: base64Image  
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al guardar la imagen en la base de datos');
+      }
+
+      console.log('Roadmap guardado correctamente');
+    } catch (error) {
+      console.error('Error al enviar el roadmap al backend:', error);
+    }
+};
 
   const handleDownload = async (format) => {
     const roadmapElement = roadmapRef.current;
@@ -257,10 +305,14 @@ function GeneratedRoadmap() {
             <button className="control-button" onClick={handleShowModal}>
               <FontAwesomeIcon icon={faLink} />
             </button>
+            <button className="control-button" onClick={captureRoadmap}>
+              <FontAwesomeIcon icon={faSave} />
+            </button>   
               {/* Botón de descarga */}
               <button className="icon-button" onClick={() => setShowDownloadOptions(true)}>
               <FontAwesomeIcon icon={faDownload} className="download-icon" />
             </button>
+
           </div>
         </>
       )}

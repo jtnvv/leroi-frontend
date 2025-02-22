@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 
 const CustomNode = ({ data }) => {
     const backgroundColor = data.color || '#fff';
-    const isYellow = backgroundColor.toLowerCase() === '#ffca00'; // Amarillo (primer nivel)
-    const isGreen = backgroundColor.toLowerCase() === '#96e6b3'; // Verde (segundo nivel)
+    const isYellow = backgroundColor.toLowerCase() === '#ffca00'; 
+    const isGreen = backgroundColor.toLowerCase() === '#96e6b3'; 
 
-    // 📌 Estado para manejar si la pantalla es menor a 768px
+    
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const CustomNode = ({ data }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // 📌 Permitir saltos de línea en amarillo y verde SOLO si la pantalla es menor a 768px
+    
     const shouldWrap = isMobile && (isYellow || isGreen);
 
     return (
@@ -27,11 +27,11 @@ const CustomNode = ({ data }) => {
                 borderRadius: 5,
                 background: backgroundColor,
                 color: '#000',
-                maxWidth: shouldWrap ? '120px' : 'auto', // 📌 Solo restringe ancho si debe hacer saltos
+                maxWidth: shouldWrap ? '120px' : 'auto', 
                 textAlign: 'center',
                 wordWrap: shouldWrap ? 'break-word' : 'normal',
                 overflowWrap: shouldWrap ? 'break-word' : 'normal',
-                whiteSpace: shouldWrap ? 'pre-wrap' : 'nowrap', // 📌 Saltos de línea solo si es necesario
+                whiteSpace: shouldWrap ? 'pre-wrap' : 'nowrap', 
             }}
         >
             <Handle type="target" position="left" style={{ background: '#555' }} />

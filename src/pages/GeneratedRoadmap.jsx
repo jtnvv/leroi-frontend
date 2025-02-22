@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
 
 
@@ -12,6 +12,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 
+
 function GeneratedRoadmap() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ function GeneratedRoadmap() {
   const [selectedFormat, setSelectedFormat] = useState('json');
   const roadmapRef = useRef(null);
   const reactFlowInstance = useRef(null);
+
+
 
   const handleShowModal = () => {
     setRelatedTopicsModal(true);
@@ -36,12 +39,40 @@ function GeneratedRoadmap() {
     setRelatedTopicsModal(false);
   };
 
+  const [levelOffset, setLevelOffset] = useState(400);
+  const [nodeWidth, setNodeWidth] = useState(400);
+
+  // Función para ajustar los valores según el tamaño de la pantalla
+  const updateDimensions = () => {
+    const width = window.innerWidth;
+
+    if (width < 480) { // Pantallas pequeñas (móviles)
+      setLevelOffset(450);
+      setNodeWidth(225);
+    } else if (width >= 480 && width < 768) { // Tablets
+      setLevelOffset(395);
+      setNodeWidth(225);
+    } else { // Pantallas grandes (escritorio)
+      setLevelOffset(400);
+      setNodeWidth(400);
+    }
+  };
+
+  // Efecto para actualizar los valores al cargar el componente y al cambiar el tamaño de la ventana
+  useEffect(() => {
+    updateDimensions(); // Ajustar valores iniciales
+    window.addEventListener('resize', updateDimensions); // Escuchar cambios en el tamaño de la ventana
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions); // Limpiar el listener al desmontar el componente
+    };
+  }, []);
+  
+
   const nodes = [];
   const edges = [];
 
   let idCounter = 0;
-  const levelOffset = 500;
-  const nodeWidth = 400;
 
   if (roadmapTopics) {
     Object.keys(roadmapTopics).forEach((topicKey, topicIndex) => {

@@ -99,13 +99,17 @@
   align-items: center;
   z-index: 1000; 
   gap: 2rem;
+  padding: 20px;
 }
 
 .topics-content {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: white;
+  flex-wrap: wrap; /* Permite que los temas se envuelvan en varias líneas */
+  justify-content: center; /* Centra los temas horizontalmente */
+  gap: 10px; /* Espacio entre los botones de temas */
+  max-height: 70vh; /* Limita la altura del contenedor */
+  overflow-y: auto; /* Agrega scroll vertical si hay muchos temas */
+  padding: 10px; /* Espacio interno para evitar que los temas toquen los bordes */
 }
 
 .topic-button {
@@ -113,19 +117,23 @@
   background: #835bfc;
   color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1.5rem; /* Aumentar el padding para mejor tacto en móviles */
   border-radius: 5px;
   cursor: pointer;
-  margin: 0.5rem;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1rem; /* Reducir el tamaño de la fuente en móviles */
   transition: background 0.3s ease, transform 0.3s ease;
+  flex: 1 1 auto; /* Permite que los botones crezcan y se ajusten */
+  min-width: 150px; /* Ancho mínimo para los botones */
+  text-align: center; /* Centrar el texto */
 }
 
 .topic-button:hover {
   background: #6b4ad4;
   transform: scale(1.02);
 }
+
+
 
 .preview-content button {
   font-family: 'Lexend Deca', sans-serif;
@@ -177,16 +185,31 @@
 
 .generated-roadmap-container {
   width: 100%;
-  height: auto;
+  height: calc(100vh - 60px); 
+  display: flex;
   margin-top: 2.5rem; /* Aumenta el margen para separarlo del navbar */
   position: relative; /* Asegura que no se superponga */
-  padding-top: 2rem; /* Espacio adicional */
+  padding-top: 2rem;
+  overflow: hidden; 
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra el contenido horizontalmente */
+  justify-content: flex-start;
+  padding: 0; /* Eliminar padding */
+  margin: 0; /* Eliminar márgenes */
 }
 
 .react-flow-container {
   display:flex;
   align-items: center;
-  height: 700px;
+  height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* Centra el roadmap horizontalmente */
+  align-items: center; /* Centra el roadmap verticalmente */
+  overflow: auto;
+  padding: 0; /* Eliminar padding */
+  margin: 0;
 }
 
 .roadmap-topics {
@@ -197,6 +220,9 @@
   width: fit-content;
   background-color: #835bfc;
   color: white;
+  width: 100%;
+  max-width: 95%;
+  margin: 1rem auto;
 }
 
 .roadmap-content {
@@ -318,59 +344,7 @@
 }
 
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
-@media (max-width: 1024px) {
-  h1 {
-    text-align: center;
-  }
-  .generate-button {
-    width: 20%;
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  h1 {
-    text-align: center;
-  }
-  .generate-button {
-    width: 30%;
-    padding: 0.7rem;
-    font-size: 0.85rem;
-  }
-  .topics-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .control-button{
-    position: 'fixed';
-    top: '50%' !important;
-    left: '5%';
-    z-Index: 1000
-  }
-}
-
-@media (max-width: 480px) {
-  h1 {
-    text-align: center;
-  }
-  .generate-button {
-    width: 50%;
-    padding: 0.6rem;
-    font-size: 0.8rem;
-  }
-  .topics-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-}
 
 .help-icon {
   position: fixed;
@@ -567,26 +541,38 @@
   margin: 20px 0;
 }
 .download-button {
-  
-  color: white;
+  background-color: #835BFCCC; /* Morado con transparencia */
+  color: var(--card-foreground); /* Color del texto (blanco) */
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius);
+  font-family: var(--font-main);
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 16px;
-  margin-top: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Agregamos transformación */
+}
+
+.download-button:hover {
+  background-color: #6b4ad4; /* Morado más oscuro */
+  transform: scale(1.05); /* Efecto de escala al hacer hover */
 }
 
 
 .icon-button {
-  position: absolute;
-  top: 20px;
-  right: 10px;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
-  z-index: 10; 
+  color: white; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px; 
+  transition: opacity 0.2s, transform 0.2s;
+}
+.icon-button:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
 }
 
 
@@ -652,13 +638,14 @@
   right: 40px;
   display: flex;
   gap: 15px;
-  z-index: 10;
+  z-index: 100;
   background-color: var(--background-color); /* Usa la variable */
   padding: 10px;
   border-radius: 12px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   align-items: center;
   backdrop-filter: blur(5px);
+  margin-bottom: 10px;
 }
 
 .controls-container button {
@@ -703,3 +690,181 @@
   stroke: #000; 
   stroke-width: 2px;
 }
+
+.navbar {
+  height: 60px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Contenedor principal */
+.generated-roadmap-container {
+  padding-top: 70px; /* 60px (navbar) + 10px de margen */
+  min-height: calc(100vh - 70px); /* Asegura que el contenido no se superponga */
+}
+
+/* Controles fijos */
+.controls-container {
+  position: fixed;
+  top: 70px; /* 60px (navbar) + 10px de margen */
+  right: 40px;
+  z-index: 999; /* Un z-index menor que el de la barra de navegación */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilos base */
+.generated-roadmap-container {
+  width: 100%;
+  height: calc(100vh - 60px); /* 100vh menos la altura de la navbar */
+  position: relative;
+}
+
+.controls-container {
+  position: fixed;
+  top: 70px; /* 60px (navbar) + 10px (margen) */
+  right: 20px;
+  display: flex;
+  gap: 15px;
+  z-index: 1000;
+  background-color: var(--background-color);
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.controls-container button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.controls-container button:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
+}
+
+/* Media Queries */
+@media (min-width: 1024px) {
+  .react-flow-container {
+    width: 100%; /* Asegura que ocupe el 100% del ancho en pantallas grandes */
+    height: 100vh; /* Asegura que ocupe el 100% de la altura en pantallas grandes */
+    transform: none; /* Elimina transformaciones innecesarias */
+  }
+}
+
+@media (max-width: 768px) {
+  .controls-container {
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .controls-container button {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .react-flow-container {
+    transform: scale(0.9); /* Reducir el tamaño del roadmap */
+    transform-origin: top center;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  .controls-container button {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .generated-roadmap-container {
+    height: calc(100vh - 100px); /* Ajustar altura para móviles */
+  }
+
+  .react-flow-container {
+    transform: scale(0.8); /* Reducir aún más el tamaño del roadmap */
+    width: 95%; /* Reducir ligeramente el ancho */
+    margin: 0 auto; /* Centrar el contenedor */
+  }
+}
+.react-flow__node {
+  --levelOffset: 400px;
+  --nodeWidth: 400px;
+}
+
+/* Ajustes para tablets */
+@media (max-width: 1024px) {
+  .react-flow__node {
+    --levelOffset: 300px;
+    --nodeWidth: 300px;
+  }
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  .react-flow__node {
+    --levelOffset: 200px;
+    --nodeWidth: 200px;
+  }
+}
+
+/* Ajustes para móviles pequeños */
+@media (max-width: 480px) {
+  .react-flow__node {
+    --levelOffset: 150px;
+    --nodeWidth: 150px;
+  }
+}
+
+/*Responsive topics roadmap*/
+@media (max-width: 768px) {
+  .topics-content {
+    flex-direction: column; /* Apilar los temas verticalmente en móviles */
+    align-items: center; /* Centrar los temas */
+    gap: 8px; /* Reducir el espacio entre temas */
+  }
+
+  .topic-button {
+    width: 80%; /* Hacer que los botones ocupen más ancho en móviles */
+    font-size: 0.9rem; /* Reducir el tamaño de la fuente */
+    padding: 0.6rem 1rem; /* Reducir el padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-modal h1 {
+    font-size: 1.5rem; /* Reducir el tamaño del título en móviles pequeños */
+    text-align: center; /* Centrar el título */
+  }
+
+  .topic-button {
+    width: 90%; /* Ocupar casi todo el ancho en móviles pequeños */
+    font-size: 0.8rem; /* Reducir aún más el tamaño de la fuente */
+    padding: 0.5rem 0.8rem; /* Reducir el padding */
+  }
+}
+
+
+
+

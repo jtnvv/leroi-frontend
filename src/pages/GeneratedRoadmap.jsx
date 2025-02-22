@@ -235,7 +235,7 @@ function GeneratedRoadmap() {
     <div className="generated-roadmap-container">
       {roadmapTopics && (
         <>
-
+      
           {showDownloadOptions && (
             <div className="modal-overlay">
               <div className="modal-content">

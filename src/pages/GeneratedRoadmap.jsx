@@ -110,7 +110,7 @@ function GeneratedRoadmap() {
   }
 
   const captureRoadmap = async () => {
-    const roadmapElement = document.getElementById('roadmap-container');
+    const roadmapElement = roadmapRef.current;
     if (!roadmapElement) return;
 
     try {
@@ -146,6 +146,7 @@ function GeneratedRoadmap() {
           image_base64: base64Image  
         }),
       });
+      console.log("ejecutandose");
 
       if (!response.ok) {
         throw new Error('Error al guardar la imagen en la base de datos');

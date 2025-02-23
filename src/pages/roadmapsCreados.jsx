@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTrash } from "react-icons/fa"; // Icono de eliminar
+import { FaTrash, FaSearch } from "react-icons/fa"; // Icono de eliminar y lupa
 import "../styles/profile.css";
 
 function RoadmapsSection() {
   const [userRoadmaps, setUserRoadmaps] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const authToken = localStorage.getItem("token");
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     const fetchUserRoadmaps = async () => {
       if (!authToken) {
@@ -50,7 +51,7 @@ function RoadmapsSection() {
   const handleDeleteImage = async (roadmapId) => {
     const authToken = localStorage.getItem("token");
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  
+
     try {
       const response = await fetch(`${backendUrl}/delete-roadmap-image`, {
         method: "DELETE",
@@ -66,23 +67,29 @@ function RoadmapsSection() {
       }
 
       const result = await response.json();
-      console.log(result.message); 
+      console.log(result.message);
       setUserRoadmaps((prevRoadmaps) =>
         prevRoadmaps.map((roadmap) =>
           roadmap.id_roadmap === roadmapId
-            ? { ...roadmap, image: null } 
+            ? { ...roadmap, image: null }
             : roadmap
         )
       );
 
       setTimeout(() => {
         window.location.reload();
-      }, 1000); 
+      }, 1000);
 
     } catch (error) {
       console.error("Error al eliminar la imagen:", error);
     }
   };
+
+  const filteredRoadmaps = userRoadmaps.filter((roadmap) => {
+    const matchesName = roadmap.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDate = new Date(Date.parse(roadmap.fecha_creacion)).toLocaleDateString().includes(searchTerm);
+    return matchesName || matchesDate;
+  });
 
   if (isLoading) {
     return (
@@ -91,12 +98,23 @@ function RoadmapsSection() {
       </div>
     );
   }
+
   return (
     <div className="roadmaps-section">
       <h3>Roadmaps Creados</h3>
-      {userRoadmaps.length > 0 ? (
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Buscar por nombre o fecha..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+        <FaSearch className="search-icon" />
+      </div>
+      {filteredRoadmaps.length > 0 ? (
         <div className="roadmaps-grid">
-          {userRoadmaps.map((roadmap) => (
+          {filteredRoadmaps.map((roadmap) => (
             <div
               key={roadmap.id_roadmap}
               className="roadmap-card"
@@ -106,28 +124,27 @@ function RoadmapsSection() {
                 <strong>{roadmap.nombre}</strong>
               </div>
               <div className="roadmap-card-body">
-  <img
-    src={roadmap.image || "ruta/a/imagen/por/defecto.png"}
-    alt={`Imagen de ${roadmap.nombre}`}
-    className="roadmap-image"
-  />
- <p>Creado el: {new Date(Date.parse(roadmap.fecha_creacion)).toLocaleDateString()}</p>
- 
-  <div className="delete-icon-container">
-    <FaTrash
-      className="delete-icon"
-      onClick={(e) => {
-        e.stopPropagation();
-        handleDeleteImage(roadmap.id_roadmap);
-      }}
-    />
-  </div>
-</div>
+                <img
+                  src={roadmap.image || "ruta/a/imagen/por/defecto.png"}
+                  alt={`Imagen de ${roadmap.nombre}`}
+                  className="roadmap-image"
+                />
+                <p>Creado el: {new Date(Date.parse(roadmap.fecha_creacion)).toLocaleDateString()}</p>
+                <div className="delete-icon-container">
+                  <FaTrash
+                    className="delete-icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteImage(roadmap.id_roadmap);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>
       ) : (
-        <p>No has creado ningún roadmap aún.</p>
+        <p>No se encontraron roadmaps que coincidan con la búsqueda.</p>
       )}
     </div>
   );

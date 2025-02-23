@@ -319,3 +319,53 @@
     font-size: 12px;
   }
 }
+/* Estilos para el contenedor de búsqueda */
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  max-width: 400px; 
+  width: 100%;
+  margin-left: auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px; 
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 25px; 
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.search-input:hover,
+.search-input:focus {
+  border-color: var(--hover); 
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2); 
+}
+
+/* Estilo del ícono de lupa */
+.search-icon {
+  position: absolute;
+  right: 15px;
+  color: #777; 
+  font-size: 18px;
+  pointer-events: none; 
+}
+.search-icon:hover {
+  color: var(--hover); 
+}
+
+/* Estilos para el contenedor principal */
+.roadmaps-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.roadmaps-section h3 {
+  margin: 0; 
+}

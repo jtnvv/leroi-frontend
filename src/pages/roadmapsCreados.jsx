@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTrash, FaSearch } from "react-icons/fa"; // Icono de eliminar y lupa
+import { FaTrash, FaSearch } from "react-icons/fa"; 
 import "../styles/profile.css";
+import { format, parseISO } from "date-fns";
+import { es } from "date-fns/locale"; 
 
 function RoadmapsSection() {
   const [userRoadmaps, setUserRoadmaps] = useState([]);
@@ -129,7 +131,12 @@ function RoadmapsSection() {
                   alt={`Imagen de ${roadmap.nombre}`}
                   className="roadmap-image"
                 />
-                <p>Creado el: {new Date(Date.parse(roadmap.fecha_creacion)).toLocaleDateString()}</p>
+                <p>
+                  Creado el:{" "}
+                  {format(parseISO(roadmap.fecha_creacion), "dd 'de' MMMM 'de' yyyy", {
+                    locale: es,
+                  })}
+                </p>
                 <div className="delete-icon-container">
                   <FaTrash
                     className="delete-icon"

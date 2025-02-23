@@ -86,7 +86,7 @@ function Roadmap() {
     setLoadingText("Cargando documento 🧐");
     const file = e.target.files[0];
     const maxSize = 50 * 1024 * 1024; // 50 MB
-
+  
     if (file.size > maxSize) {
       toast.error('El archivo no puede ser mayor a 50 MB');
       return;
@@ -94,60 +94,106 @@ function Roadmap() {
       setFileUploaded(file);
       convertToBase64(file);
     }
-
+  
     setFileUploaded(file);
-
+  
     try {
       const base64String = await convertToBase64(file);
       setBase64(base64String);
-
+  
       const dataToSend = {
         fileName: file.name,
         fileType: file.type,
         fileSize: file.size,
         fileBase64: base64String,
       };
-
+  
       setShowFileInfo(true);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/preview-cost-process-file`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataToSend),
+  
+      const token = localStorage.getItem("token");
+      let email = '';
+      if (token) {
+        try {
+          if (token.split('.').length === 3) {
+            const decodedPayload = token.split('.')[1];
+            const decoded = atob(decodedPayload);
+            const parsed = JSON.parse(decoded);
+            email = parsed.sub;
+          }
+        } catch (error) {
+          console.error('Error al decodificar el token:', error);
+          toast.error('Error al decodificar el token');
+          return;
         }
-      );
-
-      if (!response.ok) {
+      }
+  
+      if (!email) {
+        toast.error('No se pudo obtener el correo del usuario.');
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("email", email);
+  
+      const previewPromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/preview-cost-process-file`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+  
+      const analyzePromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+  
+      const previewResponse = await previewPromise;
+      if (!previewResponse.ok) {
         throw new Error('Error al obtener la vista previa de costos');
       }
-
-      const result = await response.json();
-      const parseResult = JSON.parse(result);
-
-      const credits_cost = parseInt(parseResult.credits_cost)
-      const user_credits = parseInt(parseResult.user_credits)
-
+  
+      const previewResult = await previewResponse.json();
+      const parsePreviewResult = JSON.parse(previewResult);
+  
+      const credits_cost = parseInt(parsePreviewResult.credits_cost);
+      const user_credits = parseInt(parsePreviewResult.user_credits);
+  
       setPreviewCost("Costo: " + credits_cost.toLocaleString() + " Créditos");
-      setUserCredits("Actualmente tienes " + user_credits.toLocaleString() + " créditos")
-      
+      setUserCredits("Actualmente tienes " + user_credits.toLocaleString() + " créditos");
+  
       setCanUserPay(credits_cost > user_credits);
       if (credits_cost > user_credits) {
         toast.error('Creditos Insuficientes 😔');
-      } 
-
+      }
+      analyzePromise
+        .then((analyzeResponse) => {
+          if (!analyzeResponse.ok) {
+            throw new Error('Error al analizar el archivo');
+          }
+          return analyzeResponse.json();
+        })
+        .then((analyzeResult) => {
+          if (analyzeResult.has_virus) {
+            toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
+          }
+        })
+        .catch((error) => {
+          console.error('Error al analizar el archivo:', error);
+          toast.error('Error al analizar el archivo');
+        });
+  
     } catch (error) {
       console.error('Error al obtener la vista previa de costos:', error);
       toast.error('Error al obtener el costo de procesamiento');
+    } finally {
+      setLoadingPage(false);
+      setLoadingText("");
     }
-    setLoadingPage(false);
-    setLoadingText("");
   };
-
   const handleReset = () => {
     setFileUploaded(null);
     setPreviewCost("Calculando...");
@@ -160,39 +206,7 @@ function Roadmap() {
       return;
     }
   
-    setIsLoading(true);
-
-    const token = localStorage.getItem("token"); 
-
-    if (!token) {
-      toast.error('No se encontró el token del usuario.');
-      return;
-    }
-  
-    let email = '';
-    try {
-      if (token.split('.').length === 3) {
-        const decodedPayload = token.split('.')[1]; 
-        const decoded = atob(decodedPayload); 
-        const parsed = JSON.parse(decoded); 
-        email = parsed.sub; 
-      } else {
-        toast.error('El token JWT no tiene un formato válido.');
-        return;
-      }
-    } catch (error) {
-      console.error('Error al decodificar el token:', error);
-      toast.error('Error al decodificar el token');
-      return;
-    }
-  
-    if (!email) {
-      toast.error('No se pudo obtener el correo del usuario.');
-      return;
-    }
-
     setLoadingPage(true);
-
     setLoadingText("Buscando temas relacionados... 📈🧠📚");
   
     const dataToSend = {
@@ -201,13 +215,9 @@ function Roadmap() {
       fileSize: fileUploaded.size,
       fileBase64: base64,
     };
-    const formData = new FormData();
-    formData.append("file", fileUploaded);
-    formData.append("email", email);
   
     try {
-
-      const processPromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
+      const processResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/process-file`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -215,22 +225,6 @@ function Roadmap() {
         },
         body: JSON.stringify(dataToSend),
       });
-  
-      const analyzePromise = fetch(`${import.meta.env.VITE_BACKEND_URL}/analyze`, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.has_virus) {
-            toast.error("El archivo contiene virus. El usuario ha sido eliminado.");
-          }
-        })
-        .catch((error) => console.error("Error al analizar el archivo:", error));
-  
-      
-      const processResponse = await processPromise;
   
       if (!processResponse.ok) {
         throw new Error("Error al enviar los datos al backend");
@@ -259,14 +253,17 @@ function Roadmap() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify({ topic }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al enviar el topic al backend');
       }
+      
       const result = await response.json();
+      console.log("Response:", result);
       const parseResult = JSON.parse(result);
 
       const responseTopics = await fetch(`${import.meta.env.VITE_BACKEND_URL}/related-topics`, {

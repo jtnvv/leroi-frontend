@@ -42,7 +42,7 @@
   font-family: 'Lexend Deca', sans-serif;
   position: relative;
   width: 15%;
-  padding: 1rem;
+  padding: 15px 30px; /* Aumenta el padding para un mejor tacto */
   background: #835bfc;
   color: white;
   border: none;
@@ -51,11 +51,17 @@
   transition: all 0.3s ease;
   font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   }
 
-  .generate-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+  .generate-button {
+    background: #835bfc; /* Color morado */
+    color: white;
   }
   
 .preview-modal {
@@ -421,11 +427,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #13131f; /* Fondo oscuro */
   color: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
+  gap: 20px;
 }
 
 /* Contenedor izquierdo: Información del archivo */
@@ -435,6 +442,7 @@
   flex-direction: column;
   justify-content: right;
   gap: 15px;
+  
 }
 
 .credits-cost{
@@ -459,6 +467,8 @@
   gap: 50px;
   align-items: center;
   justify-content: center;
+  max-width: 60%;
+  overflow: hidden;
 }
 
 .pdf-preview iframe {
@@ -479,17 +489,15 @@
 }
 
 /* Botón de generación */
-.generate-button {
-  padding:15px;
-  width: 210px;
-  height: 80px;
+.generate-button, .reset-button {
+  height: 80px; /* Misma altura para ambos botones */
+  display: flex;
+  align-items: center; /* Centra el texto verticalmente */
+  justify-content: center; /* Centra el texto horizontalmente */
   font-family: 'Lexend Deca', sans-serif;
-  background: #835bfc;
-  color: white;
   border: none;
   border-radius: 8px;
   font-weight: 500;
-  font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -500,20 +508,22 @@
 }
 
 /* Botón para subir otro archivo */
+.generate-button {
+  width: 210px;
+  padding: 15px 30px; 
+  background: #835bfc;
+  color: white;
+  font-size: 1.1rem;
+}
+
 .reset-button {
-  padding:15px;
   width: 170px;
-  height: 50px;
-  font-family: 'Lexend Deca', sans-serif;
+  padding: 15px 20px; 
   background: #ff4d4d;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
+  font-size: 1rem;
 }
+
 
 .reset-button:hover {
   background: #cc0000;
@@ -958,4 +968,32 @@
 
 .save-message.error {
   background: #F44336;
+}
+
+/* responsive pagina preview*/
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .file-info-container {
+    flex-direction: column; 
+    padding-top: 80px; 
+  }
+
+  .pdf-preview {
+    display: none; 
+  }
+
+  .file-details {
+    width: 100%; 
+    text-align: center; 
+  }
+
+  .buttons-container {
+    flex-direction: column; 
+    align-items: center; 
+  }
 }

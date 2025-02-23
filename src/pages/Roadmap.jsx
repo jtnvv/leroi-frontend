@@ -27,7 +27,6 @@ function Roadmap() {
   const [relatedTopics, setRelatedTopics] = useState([]);
   const authToken = localStorage.getItem("token");
 
-
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -65,7 +64,7 @@ function Roadmap() {
       localStorage.removeItem('topicsModal');
     }
   }, [location.state]);
-
+  
   useEffect(() => {
     if (Object.keys(roadmapTopics).length > 0) {
       console.log("Roadmap Topics:", roadmapTopics);

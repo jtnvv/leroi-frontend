@@ -19,6 +19,7 @@
     "canvg": "^4.0.2",
     "classcat": "^5.0.5",
     "dagre": "^0.8.5",
+    "date-fns": "^4.1.0",
     "dom-to-image": "^2.6.0",
     "dom-to-image-more": "^3.5.0",
     "firebase": "^11.1.0",

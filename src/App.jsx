@@ -15,6 +15,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './pages/ResetPassword';
 import About from './pages/About';
 import Pricing from './pages/Pricing';
+import RoadmapsSection from './pages/roadmapsCreados';
 
 function App() {
   return (
@@ -53,6 +54,8 @@ function App() {
 
             <Route path="/about" element={<About />} />
             <Route path="/pricing" element={<ProtectedRoute><Pricing /></ProtectedRoute>} />
+
+            <Route path="/roadmapsCreados" element={<ProtectedRoute><RoadmapsSection /></ProtectedRoute>} />
           </Routes>
         </div>
       </Router>

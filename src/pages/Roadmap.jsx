@@ -158,7 +158,7 @@ function Roadmap() {
       const previewResult = await previewResponse.json();
       const parsePreviewResult = JSON.parse(previewResult);
   
-      const credits_cost = parseInt(parsePreviewResult.credits_cost);
+      const credits_cost = Math.round((file.size / 1024 / 1024)*5);
       const user_credits = parseInt(parsePreviewResult.user_credits);
   
       setPreviewCost("Costo: " + credits_cost.toLocaleString() + " Créditos");

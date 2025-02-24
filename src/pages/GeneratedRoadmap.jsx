@@ -106,7 +106,7 @@ function GeneratedRoadmap() {
       });
     });
   }
-
+  const [saveMessage, setSaveMessage] = useState("");
   const captureRoadmap = async () => {
     const roadmapElement = roadmapRef.current;
     if (!roadmapElement) return;
@@ -149,6 +149,8 @@ function GeneratedRoadmap() {
       if (!response.ok) {
         throw new Error('Error al guardar la imagen en la base de datos');
       }
+      setSaveMessage("Roadmap guardado correctamente."); // Mensaje de confirmación
+      setTimeout(() => setSaveMessage(""), 3000); // Oculta el mensaje después de 3 segundos
 
       console.log('Roadmap guardado correctamente');
     } catch (error) {
@@ -302,6 +304,8 @@ const handleDownload = async (format) => {
               </div>
             </div>
           )}
+
+          {saveMessage && <div className="save-message">{saveMessage}</div>}  
           <div className="react-flow-container" ref={roadmapRef}>
             <ReactFlow
               nodes={nodes}

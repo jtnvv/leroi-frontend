@@ -119,34 +119,36 @@
 }
 
 /* Sección de Roadmaps */
+/* Contenedor de la sección de roadmaps */
 .roadmaps-section {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: rgba(30, 31, 38, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
+  margin-top: 80px; /* Ajusta este valor según la altura de tu barra de navegación */
+  padding: 20px;
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* Título de la sección */
 .roadmaps-section h3 {
   color: #fff;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 24px;
+  margin-bottom: 20px;
   text-align: center;
   opacity: 0.9;
 }
 
-/* Grid de Roadmaps */
+/* Grid de roadmaps */
 .roadmaps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 20px;
+  padding: 10px;
 }
 
-/* Card de Roadmap */
+/* Tarjeta de roadmap */
 .roadmap-card {
+  position: relative;
   background: rgba(40, 41, 49, 0.95);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
@@ -156,7 +158,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  padding: 15px;
 }
 
 .roadmap-card:hover {
@@ -164,9 +166,9 @@
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* Encabezado de la Card */
+/* Encabezado de la tarjeta */
 .roadmap-card-header {
-  padding: 1rem;
+  padding: 10px;
   background: rgba(50, 51, 59, 0.95);
   color: #fff;
   text-align: center;
@@ -175,19 +177,19 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Cuerpo de la Card */
+/* Cuerpo de la tarjeta */
 .roadmap-card-body {
-  padding: 1rem;
+  padding: 10px;
   text-align: center;
   color: #ddd;
-  font-size: 0.9rem;
+  font-size: 14px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* Imagen dentro de la Card */
+/* Imagen dentro de la tarjeta */
 .roadmap-image {
   width: 100%;
   height: 150px;
@@ -196,26 +198,174 @@
   margin-bottom: 10px;
 }
 
-/* Botón dentro de la Card */
-.roadmap-button {
-  background: var(--hover);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-.roadmap-button:hover {
-  background: var(--button-hover);
+/* Texto de fecha */
+.roadmap-card-body p {
+  margin: 0;
+  font-size: 12px;
+  color: #aaa;
 }
 
 /* Mensaje cuando no hay roadmaps */
 .roadmaps-section p {
   color: #ddd;
   text-align: center;
-  font-size: 1rem;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Resta la altura de la barra de navegación */
+  width: 100%;
+}
+
+.loading-message {
+  font-size: 1.5rem;
+  color: #fff;
+}
+.delete-icon-container {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-icon-container:hover {
+  background-color: rgba(255, 0, 0, 0.8); /* Fondo rojo al hacer hover */
+}
+
+.delete-icon {
+  color: #ff0000; /* Color rojo para el icono */
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.delete-icon-container:hover .delete-icon {
+  color: #ffffff; /* Color blanco al hacer hover */
+}
+
+
+/* Estilo base para el botón "Ver Roadmaps" */
+.roadmap-button {
+  background-color: var(--hover);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px; /* Espacio entre el texto y el botón */
+}
+
+
+.roadmap-button:hover {
+  background-color: var(--button-hover) 
+}
+
+
+.roadmap-button:disabled {
+  background-color: #ccc; 
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Estilo para el icono dentro del botón */
+.roadmap-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+/*responsive roadmaps Generados */
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .roadmaps-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .roadmap-card-header strong {
+    font-size: 16px;
+  }
+
+  .roadmap-card-body p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .roadmaps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roadmap-card-header strong {
+    font-size: 14px;
+  }
+
+  .roadmap-card-body p {
+    font-size: 12px;
+  }
+}
+/* Estilos para el contenedor de búsqueda */
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  max-width: 400px; 
+  width: 100%;
+  margin-left: auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px; 
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 25px; 
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.search-input:hover,
+.search-input:focus {
+  border-color: var(--hover); 
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2); 
+}
+
+/* Estilo del ícono de lupa */
+.search-icon {
+  position: absolute;
+  right: 15px;
+  color: #777; 
+  font-size: 18px;
+  pointer-events: none; 
+}
+.search-icon:hover {
+  color: var(--hover); 
+}
+
+/* Estilos para el contenedor principal */
+.roadmaps-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.roadmaps-section h3 {
+  margin: 0; 
 }

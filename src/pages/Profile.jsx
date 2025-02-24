@@ -8,6 +8,7 @@ import "../styles/modal.css";
 import "../styles/editmodal.css";
 import { useNavigate } from 'react-router-dom'; 
 
+
 function Profile() {
   const [userData, setUserData] = useState(null);
   const [userRoadmaps, setUserRoadmaps] = useState([]);
@@ -40,23 +41,6 @@ function Profile() {
 
         const userData = await userResponse.json();
         setUserData(userData.data);
-
-        // Obtener los roadmaps del usuario
-        const roadmapsResponse = await fetch(`${backendUrl}/user-roadmaps`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!roadmapsResponse.ok) {
-          throw new Error("Error al obtener los roadmaps del usuario");
-        }
-
-        const roadmapsData = await roadmapsResponse.json();
-        console.log("Roadmaps del usuario:", roadmapsData.data);
-        setUserRoadmaps(roadmapsData.data);
       } catch (error) {
         console.error(error);
         window.location.href = "/login";
@@ -142,9 +126,6 @@ function Profile() {
     }
   };
 
-  const handleRoadmapClick = (roadmap) => {
-    navigate('/generatedRoadmap', { state: { roadmapTopics: JSON.parse(roadmap.prompt) } });
-  };
 
   if (!userData) {
     return <div>Cargando...</div>;
@@ -181,6 +162,15 @@ function Profile() {
           </div>
           <div className="profile-field">
             <strong>Roadmaps Creados:</strong> {userData.roadmapsCreated}
+            {userData.roadmapsCreated > 0 && (
+              <Button 
+                className="roadmap-button" 
+                size="sm" 
+                onClick={() => navigate("/roadmapsCreados")}
+              >
+                Ver Roadmaps
+              </Button>
+            )}
           </div>
         </div>
 
@@ -200,37 +190,6 @@ function Profile() {
             Borrar cuenta
           </Button>
         </div>
-      </div>
-
-      {/* Sección de Roadmaps */}
-      <div className="roadmaps-section">
-        <h3>Roadmaps Creados</h3>
-        {userRoadmaps.length > 0 ? (
-          <div className="roadmaps-grid">
-            {userRoadmaps.map((roadmap) => (
-              <div
-                key={roadmap.id_roadmap}
-                className="roadmap-card"
-                onClick={() => handleRoadmapClick(roadmap)}  
-              >
-                <div className="roadmap-card-header">
-                  <strong>{roadmap.nombre}</strong>
-                </div>
-                <div className="roadmap-card-body">
-                  {/* Mostrar la imagen */}
-                    <img
-                      src={roadmap.image}
-                      alt={`Imagen de ${roadmap.nombre}`}
-                      className="roadmap-image"
-                    />
-                  <p>Creado el: {new Date(roadmap.fecha_creacion).toLocaleDateString()}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No has creado ningún roadmap aún.</p>
-        )}
       </div>
 
       {showConfirmModal && (

@@ -127,30 +127,27 @@ function Home() {
             <p className="price">250 créditos</p>
             <ul>
               <li>Ideal para probar Leroi</li>
-              <li>Procesa hasta 5 documentos </li>
-              <li>Descarga tus roadmaps</li>
+              <li>Procesa muchos documentos pequeños </li>
             </ul>
-            <Link to="/pricing" state={{ credits: 250 }} className="cta-button">Adquiere este plan</Link>
+            <Link to="/pricing" state={{ credits: 250 }} className="cta-button">Comprar paquete</Link>
           </div>
           <div className="pricing-card">
             <h3>Intermedio</h3>
             <p className="price">750 créditos</p>
             <ul>
-              <li>Suficiente para generar entre 5 y 8 roadmaps medianos</li>
-              <li>Ideal para estudiantes </li>
-              <li>Prueba funciones avanzadas</li>
+              <li>Ideal para estudiantes</li>
+              <li>Suficiente para generar roadmaps con archivos medianamente grandes</li>
             </ul>
-            <Link to="/pricing" state={{ credits: 750 }} className="cta-button">Adquiere este plan</Link>
+            <Link to="/pricing" state={{ credits: 750 }} className="cta-button">Comprar paquete</Link>
           </div>
           <div className="pricing-card">
             <h3>Avanzado</h3>
             <p className="price">1500 créditos</p>
             <ul>
-              <li>Almacenamiento extensivo</li>
-              <li>Procesa documentos grandes</li>
-              <li>Prueba funciones experimentales</li>
+              <li>Perfecto para autodidactas avanzados</li>
+              <li>Genera roadmaps con archivos grandes</li>
             </ul>
-            <Link to="/pricing" state={{ credits: 1500 }} className="cta-button">Adquiere este plan</Link>
+            <Link to="/pricing" state={{ credits: 1500 }} className="cta-button">Comprar paquete</Link>
           </div>
         </div>
       </section>

@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
-
-
+import ReactFlow, { Background } from 'react-flow-renderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand,faSave } from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons'; 
@@ -16,7 +14,7 @@ import jsPDF from 'jspdf';
 function GeneratedRoadmap() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { roadmapTopics, relatedTopics } = location.state || {};
+  const { roadmapTopics, relatedTopics, linkButton } = location.state || {};
   const [relatedTopicsModal, setRelatedTopicsModal] = useState(false);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState('json');
@@ -253,6 +251,7 @@ const handleDownload = async (format) => {
   };
 
   const handleFitView = () => {
+    console.log("averlo", linkButton);
     if (reactFlowInstance.current) {
       reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
     }
@@ -313,7 +312,7 @@ const handleDownload = async (format) => {
               nodes={nodes}
               edges={edges}
               nodeTypes={{ custom: CustomNode }}
-              fitView
+              fit
               onInit={onInit}
             >
               <Background />
@@ -331,9 +330,11 @@ const handleDownload = async (format) => {
             <button className="control-button" onClick={handleFitView}>
               <FontAwesomeIcon icon={faExpand} />
             </button>
-            <button className="control-button" onClick={handleShowModal}>
-              <FontAwesomeIcon icon={faLink} />
-            </button>
+            {(linkButton === undefined) && (
+              <button className="control-button" onClick={handleShowModal}>
+                <FontAwesomeIcon icon={faLink} />
+              </button>
+            )}
             <button className="control-button" onClick={captureRoadmap}>
               <FontAwesomeIcon icon={faSave} />
             </button>   

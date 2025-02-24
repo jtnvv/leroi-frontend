@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaTrash, FaSearch } from "react-icons/fa"; 
 import "../styles/profile.css";
@@ -47,7 +47,7 @@ function RoadmapsSection() {
   }, [backendUrl, authToken, navigate]);
 
   const handleRoadmapClick = (roadmap) => {
-    navigate("/generatedRoadmap", { state: { roadmapTopics: JSON.parse(roadmap.prompt) } });
+    navigate("/generatedRoadmap", { state: { roadmapTopics: JSON.parse(roadmap.prompt), linkButton: false} });
   };
 
   const handleDeleteImage = async (roadmapId) => {

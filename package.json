@@ -29,6 +29,7 @@
     "jspdf": "^2.5.2",
     "lucide-react": "^0.461.0",
     "nanoid": "^5.0.9",
+    "normalize.css": "^8.0.1",
     "popmotion": "^11.0.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

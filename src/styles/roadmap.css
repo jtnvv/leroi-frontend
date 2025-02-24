@@ -191,9 +191,8 @@
 
 .generated-roadmap-container {
   width: 100%;
-  height: calc(100vh - 60px); 
+  height: 100vh; 
   display: flex;
-  margin-top: 2.5rem; /* Aumenta el margen para separarlo del navbar */
   position: relative; /* Asegura que no se superponga */
   padding-top: 2rem;
   flex-direction: column; /* Organiza los elementos en columna */

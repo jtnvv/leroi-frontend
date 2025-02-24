@@ -84,7 +84,7 @@ function Roadmap() {
     setLoadingPage(true);
     setLoadingText("Cargando documento 🧐");
     const file = e.target.files[0];
-    const maxSize = 50 * 1024 * 1024; // 50 MB
+    const maxSize = 50 * 1024 * 1024; 
   
     if (file.size > maxSize) {
       toast.error('El archivo no puede ser mayor a 50 MB');

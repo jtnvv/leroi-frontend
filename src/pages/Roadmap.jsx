@@ -4,6 +4,7 @@ import archivo from '../assets/archivo.png';
 import anim_tutorial from '../assets/Tutorial_CrearRoadmap.mp4';
 import tutorial_logo from '../assets/Tutorial_logo.png';
 import { toast } from 'react-hot-toast';
+import { PDFDocument } from 'pdf-lib';
 import '../styles/roadmap.css';
 
 function Roadmap() {
@@ -99,13 +100,22 @@ function Roadmap() {
   
     try {
       const base64String = await convertToBase64(file);
-      setBase64(base64String);
+      
+      const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+      const newPdfDoc = await PDFDocument.create();
+      const [firstPage] = await newPdfDoc.copyPages(pdfDoc, [0]); 
+      newPdfDoc.addPage(firstPage);
+      const pdfBytes = await newPdfDoc.save();
+      const base64Page = await convertToBase64(new Blob([pdfBytes], { type: 'application/pdf' }));
+      setBase64(base64Page);
+      console.log("VIEJO BASE64", base64String);
+      console.log("NUEVO BASE64:", base64Page);
   
       const dataToSend = {
         fileName: file.name,
         fileType: file.type,
         fileSize: file.size,
-        fileBase64: base64String,
+        fileBase64: base64Page,
       };
   
       const token = localStorage.getItem("token");

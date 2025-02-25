@@ -191,9 +191,6 @@ function Roadmap() {
       }
       analyzePromise
         .then((analyzeResponse) => {
-          if (!analyzeResponse.ok) {
-            throw new Error('Error al analizar el archivo');
-          }
           return analyzeResponse.json();
         })
         .then((analyzeResult) => {
@@ -203,7 +200,6 @@ function Roadmap() {
         })
         .catch((error) => {
           console.error('Error al analizar el archivo:', error);
-          toast.error('Error al analizar el archivo');
         });
   
     } catch (error) {

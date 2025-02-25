@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import '../styles/footer.css';
+import { FaInstagram, FaTwitter, FaDiscord } from "react-icons/fa";
 
 Footer.defaultProps = {
   t: {
@@ -12,12 +13,19 @@ Footer.defaultProps = {
       terms: "Términos y condiciones",
       privacy: "Privacidad",
       infoent: "Información de la empresa",
+      socialMedia: "Redes sociales",
       infoentLink: "/legal",
       aboutUsLink: "/about",
-      faqLink: "/faq",
+      faqLink: "/#faq",
       tutorialsLink: "/tutorials",
       termsLink: "/terms",
       privacyLink: "/privacy",
+      instagram: <FaInstagram />,
+      instagramLink: "https://www.instagram.com/leroidevteam/",
+      x: <FaTwitter />,
+      xLink: "https://x.com/LeroiDevteam",
+      discord: <FaDiscord />,
+      discordLink: "https://discord.gg/Yuw2Qec9xY",
     },
   },
 };
@@ -33,11 +41,18 @@ Footer.propTypes = {
       terms: PropTypes.string,
       privacy: PropTypes.string,
       infoent: PropTypes.string,
+      socialMedia: PropTypes.string,
       aboutUsLink: PropTypes.string,
       faqLink: PropTypes.string,
       tutorialsLink: PropTypes.string,
       termsLink: PropTypes.string,
       privacyLink: PropTypes.string,
+      instagram: PropTypes.node,
+      instagramLink: PropTypes.string,
+      x: PropTypes.node,
+      xLink: PropTypes.string,
+      discord: PropTypes.node,
+      discordLink: PropTypes.string,
     }),
   }),
 };
@@ -47,6 +62,37 @@ function Footer({ t }) {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-row">
+
+          {/* Sección de Redes Sociales */}
+          <div className="footer-section">
+            <h4>{t.footer.socialMedia}</h4>
+            <ul>
+              <li className="social-icons">
+                <a 
+                  href={t.footer.instagramLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  {t.footer.instagram}
+                </a>
+                <a 
+                  href={t.footer.xLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  {t.footer.x}
+                </a>
+                <a 
+                  href={t.footer.discordLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  {t.footer.discord}
+                </a>
+              </li>
+            </ul>
+          </div>
+
           {/* Sección de Información */}
           <div className="footer-section">
             <h4>{t.footer.aboutUs}</h4>
@@ -56,13 +102,12 @@ function Footer({ t }) {
           </div>
 
           {/* Sección de Recursos */}
-          {/* <div className="footer-section">
+          <div className="footer-section">
             <h4>{t.footer.resources}</h4>
             <ul>
               <li><a href={t.footer.faqLink}>{t.footer.faq}</a></li>
-              <li><a href={t.footer.tutorialsLink}>{t.footer.tutorials}</a></li>
             </ul>
-          </div> */}
+          </div>
 
           {/* Sección Legal */}
           {/* <div className="footer-section">

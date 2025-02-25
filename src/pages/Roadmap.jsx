@@ -236,7 +236,9 @@ function Roadmap() {
       });
   
       if (!processResponse.ok) {
-        throw new Error("Error al enviar los datos al backend");
+        toast.error("No puedes generar rutas de aprendizaje de temas sensibles");
+        const errorData = processResponse.json();
+        throw new Error(errorData.detail);
       }
   
       const result = await processResponse.json();
@@ -245,7 +247,7 @@ function Roadmap() {
   
     } catch (error) {
       console.error("Error en el proceso:", error);
-      toast.error("Error al procesar el archivo");
+      toast.error("Error al enviar los datos al backend");
     } finally {
       setIsLoading(false);
       setLoadingPage(false);

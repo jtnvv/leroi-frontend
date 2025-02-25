@@ -150,7 +150,7 @@ function Navbar({ t }) {
               </>
             )}
             {/* Tema */}
-            {/*ThemeToggle />*/}
+            <ThemeToggle />
           </div>
         </div>
       </div>

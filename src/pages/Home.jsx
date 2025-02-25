@@ -22,18 +22,58 @@ function Home() {
   const faqData = [
     {
       question: "¿Cómo funciona?",
-      answer: "Leroi analiza el contenido de los documentos subidos por los usuarios y genera un roadmap de aprendizaje jerárquico basado en los temas y subtemas identificados."
+      answer: "Leroi analiza el contenido de los documentos subidos por los usuarios y genera un roadmap de aprendizaje jerárquico basado en los temas y subtemas identificados. Utiliza procesamiento de lenguaje natural para extraer conceptos clave y organizarlos en una secuencia lógica de aprendizaje."
     },
     {
       question: "¿Qué tipo de documentos puedo subir?",
-      answer: "Leroi acepta documentos en formato PDF."
+      answer: "Leroi acepta documentos en formato PDF. Se recomienda que los documentos contengan texto estructurado y contengan pocas imagenes, esto con el fin de obtener una mejor interpretación y generar roadmaps más precisos."
     },
     {
       question: "¿Puedo personalizar los roadmaps generados?",
       answer: "Por ahora no, pero estamos trabajando para que los usuarios puedan ajustar los roadmaps generados por Leroi."
+    },
+    {
+      question: "¿Mi cuenta ha sido suspendida o eliminada?",
+      answer: "Si tu cuenta ha sido suspendida o eliminada, puede deberse a una infracción de nuestras políticas. Recuerda que subir archivos con contenido sensible o malicioso puede llevar a la eliminación de la cuenta. Si crees que esto ha ocurrido por error, puedes ponerte en contacto con nuestro equipo de soporte."
+    },
+    {
+      question: "¿Por qué mi cuenta fue suspendida después de varios intentos fallidos de inicio de sesión?",
+      answer: "Por razones de seguridad, si introduces varias veces una contraseña incorrecta, tu cuenta puede ser suspendida temporalmente. Te recomendamos esperar unos minutos e intentar nuevamente o restablecer tu contraseña si no la recuerdas. Si el problema persiste, contacta con nuestro equipo de soporte."
+    },
+    {
+      question: "¿Puedo compartir los roadmaps generados?",
+      answer: "Sí, puedes compartir los roadmaps generados con otros usuarios al exportarlos en formato PDF, PNG o JSON para su consulta offline."
+    },
+    {
+      question: "¿Qué hago si mi documento no se procesa correctamente?",
+      answer: "Si tu documento no se procesa correctamente, verifica que esté en formato PDF y que el texto sea legible. Si el problema persiste, prueba con otro documento o contacta con nuestro equipo de soporte."
+    },
+    {
+      question: "¿Cómo funciona la compra de créditos en la pasarela de pago?",
+      answer: "Los usuarios pueden comprar créditos a través de nuestra pasarela de pago segura. Ofrecemos tres paquetes de créditos, cada uno con diferentes cantidades de créditos disponibles. Una vez realizada la compra, los créditos se añaden automáticamente a tu cuenta y puedes utilizarlos para procesar documentos dentro de Leroi."
+    },
+    {
+      question: "¿Cómo se calcula el costo en créditos para procesar un documento?",
+      answer: "El costo en créditos para procesar un documento se basa en la cantidad y complejidad del contenido en sus páginas. Si un documento tiene solo texto, el costo será menor, mientras que si contiene imágenes de alta calidad o expresiones matemáticas en LaTeX muy pesadas, el costo aumentará debido a la mayor carga de procesamiento."
+    },
+    {
+      question: "¿Qué elementos pueden aumentar el costo en créditos al procesar un documento?",
+      answer: "Elementos como imágenes de alta resolución, gráficos detallados, ecuaciones complejas en LaTeX o documentos extensos pueden incrementar el costo en créditos. Recomendamos cargar documentos con pocas imagenes o expresiones muy complejas para evitar un procesamiento innecesariamente costoso."
+    },
+    {
+      question: "¿Puedo obtener un estimado del costo en créditos antes de procesar un documento?",
+      answer: "Sí, antes de confirmar el procesamiento de un documento, Leroi te mostrará un estimado del costo en créditos basado en la cantidad de páginas y la complejidad del contenido. De esta manera, puedes decidir si deseas continuar o ajustar el documento antes de procesarlo."
+    },
+    {
+      question: "¿Los créditos tienen fecha de expiración?",
+      answer: "No, los créditos comprados no tienen fecha de expiración. Puedes utilizarlos cuando lo necesites sin preocuparte por perderlos con el tiempo."
+    },
+    {
+      question: "¿Puedo solicitar un reembolso si no utilizo mis créditos?",
+      answer: "No ofrecemos reembolsos por créditos no utilizados. Sin embargo, puedes usarlos en cualquier momento, ya que no tienen fecha de expiración."
     }
   ];
-
+  
   const toggleAnswer = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
@@ -161,10 +201,10 @@ function Home() {
       </h2>
       <div className="faq-container">
         {faqData.map((item, index) => (
-          <div key={index} className={`faq-card ${activeIndex === index ? 'active' : ''}`}>
-            <h3 onClick={() => toggleAnswer(index)} style={{ cursor: 'pointer' }}>
+          <div key={index} className={`faq-card ${activeIndex === index ? 'active' : ''}`} onClick={() => toggleAnswer(index)} style={{ cursor: 'pointer' }}>
+            <h4>
               {item.question}
-            </h3>
+            </h4>
             {activeIndex === index && <p>{item.answer}</p>}
           </div>
         ))}

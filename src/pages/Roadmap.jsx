@@ -82,19 +82,20 @@ function Roadmap() {
   }, [relatedTopics]);
 
   const handleFileChange = async (e) => {
-    setLoadingPage(true);
-    setLoadingText("Cargando documento 🧐");
+    
     const file = e.target.files[0];
     const maxSize = 50 * 1024 * 1024; 
-  
+
     if (file.size > maxSize) {
-      toast.error('El archivo no puede ser mayor a 50 MB');
+      toast.error('¡El archivo supera nuestras capacidades de procesamiento! Prueba eliminando algunas páginas o imagenes del archivo...');
       return;
     } else {
       setFileUploaded(file);
       convertToBase64(file);
     }
-  
+
+    setLoadingPage(true);
+    setLoadingText("Cargando documento 🧐");
     setFileUploaded(file);
   
     try {
@@ -116,8 +117,6 @@ function Roadmap() {
         fileSize: file.size,
         fileBase64: base64Page,
       };
-  
-      setShowFileInfo(true);
   
       const token = localStorage.getItem("token");
       let email = '';
@@ -167,12 +166,24 @@ function Roadmap() {
   
       const previewResult = await previewResponse.json();
       const parsePreviewResult = JSON.parse(previewResult);
+
+      const file_tokens = parseInt(parsePreviewResult.file_tokens);
+
+      if (file_tokens >= 1000000) {
+        toast.error('¡El archivo supera nuestras capacidades de procesamiento! Prueba eliminando algunas páginas o imagenes del archivo...');
+        setFileUploaded(null);
+        setPreviewCost("Calculando...");
+        setShowFileInfo(false);
+        return;
+      }
   
-      const credits_cost = Math.round((file.size / 1024 / 1024)*5);
+      const credits_cost = parseInt(parsePreviewResult.credits_cost);
       const user_credits = parseInt(parsePreviewResult.user_credits);
   
       setPreviewCost("Costo: " + credits_cost.toLocaleString() + " Créditos");
       setUserCredits("Actualmente tienes " + user_credits.toLocaleString() + " créditos");
+
+      setShowFileInfo(true);
   
       setCanUserPay(credits_cost > user_credits);
       if (credits_cost > user_credits) {
@@ -310,7 +321,7 @@ function Roadmap() {
                 style={{ display: 'none' }}
               />
               <img src={archivo} alt="Icono de carga" className="upload-icon" />
-              <p>{'Sube tu archivo PDF (máx 50 MB)'}</p>
+              <p>{'Sube tu archivo PDF (Máx 50 MB)'}</p>
             </div>
           </div>
         ) : (

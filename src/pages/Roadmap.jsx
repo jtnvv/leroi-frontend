@@ -210,6 +210,27 @@ function Roadmap() {
       setLoadingText("");
     }
   };
+
+/*Interaccion al subir un documento*/
+const [isDragging, setIsDragging] = useState(false);
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  setIsDragging(true);
+};
+
+const handleDragLeave = () => {
+  setIsDragging(false);
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  setIsDragging(false);
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    handleFileChange({ target: { files: [file] } });
+  }
+};
   const handleReset = () => {
     setFileUploaded(null);
     setPreviewCost("Calculando...");
@@ -310,7 +331,11 @@ function Roadmap() {
         {!showFileInfo ? (
           <div className="roadmap-container">
             <h1>Sube un archivo para generar tu ruta de aprendizaje</h1>
-            <div className="file-upload" onClick={() => document.getElementById('fileInput').click()}>
+            <div className={`file-upload ${isDragging ? 'dragging' : ''}`} onClick={() => document.getElementById('fileInput').click()}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              >
               <input
                 id="fileInput"
                 type="file"
@@ -319,7 +344,7 @@ function Roadmap() {
                 style={{ display: 'none' }}
               />
               <img src={archivo} alt="Icono de carga" className="upload-icon" />
-              <p>{'Sube tu archivo PDF (Máx 50 MB)'}</p>
+              <p>{isDragging ? 'Suelta tu archivo aquí...' : 'Arrastra y suelta tu archivo PDF aquí o haz clic para subirlo (Máx 50 MB)'}</p>
             </div>
           </div>
         ) : (

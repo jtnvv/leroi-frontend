@@ -100,14 +100,12 @@ function Footer({ t }) {
               <li><a href={t.footer.aboutUsLink}>{t.footer.infoent}</a></li>
             </ul>
           </div>
-          <h4>© 2025 Leroi. Todos los derechos reservados.</h4>
-          {/* Sección de Recursos */}
-          <div className="footer-section">
-            <h4>{t.footer.resources}</h4>
+          <h4>{t.footer.resources}</h4>
             <ul>
               <li><a href={t.footer.faqLink}>{t.footer.faq}</a></li>
             </ul>
-          </div>
+          <h4>© 2025 Leroi. Todos los derechos reservados.</h4>
+            
 
           {/* Sección Legal */}
           {/* <div className="footer-section">

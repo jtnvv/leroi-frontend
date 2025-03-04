@@ -179,6 +179,7 @@ function GeneratedRoadmap() {
   }
   const [saveMessage, setSaveMessage] = useState("");
   const captureRoadmap = async () => {
+
     const roadmapElement = roadmapRef.current;
     if (!roadmapElement) return;
 
@@ -189,9 +190,11 @@ function GeneratedRoadmap() {
     } catch (error) {
       console.error('Error al capturar la imagen:', error);
     }
+      console.log('Guardando roadmap en la base de datos...');
   };
 
   const saveImageToDB = async (base64Image) => {
+    console.log("Ejecutando saveImageToDB...");
     const authToken = localStorage.getItem("token");
 
     if (!roadmapTopics || Object.keys(roadmapTopics).length === 0) {

@@ -110,7 +110,9 @@ function GeneratedRoadmap() {
   }
 
   const captureRoadmap = async () => {
-    const roadmapElement = document.getElementById('roadmap-container');
+    console.log("Ejecutando captureRoadmap...");
+    const roadmapElement = roadmapRef.current;
+    console.log(roadmapElement);
     if (!roadmapElement) return;
 
     try {
@@ -120,9 +122,11 @@ function GeneratedRoadmap() {
     } catch (error) {
       console.error('Error al capturar la imagen:', error);
     }
+      console.log('Guardando roadmap en la base de datos...');
   };
 
   const saveImageToDB = async (base64Image) => {
+    console.log("Ejecutando saveImageToDB...");
     const authToken = localStorage.getItem("token");
 
     if (!roadmapTopics || Object.keys(roadmapTopics).length === 0) {

@@ -13,6 +13,8 @@ function Profile() {
   const [userRoadmaps, setUserRoadmaps] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [new2FAStatus, setNew2FAStatus] = useState(false); 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const authToken = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ function Profile() {
 
         const userData = await userResponse.json();
         setUserData(userData.data);
+        console.log("Datos del usuario:", userData.data);
 
         // Obtener los roadmaps del usuario
         const roadmapsResponse = await fetch(`${backendUrl}/user-roadmaps`, {
@@ -65,6 +68,46 @@ function Profile() {
 
     fetchUserData();
   }, [backendUrl, authToken]);
+
+  // Función para manejar el cambio en el checkbox de 2FA
+  const handleToggle2FA = (event) => {
+    const newStatus = event.target.checked;
+    setNew2FAStatus(newStatus); 
+    setShow2FAModal(true); 
+  };
+
+  // Función para confirmar el cambio de 2FA
+  const confirmToggle2FA = async () => {
+    try {
+      // Enviar la solicitud al backend para actualizar el estado de 2FA
+      const response = await fetch(`${backendUrl}/update-2fa`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ is_2fa_enabled: new2FAStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al actualizar el estado de 2FA");
+      }
+
+      // Actualizar el estado local con el nuevo valor de 2FA
+      setUserData({ ...userData, TFA_enabled: new2FAStatus });
+      alert(`Autenticación de doble factor ${new2FAStatus ? "activada" : "desactivada"} correctamente.`);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un error al actualizar la autenticación de doble factor.");
+    } finally {
+      setShow2FAModal(false); 
+    }
+  };
+
+  // Función para cancelar el cambio de 2FA
+  const cancelToggle2FA = () => {
+    setShow2FAModal(false); 
+  };
 
   const handleDeleteAccount = async () => {
     setShowConfirmModal(true);
@@ -113,9 +156,7 @@ function Profile() {
       email: userData.email?.trim(),
       provider: 'default'
     };
-  
-    console.log("Datos corregidos enviados al backend:", trimmedData);
-  
+
     try {
       const response = await fetch(`${backendUrl}/update-user`, {
         method: "PUT",
@@ -125,14 +166,13 @@ function Profile() {
         },
         body: JSON.stringify(trimmedData),
       });
-  
+
       const result = await response.json();
-      console.log("Respuesta del backend:", result);
-  
+
       if (!response.ok) {
         throw new Error(result.detail || "Error al actualizar los datos");
       }
-  
+
       alert("Datos actualizados correctamente");
       setUserData({ ...userData, ...updatedData });
       setShowEditModal(false);
@@ -149,7 +189,6 @@ function Profile() {
   if (!userData) {
     return <div>Cargando...</div>;
   }
-  
 
   return (
     <div className="profile-container">
@@ -181,6 +220,16 @@ function Profile() {
           </div>
           <div className="profile-field">
             <strong>Roadmaps Creados:</strong> {userData.roadmapsCreated}
+          </div>
+          <div className="profile-field">
+            <label>
+              <input
+                type="checkbox"
+                checked={userData.TFA_enabled || false}
+                onChange={handleToggle2FA}
+              />
+              Activar Autenticación de Doble Factor
+            </label>
           </div>
         </div>
 
@@ -217,12 +266,11 @@ function Profile() {
                   <strong>{roadmap.nombre}</strong>
                 </div>
                 <div className="roadmap-card-body">
-                  {/* Mostrar la imagen */}
-                    <img
-                      src={roadmap.image}
-                      alt={`Imagen de ${roadmap.nombre}`}
-                      className="roadmap-image"
-                    />
+                  <img
+                    src={roadmap.image}
+                    alt={`Imagen de ${roadmap.nombre}`}
+                    className="roadmap-image"
+                  />
                   <p>Creado el: {new Date(roadmap.fecha_creacion).toLocaleDateString()}</p>
                 </div>
               </div>
@@ -246,6 +294,16 @@ function Profile() {
           userData={userData}
           onClose={() => setShowEditModal(false)}
           onSave={handleSave}
+        />
+      )}
+
+      {show2FAModal && (
+        <ConfirmModal
+          message={`¿Estás seguro de que deseas ${
+            new2FAStatus ? "activar" : "desactivar"
+          } la autenticación de doble factor?`}
+          onConfirm={confirmToggle2FA}
+          onCancel={cancelToggle2FA}
         />
       )}
     </div>

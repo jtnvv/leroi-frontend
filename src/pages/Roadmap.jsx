@@ -4,6 +4,7 @@ import archivo from '../assets/archivo.png';
 import anim_tutorial from '../assets/Tutorial_CrearRoadmap.mp4';
 import tutorial_logo from '../assets/Tutorial_logo.png';
 import { toast } from 'react-hot-toast';
+import { PDFDocument } from 'pdf-lib';
 import '../styles/roadmap.css';
 
 function Roadmap() {
@@ -24,9 +25,9 @@ function Roadmap() {
   const [loadingPage, setLoadingPage] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [roadmapTopics, setRoadmapTopics] = useState({});
+  const [roadmapInfo, setRoadmapInfo] = useState({});
   const [relatedTopics, setRelatedTopics] = useState([]);
   const authToken = localStorage.getItem("token");
-
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -65,13 +66,13 @@ function Roadmap() {
       localStorage.removeItem('topicsModal');
     }
   }, [location.state]);
-
+  
   useEffect(() => {
     if (Object.keys(roadmapTopics).length > 0) {
       console.log("Roadmap Topics:", roadmapTopics);
       setLoadingPage(false);
       setLoadingText("");
-      navigate('/generatedRoadmap', {state: {roadmapTopics, relatedTopics}});
+      navigate('/generatedRoadmap', {state: {roadmapTopics, relatedTopics, roadmapInfo}});
     }
   }, [roadmapTopics, relatedTopics, navigate]);
 
@@ -82,33 +83,41 @@ function Roadmap() {
   }, [relatedTopics]);
 
   const handleFileChange = async (e) => {
-    setLoadingPage(true);
-    setLoadingText("Cargando documento 🧐");
+    
     const file = e.target.files[0];
-    const maxSize = 50 * 1024 * 1024; // 50 MB
-  
+    const maxSize = 50 * 1024 * 1024; 
+
     if (file.size > maxSize) {
-      toast.error('El archivo no puede ser mayor a 50 MB');
+      toast.error('¡El archivo supera nuestras capacidades de procesamiento! Prueba eliminando algunas páginas o imagenes del archivo...');
       return;
     } else {
       setFileUploaded(file);
       convertToBase64(file);
     }
-  
+
+    setLoadingPage(true);
+    setLoadingText("Cargando documento 🧐");
     setFileUploaded(file);
   
     try {
       const base64String = await convertToBase64(file);
-      setBase64(base64String);
+      
+      const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+      const newPdfDoc = await PDFDocument.create();
+      const [firstPage] = await newPdfDoc.copyPages(pdfDoc, [0]); 
+      newPdfDoc.addPage(firstPage);
+      const pdfBytes = await newPdfDoc.save();
+      const base64Page = await convertToBase64(new Blob([pdfBytes], { type: 'application/pdf' }));
+      setBase64(base64Page);
+      console.log("VIEJO BASE64", base64String);
+      console.log("NUEVO BASE64:", base64Page);
   
       const dataToSend = {
         fileName: file.name,
         fileType: file.type,
         fileSize: file.size,
-        fileBase64: base64String,
+        fileBase64: base64Page,
       };
-  
-      setShowFileInfo(true);
   
       const token = localStorage.getItem("token");
       let email = '';
@@ -158,12 +167,24 @@ function Roadmap() {
   
       const previewResult = await previewResponse.json();
       const parsePreviewResult = JSON.parse(previewResult);
+
+      const file_tokens = parseInt(parsePreviewResult.file_tokens);
+
+      if (file_tokens >= 1000000) {
+        toast.error('¡El archivo supera nuestras capacidades de procesamiento! Prueba eliminando algunas páginas o imagenes del archivo...');
+        setFileUploaded(null);
+        setPreviewCost("Calculando...");
+        setShowFileInfo(false);
+        return;
+      }
   
       const credits_cost = parseInt(parsePreviewResult.credits_cost);
       const user_credits = parseInt(parsePreviewResult.user_credits);
   
       setPreviewCost("Costo: " + credits_cost.toLocaleString() + " Créditos");
       setUserCredits("Actualmente tienes " + user_credits.toLocaleString() + " créditos");
+
+      setShowFileInfo(true);
   
       setCanUserPay(credits_cost > user_credits);
       if (credits_cost > user_credits) {
@@ -171,9 +192,6 @@ function Roadmap() {
       }
       analyzePromise
         .then((analyzeResponse) => {
-          if (!analyzeResponse.ok) {
-            throw new Error('Error al analizar el archivo');
-          }
           return analyzeResponse.json();
         })
         .then((analyzeResult) => {
@@ -183,7 +201,6 @@ function Roadmap() {
         })
         .catch((error) => {
           console.error('Error al analizar el archivo:', error);
-          toast.error('Error al analizar el archivo');
         });
   
     } catch (error) {
@@ -194,6 +211,27 @@ function Roadmap() {
       setLoadingText("");
     }
   };
+
+/*Interaccion al subir un documento*/
+const [isDragging, setIsDragging] = useState(false);
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  setIsDragging(true);
+};
+
+const handleDragLeave = () => {
+  setIsDragging(false);
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  setIsDragging(false);
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    handleFileChange({ target: { files: [file] } });
+  }
+};
   const handleReset = () => {
     setFileUploaded(null);
     setPreviewCost("Calculando...");
@@ -227,7 +265,9 @@ function Roadmap() {
       });
   
       if (!processResponse.ok) {
-        throw new Error("Error al enviar los datos al backend");
+        toast.error("No puedes generar rutas de aprendizaje de temas sensibles");
+        const errorData = processResponse.json();
+        throw new Error(errorData.detail);
       }
   
       const result = await processResponse.json();
@@ -236,7 +276,7 @@ function Roadmap() {
   
     } catch (error) {
       console.error("Error en el proceso:", error);
-      toast.error("Error al procesar el archivo");
+      toast.error("Error al enviar los datos al backend");
     } finally {
       setIsLoading(false);
       setLoadingPage(false);
@@ -263,8 +303,10 @@ function Roadmap() {
       }
       
       const result = await response.json();
-      console.log("Response:", result);
-      const parseResult = JSON.parse(result);
+      console.log("Response:", result.roadmap);
+      const parseResult = JSON.parse(result.roadmap);
+      const parseSecondResult = JSON.parse(result.extra_info)
+      console.log("VAMO A VERRRR", parseSecondResult);
 
       const responseTopics = await fetch(`${import.meta.env.VITE_BACKEND_URL}/related-topics`, {
         method: 'POST',
@@ -279,6 +321,7 @@ function Roadmap() {
 
       setRelatedTopics(parseResultTopics);
       setRoadmapTopics(parseResult);    
+      setRoadmapInfo(parseSecondResult);
     } catch (error) {
       console.error('Error al enviar al generar la ruta:', error);
       toast.error('No pudimos generar tu ruta de aprendizaje 😔');
@@ -292,7 +335,11 @@ function Roadmap() {
         {!showFileInfo ? (
           <div className="roadmap-container">
             <h1>Sube un archivo para generar tu ruta de aprendizaje</h1>
-            <div className="file-upload" onClick={() => document.getElementById('fileInput').click()}>
+            <div className={`file-upload ${isDragging ? 'dragging' : ''}`} onClick={() => document.getElementById('fileInput').click()}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              >
               <input
                 id="fileInput"
                 type="file"
@@ -301,7 +348,7 @@ function Roadmap() {
                 style={{ display: 'none' }}
               />
               <img src={archivo} alt="Icono de carga" className="upload-icon" />
-              <p>{'Sube tu archivo PDF (máx 50 MB)'}</p>
+              <p>{isDragging ? 'Suelta tu archivo aquí...' : 'Arrastra y suelta tu archivo PDF aquí o haz clic para subirlo (Máx 50 MB)'}</p>
             </div>
           </div>
         ) : (

@@ -1,10 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import ReactFlow, { Background, Controls, ControlButton } from 'react-flow-renderer';
-
-
+import ReactFlow, { Background } from 'react-flow-renderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand,faSave } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faTimes, faSearchPlus, faSearchMinus, faExpand,faSave, faClipboardQuestion} from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons'; 
 import CustomNode from '../components/CustomNode';
 import '../styles/roadmap.css';
@@ -16,14 +14,77 @@ import jsPDF from 'jspdf';
 function GeneratedRoadmap() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { roadmapTopics, relatedTopics } = location.state || {};
+  const { roadmapTopics, relatedTopics, roadmapInfo, linkButton } = location.state || {};
   const [relatedTopicsModal, setRelatedTopicsModal] = useState(false);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState('json');
+  const [topicInfo, setTopicInfo] = useState("");
+  const [modalInfo, setModalInfo] = useState(false);
+  const [linkInfo, setLinkInfo] = useState([]);
+  const [modalPosition, setModalPosition] = useState({}); 
   const roadmapRef = useRef(null);
   const reactFlowInstance = useRef(null);
+  const authToken = localStorage.getItem("token");
+  const [generatedQuestions, setGeneratedQuestions] = useState([]);
+  const [questionModal, setQuestionModal] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(false);
 
+  useEffect(() => {
+    if (Object.keys(generatedQuestions).length > 0) {
+      setLoadingPage(false);
+      console.log("PREGUNTASSS", generatedQuestions)
+      navigate('/questions', {state: {generatedQuestions}});
+    }
+  }, [generatedQuestions, navigate]);
 
+  const handleNodeEnter = (event, node) => {
+    const name = node.data.label;
+    const x = event.clientX;
+    const y = event.clientY;
+    setModalPosition({ x, y });
+  
+    let info = roadmapInfo[name];
+    const regex = /(https?:\/\/[^\s]+)/g;
+    const matches = info.match(regex);
+  
+    info = info.replace(regex, '');
+  
+    setTopicInfo(info);
+    setLinkInfo(matches || []);
+    setModalInfo(true);
+  };
+
+  const handleNodeLeave = () => {
+    setModalInfo(false);
+    setModalPosition({});
+  };
+
+  const handleGenerateQuestions = async () => {
+    setQuestionModal(false);
+    setLoadingPage(true);
+    try {
+      const questionsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate-questions`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ topic: JSON.stringify(roadmapInfo) }),
+      });
+  
+      if (!questionsResponse.ok) {
+        const errorData = await questionsResponse.json();
+        throw new Error(errorData.detail);
+      }
+  
+      const result = await questionsResponse.json();
+      const parseResult = JSON.parse(result)
+      setGeneratedQuestions(parseResult);
+      console.log("RESULTADO", result, "resultado en json", parseResult); 
+    } catch (error) {
+      console.error("Error en el proceso:", error);
+    } 
+  }
 
   const handleShowModal = () => {
     setRelatedTopicsModal(true);
@@ -38,6 +99,14 @@ function GeneratedRoadmap() {
   const closeModal = () => {
     setRelatedTopicsModal(false);
   };
+
+  const handleShowQuestionsModal = () => {
+    setQuestionModal(true)
+  }
+
+  const handleCloseQuestionsModal = () => {
+    setQuestionModal(false)
+  }
 
   const [levelOffset, setLevelOffset] = useState(400);
   const [nodeWidth, setNodeWidth] = useState(400);
@@ -108,11 +177,10 @@ function GeneratedRoadmap() {
       });
     });
   }
-
+  const [saveMessage, setSaveMessage] = useState("");
   const captureRoadmap = async () => {
-    console.log("Ejecutando captureRoadmap...");
+
     const roadmapElement = roadmapRef.current;
-    console.log(roadmapElement);
     if (!roadmapElement) return;
 
     try {
@@ -150,10 +218,13 @@ function GeneratedRoadmap() {
           image_base64: base64Image  
         }),
       });
+      console.log("ejecutandose");
 
       if (!response.ok) {
         throw new Error('Error al guardar la imagen en la base de datos');
       }
+      setSaveMessage("Roadmap guardado correctamente."); // Mensaje de confirmación
+      setTimeout(() => setSaveMessage(""), 3000); // Oculta el mensaje después de 3 segundos
 
       console.log('Roadmap guardado correctamente');
     } catch (error) {
@@ -219,7 +290,6 @@ const handleDownload = async (format) => {
           let position = 0;
           while (position < imgHeight) {
             if (position > 0) pdf.addPage();
-            const pageHeight = Math.min(pdfHeight, imgHeight - position);
             pdf.addImage(dataUrl, 'PNG', 0, -position, imgWidth, imgHeight);
             position += pdfHeight;
           }
@@ -254,6 +324,7 @@ const handleDownload = async (format) => {
   };
 
   const handleFitView = () => {
+    console.log("averlo", linkButton);
     if (reactFlowInstance.current) {
       reactFlowInstance.current.fitView({ padding: 0.2, duration: 500 });
     }
@@ -307,13 +378,17 @@ const handleDownload = async (format) => {
               </div>
             </div>
           )}
-          <div className="react-flow-container" ref={roadmapRef}>
+
+          {saveMessage && <div className="save-message">{saveMessage}</div>}  
+          <div className="react-flow-container" ref={roadmapRef} > 
             <ReactFlow
               nodes={nodes}
               edges={edges}
               nodeTypes={{ custom: CustomNode }}
-              fitView
+              fit
               onInit={onInit}
+              onNodeClick={handleNodeEnter}
+              onMove={handleNodeLeave}
             >
               <Background />
             </ReactFlow>
@@ -330,15 +405,20 @@ const handleDownload = async (format) => {
             <button className="control-button" onClick={handleFitView}>
               <FontAwesomeIcon icon={faExpand} />
             </button>
-            <button className="control-button" onClick={handleShowModal}>
-              <FontAwesomeIcon icon={faLink} />
-            </button>
+            {(linkButton === undefined) && (
+              <button className="control-button" onClick={handleShowModal}>
+                <FontAwesomeIcon icon={faLink} />
+              </button>
+            )}
             <button className="control-button" onClick={captureRoadmap}>
               <FontAwesomeIcon icon={faSave} />
             </button>   
               {/* Botón de descarga */}
-              <button className="icon-button" onClick={() => setShowDownloadOptions(true)}>
+            <button className="icon-button" onClick={() => setShowDownloadOptions(true)}>
               <FontAwesomeIcon icon={faDownload} className="download-icon" />
+            </button>
+            <button className="icon-button" onClick={handleShowQuestionsModal}>
+              <FontAwesomeIcon icon={faClipboardQuestion} />
             </button>
           </div>
         </>
@@ -360,6 +440,42 @@ const handleDownload = async (format) => {
           </div>
         </div>
       )}
+      {modalInfo && (
+        <div 
+          className="tooltip"
+          style={{
+            top: `${modalPosition.y}px`,
+            left: `${modalPosition.x}px`,
+          }}>
+            <>
+              {topicInfo}
+              <a href={linkInfo[0]} target="_blank" rel="noopener noreferrer">
+                🔗 Enlace relacionado
+              </a>
+            </>
+        </div>
+      )}
+      {questionModal && (
+        <div className="modal-overlay" onClick={handleCloseQuestionsModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h1 className="modal-title">¿Quieres responder algunas preguntas respecto a los temas de la ruta de aprendizaje? 🧐</h1>
+            <div className="modal-buttons">
+              <button onClick={() => handleGenerateQuestions()} className="modal-button">Sí 😃</button>
+              <button onClick={handleCloseQuestionsModal} className="modal-button">No 🙁</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {loadingPage && (
+        <div className="loading-modal">
+          <div className="loading-content">
+            <h2>Generando las preguntas... 🫡</h2>
+            <div className="spinner"></div>
+          </div>
+        </div>
+      )}
+
+ 
     </div>
   );
 }

@@ -415,10 +415,9 @@ function Register() {
             <h2>Términos y condiciones</h2>
             <p className="terms-text">
               LEROI es una plataforma web diseñada para generar rutas de aprendizaje personalizadas a partir de documentos cargados por los usuarios, 
-              quienes son responsables del contenido que suben y de su uso en conformidad con las leyes aplicables. El servicio es exclusivamente educativo, 
-              y los documentos se procesan temporalmente, sin almacenamiento permanente. Los usuarios pueden generar hasta tres rutas gratuitas y adquirir créditos para generar más, 
-              estos créditos no son reembolsables ni transferibles. La plataforma y sus contenidos son propiedad de LEROI, y el uso indebido de los mismos está prohibido. 
-              LEROI no garantiza la disponibilidad continua del servicio ni la precisión de las rutas generadas, y no se hace responsable por daños indirectos derivados del uso de la plataforma. 
+              quienes son totalmente responsables del contenido que suben y de su uso, debiendo cumplir con todas las leyes y regulaciones aplicables. LEROI en ningún caso se hace responsable del uso indebido de la plataforma, incluyendo, pero no limitado a, la generación, difusión o acceso a información que incite o facilite actividades ilegales, peligrosas o que atenten contra la seguridad pública.
+              La plataforma y sus contenidos son propiedad de LEROI, y su uso indebido está prohibido. 
+              LEROI no se hace responsable por daños indirectos derivados del uso de la plataforma. 
               LEROI puede modificar los servicios o los términos en cualquier momento, notificando a los usuarios registrados.</p>
             <button 
               onClick={() => setShowTermsModal(false)}

@@ -42,7 +42,7 @@
   font-family: 'Lexend Deca', sans-serif;
   position: relative;
   width: 15%;
-  padding: 1rem;
+  padding: 15px 30px; /* Aumenta el padding para un mejor tacto */
   background: #835bfc;
   color: white;
   border: none;
@@ -51,11 +51,17 @@
   transition: all 0.3s ease;
   font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   }
 
-  .generate-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+  .generate-button {
+    background: #835bfc; /* Color morado */
+    color: white;
   }
   
 .preview-modal {
@@ -185,9 +191,8 @@
 
 .generated-roadmap-container {
   width: 100%;
-  height: calc(100vh - 60px); 
+  height: 100vh; 
   display: flex;
-  margin-top: 2.5rem; /* Aumenta el margen para separarlo del navbar */
   position: relative; /* Asegura que no se superponga */
   padding-top: 2rem;
   flex-direction: column; /* Organiza los elementos en columna */
@@ -355,9 +360,6 @@
   transform: scale(1.05);
 }
 
-
-
-
 .help-icon {
   position: fixed;
   bottom: 20px;
@@ -421,11 +423,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #13131f; /* Fondo oscuro */
   color: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
+  gap: 20px;
 }
 
 /* Contenedor izquierdo: Información del archivo */
@@ -435,6 +438,7 @@
   flex-direction: column;
   justify-content: right;
   gap: 15px;
+  
 }
 
 .credits-cost{
@@ -459,6 +463,8 @@
   gap: 50px;
   align-items: center;
   justify-content: center;
+  max-width: 60%;
+  overflow: hidden;
 }
 
 .pdf-preview iframe {
@@ -479,17 +485,15 @@
 }
 
 /* Botón de generación */
-.generate-button {
-  padding:15px;
-  width: 210px;
-  height: 80px;
+.generate-button, .reset-button {
+  height: 80px; /* Misma altura para ambos botones */
+  display: flex;
+  align-items: center; /* Centra el texto verticalmente */
+  justify-content: center; /* Centra el texto horizontalmente */
   font-family: 'Lexend Deca', sans-serif;
-  background: #835bfc;
-  color: white;
   border: none;
   border-radius: 8px;
   font-weight: 500;
-  font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -500,20 +504,22 @@
 }
 
 /* Botón para subir otro archivo */
+.generate-button {
+  width: 210px;
+  padding: 15px 30px; 
+  background: #835bfc;
+  color: white;
+  font-size: 1.1rem;
+}
+
 .reset-button {
-  padding:15px;
   width: 170px;
-  height: 50px;
-  font-family: 'Lexend Deca', sans-serif;
+  padding: 15px 20px; 
   background: #ff4d4d;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
+  font-size: 1rem;
 }
+
 
 .reset-button:hover {
   background: #cc0000;
@@ -574,6 +580,23 @@
   transform: translateY(0);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.tooltip{
+  position: absolute; 
+  background:  white;
+  color: #000;
+  border: 1px solid  #835BFCCC; 
+  border-radius: 5px; 
+  padding: 10px;
+  max-width: 250px;
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  white-space: normal; 
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
+  font-size: 14px; 
+  z-index: 1000; 
+}
+
 
 /* Ajustes para pantallas menores a 768px */
 @media (max-width: 768px) {
@@ -914,5 +937,76 @@
 
   .format-option span {
     font-size: 0.8rem; /* Fuente aún más pequeña */
+  }
+}
+
+
+/* Estilos para el mensaje de guardado */
+.save-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%); 
+  background: #4CAF50; 
+  color: white; 
+  padding: 12px 24px; 
+  border-radius: 8px; 
+  font-size: 16px;
+  font-weight: 500; 
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); 
+  z-index: 1000; 
+  animation: fadeInUp 0.5s ease-out; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; 
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+
+.save-message.custom-theme {
+  background: #2196F3; 
+}
+
+.save-message.error {
+  background: #F44336;
+}
+
+/* responsive pagina preview*/
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .file-info-container {
+    flex-direction: column; 
+    padding-top: 80px; 
+  }
+
+  .pdf-preview {
+    display: none; 
+  }
+
+  .file-details {
+    width: 100%; 
+    text-align: center; 
+  }
+
+  .buttons-container {
+    flex-direction: column; 
+    align-items: center; 
   }
 }

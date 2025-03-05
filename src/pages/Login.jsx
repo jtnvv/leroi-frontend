@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -6,12 +6,23 @@ import { auth } from '../config/firebase';
 import googleIcon from '../assets/google.png';
 import { useNavigate } from 'react-router-dom';
 import '../styles/register.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function Login() {
+  const [captchaValido, setCaptchaValido] = useState(null);
+  const recaptchaRef = useRef(null);
+  const handleCaptchaChange = (token) => {
+    console.log("Captcha token:", token);
+    setCaptchaValido(token);
+    setFormData({ ...formData, recaptcha_token: String(token) });
+
+  };
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    recaptcha_token: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,14 +64,18 @@ function Login() {
 
     } catch (error) {
       console.error('Error al enviar el email:', error);
-      throw error; 
+      throw error;
     }
   };
 
   // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
+    if (!captchaValido) {
+      alert("Por favor, verifica que no eres un robot.");
+      return;
+    }
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
       try {
@@ -71,10 +86,19 @@ function Login() {
           },
           body: JSON.stringify(formData)
         });
-
+        console.log(response)
+        console.log(captchaValido)
+        console.log(import.meta.env.VITE_BACKEND_URL)
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.detail);
+          console.error("Error en la respuesta del servidor:", errorData);
+
+          // Verifica si errorData.detail es un string
+          if (typeof errorData.detail === "string") {
+            throw new Error(errorData.detail);
+          } else {
+            throw new Error("Error desconocido en el servidor");
+          }
         }
 
         const data = await response.json();
@@ -108,7 +132,7 @@ function Login() {
   const handleVerifyCode = async () => {
     try {
       setIsSubmittingCode(true);
-  
+
       const verifyCodeResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/verify-code`, {
         method: 'POST',
         headers: {
@@ -119,25 +143,25 @@ function Login() {
           code: verificationCode,
         }),
       });
-  
-      console.log('Respuesta de /verify-code:', verifyCodeResponse); 
-  
+
+      console.log('Respuesta de /verify-code:', verifyCodeResponse);
+
       if (!verifyCodeResponse.ok) {
         const errorData = await verifyCodeResponse.json();
-        console.error('Error en /verify-code:', errorData); 
+        console.error('Error en /verify-code:', errorData);
         throw new Error(errorData.detail || 'Código de verificación incorrecto');
       }
-  
+
       const verifyCodeData = await verifyCodeResponse.json();
-      console.log('Datos de /verify-code:', verifyCodeData); 
-  
+      console.log('Datos de /verify-code:', verifyCodeData);
+
       const token = verifyCodeData.access_token;
       localStorage.setItem('token', token);
       console.log('Token guardado:', token);
-  
+
       navigate('/roadmap');
       window.location.reload('/roadmap');
-  
+
     } catch (error) {
       toast.error(error.message);
       console.error('Error al verificar el código:', error);
@@ -148,17 +172,22 @@ function Login() {
 
   // Función para manejar el inicio de sesión con Google
   const handleGoogleSignup = async () => {
+    if (!captchaValido) {
+      alert("Por favor, verifica que no eres un robot antes de continuar.");
+      return;
+    }
     setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
 
       const userData = {
-        email: result.user.email,      
-        name: result.user.displayName,       
-        provider: 'google',                    
+        email: result.user.email,
+        name: result.user.displayName,
+        provider: 'google',
+        recaptcha_token: captchaValido,
       };
-      
+
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login-google`, {
           method: 'POST',
@@ -167,7 +196,7 @@ function Login() {
           },
           body: JSON.stringify(userData)
         });
-  
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.detail || 'Error al iniciar sesión');
@@ -177,7 +206,7 @@ function Login() {
         localStorage.setItem('token', token);
         navigate('/roadmap');
         window.location.reload('/roadmap');
-  
+
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
         throw error;
@@ -245,7 +274,7 @@ function Login() {
       <div className="register-box">
         <h1 className="register-title">Inicia sesión</h1>
         <h2 className="register-subtitle">Ingresa tus datos</h2>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Ingresa tu correo electrónico</label>
@@ -294,8 +323,8 @@ function Login() {
           </div>
 
           <div className="button-container">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="submit-button"
               disabled={isSubmitting}
             >
@@ -315,27 +344,33 @@ function Login() {
                 </>
               )}
             </button>
-          </div> 
+          </div>
+          <ReCAPTCHA
+            sitekey="6Ldl3OkqAAAAAIxc-zCEinbhJP62Qh3z838vI6Jn"
+            onChange={handleCaptchaChange}
+            style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}
+            ref={recaptchaRef}
+          />
         </form>
 
         {showForgotPassword && (
           <div className="verification-modal">
             <div className="modal-content">
               <h2>Ingresa tu correo asociado a tu cuenta</h2>
-              <input 
-                type="email" 
-                name="email" 
-                value={forgotPasswordEmail} 
-                onChange={(e) => setForgotPasswordEmail(e.target.value)} 
+              <input
+                type="email"
+                name="email"
+                value={forgotPasswordEmail}
+                onChange={(e) => setForgotPasswordEmail(e.target.value)}
                 placeholder="Correo electrónico"
                 required
                 className="forgot-password-input"
               />
               <div className="modal-buttons">
                 <button type="button" className="cancel-button" onClick={() => setShowForgotPassword(false)}>Cancelar</button>
-                <button 
-                  type="submit" 
-                  className="submit-button" 
+                <button
+                  type="submit"
+                  className="submit-button"
                   onClick={handleForgotPassword}
                   disabled={isForgotPasswordSubmitting}
                 >
@@ -361,13 +396,13 @@ function Login() {
                 disabled={isSubmittingCode}
               />
               <div className="modal-buttons">
-                <button 
+                <button
                   onClick={() => setShowVerificationModal(false)}
                   className="cancel-button"
                 >
                   Cancelar
                 </button>
-                <button 
+                <button
                   onClick={handleVerifyCode}
                   className="verify-button"
                   disabled={isSubmittingCode}
